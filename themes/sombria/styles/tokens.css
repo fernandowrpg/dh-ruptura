@@ -1,0 +1,42 @@
+/* Sombria — fragmento do domínio de Tenebra.
+   Tokens do tema. Todo o resto do CSS lê apenas estas variáveis. */
+
+html[data-ruptura-theme="sombria"] {
+  /* Destaques */
+  --rpt-accent: #b44dff;   /* brasa violeta; pode ser trocada nas configurações */
+  --rpt-hot: #ff7ad1;      /* rosa-quente: títulos e realces */
+  --rpt-pale: #cfa6ff;     /* lilás: substitui o dourado do Daggerheart */
+  --rpt-blood: #ff5c7a;    /* sangue: Medo */
+  --rpt-relic: #ffd27a;    /* ouro pálido: sucessos críticos */
+
+  /* Superfícies, da mais funda à mais alta */
+  --rpt-void: #0a0512;
+  --rpt-abyss: #120919;
+  --rpt-panel: #190d26;
+  --rpt-raised: #24123a;
+  --rpt-iron: #4d2a78;
+
+  /* Texto */
+  --rpt-text: #ecdff5;
+  --rpt-muted: #c2b3d6;
+  --rpt-ink: #12051f;      /* texto sobre a cor de destaque */
+
+  /* Derivadas */
+  --rpt-edge: color-mix(in srgb, var(--rpt-accent) 60%, var(--rpt-iron));
+  --rpt-fill: color-mix(in srgb, var(--rpt-abyss) 94%, transparent);
+  --rpt-glow: 0 0 18px color-mix(in srgb, var(--rpt-accent) 35%, transparent);
+
+  /* Forma */
+  --rpt-chamfer: 14px;     /* corte dos cantos das janelas */
+  --rpt-chamfer-sm: 8px;   /* corte dos cantos de botões e controles */
+
+  /* Tipografia — Cinzel já vem com o sistema Daggerheart */
+  --rpt-font-title: 'Cinzel', 'Modesto Condensed', 'Palatino Linotype', serif;
+}
+
+/* Configuração "Reduzir efeitos": sem cantos cortados e sem brilho. */
+html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] {
+  --rpt-chamfer: 0px;
+  --rpt-chamfer-sm: 0px;
+  --rpt-glow: none;
+}

@@ -1,0 +1,406 @@
+/* Sombria — interface do Foundry (v13 e v14). */
+
+html[data-ruptura-theme="sombria"] {
+
+  /* ---------- Paleta do núcleo ---------- */
+
+  body,
+  .themed,
+  .theme-dark,
+  .theme-light {
+    color-scheme: dark;
+
+    --color-warm-1: var(--rpt-hot);
+    --color-warm-2: var(--rpt-accent);
+    --color-warm-3: var(--rpt-iron);
+    --color-cool-3: #6a4a9c;
+    --color-cool-4: var(--rpt-raised);
+    --color-cool-5: var(--rpt-void);
+    --color-cool-5-75: color-mix(in srgb, var(--rpt-void) 75%, transparent);
+    --color-cool-5-90: color-mix(in srgb, var(--rpt-void) 90%, transparent);
+
+    --color-dark-1: var(--rpt-void);
+    --color-dark-2: var(--rpt-abyss);
+    --color-dark-3: var(--rpt-panel);
+    --color-dark-4: var(--rpt-raised);
+    --color-dark-5: #382058;
+    --color-dark-6: var(--rpt-iron);
+
+    --color-light-1: #f6effb;
+    --color-light-2: var(--rpt-text);
+    --color-light-3: #d9c9ea;
+    --color-light-4: var(--rpt-muted);
+    --color-light-5: #a592c0;
+    --color-light-6: #8a78a6;
+
+    --color-text-primary: var(--rpt-text);
+    --color-text-secondary: var(--rpt-muted);
+    --color-text-subtle: #a592c0;
+    --color-text-emphatic: #ffffff;
+    --color-text-hyperlink: var(--rpt-hot);
+    --color-text-accent: var(--rpt-hot);
+
+    --color-border: var(--rpt-iron);
+    --color-fieldset-border: var(--rpt-iron);
+    --color-form-label: var(--rpt-muted);
+    --color-form-label-hover: var(--rpt-text);
+    --color-form-hint: #a592c0;
+    --color-form-hint-hover: var(--rpt-muted);
+    --color-shadow-primary: var(--rpt-accent);
+    --color-shadow-highlight: var(--rpt-hot);
+    --color-scrollbar: var(--rpt-iron);
+    --color-scrollbar-track: transparent;
+    --color-scrollbar-border: transparent;
+
+    --sidebar-background: color-mix(in srgb, var(--rpt-abyss) 92%, transparent);
+  }
+
+  /* ---------- Janelas ---------- */
+
+  .application,
+  .app.window-app {
+    --background: var(--rpt-fill);
+    --color-header-background: var(--rpt-raised);
+    --c: var(--rpt-chamfer);
+
+    color: var(--rpt-text);
+    border: 0;
+    border-radius: 0;
+    box-shadow: var(--rpt-glow), 0 18px 40px rgba(0, 0, 0, 0.6);
+    /* Moldura de cantos cortados, desenhada no fundo para não recortar o conteúdo. */
+    background:
+      linear-gradient(135deg, transparent calc(50% - 0.75px), var(--rpt-edge) calc(50% - 0.75px), var(--rpt-edge) calc(50% + 0.75px), transparent calc(50% + 0.75px)) top left / var(--c) var(--c) no-repeat,
+      linear-gradient(135deg, transparent calc(50% - 0.75px), var(--rpt-edge) calc(50% - 0.75px), var(--rpt-edge) calc(50% + 0.75px), transparent calc(50% + 0.75px)) bottom right / var(--c) var(--c) no-repeat,
+      linear-gradient(var(--rpt-edge) 0 0) top right / calc(100% - var(--c)) 1px no-repeat,
+      linear-gradient(var(--rpt-edge) 0 0) bottom left / calc(100% - var(--c)) 1px no-repeat,
+      linear-gradient(var(--rpt-edge) 0 0) bottom left / 1px calc(100% - var(--c)) no-repeat,
+      linear-gradient(var(--rpt-edge) 0 0) top right / 1px calc(100% - var(--c)) no-repeat,
+      linear-gradient(135deg, transparent calc(var(--c) * 0.7071), var(--rpt-fill) 0, var(--rpt-fill) calc(100% - var(--c) * 0.7071), transparent 0);
+  }
+
+  .application:not(.dh-style) > .window-header,
+  .app.window-app > .window-header {
+    background: linear-gradient(135deg, transparent calc(var(--rpt-chamfer) * 0.7071), var(--rpt-raised) 0);
+    border-bottom: 1px solid var(--rpt-iron);
+    padding-left: calc(var(--rpt-chamfer) + 6px);
+  }
+
+  .window-header .window-title {
+    font-family: var(--rpt-font-title);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rpt-hot);
+    text-shadow: none;
+  }
+
+  .window-header .header-control {
+    color: var(--rpt-text);
+    border-radius: 0;
+  }
+
+  .window-header .header-control:hover,
+  .window-header .header-control:focus-visible {
+    color: var(--rpt-ink);
+    background: var(--rpt-accent);
+  }
+
+  /* ---------- Controles compactos (cena, abas da barra lateral, atalhos, navegação) ---------- */
+
+  .ui-control {
+    --control-bg-color: var(--rpt-panel);
+    --control-border-color: transparent;
+    --control-icon-color: var(--rpt-text);
+    --control-hover-bg-color: var(--rpt-raised);
+    --control-hover-border-color: transparent;
+    --control-hover-icon-color: var(--rpt-hot);
+    --control-active-bg-color: var(--rpt-accent);
+    --control-active-border-color: transparent;
+    --control-active-icon-color: var(--rpt-ink);
+    --s: var(--rpt-chamfer-sm);
+
+    border-radius: 0;
+    box-shadow: inset 0 0 0 1px var(--rpt-iron);
+    clip-path: polygon(var(--s) 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%, 0 var(--s));
+  }
+
+  .ui-control:hover,
+  .ui-control:focus-visible {
+    box-shadow: inset 0 0 0 1px var(--rpt-accent);
+    outline: none;
+  }
+
+  .ui-control[aria-pressed="true"],
+  .ui-control.active {
+    background: var(--rpt-accent);
+    color: var(--rpt-ink);
+    box-shadow: none;
+  }
+
+  #scene-navigation .ui-control {
+    font-family: var(--rpt-font-title);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #hotbar .slot .key {
+    font-family: var(--rpt-font-title);
+    color: var(--rpt-muted);
+    background: none;
+  }
+
+  /* ---------- Barra lateral e listas ---------- */
+
+  #sidebar-content {
+    background: var(--sidebar-background);
+    border: 0;
+    border-left: 2px solid var(--rpt-accent);
+    border-radius: 0;
+    box-shadow: var(--rpt-glow);
+  }
+
+  .directory .directory-header,
+  .sidebar-tab > header {
+    background: color-mix(in srgb, var(--rpt-raised) 80%, transparent);
+  }
+
+  .directory-list .directory-item {
+    border-color: color-mix(in srgb, var(--rpt-iron) 50%, transparent);
+  }
+
+  .directory-list .directory-item:hover,
+  .directory-list .directory-item.active {
+    background: color-mix(in srgb, var(--rpt-accent) 16%, transparent);
+  }
+
+  .directory-list .folder > .folder-header {
+    font-family: var(--rpt-font-title);
+    letter-spacing: 0.06em;
+  }
+
+  #players {
+    --background: var(--rpt-fill);
+  }
+
+  #players #players-active,
+  #players #players-inactive {
+    border-radius: 0;
+    border-color: var(--rpt-iron);
+    border-top: 3px solid var(--rpt-accent);
+  }
+
+  /* ---------- Chat ---------- */
+
+  .chat-message:not(.duality):not(.fate) {
+    background: var(--rpt-panel);
+    color: var(--rpt-text);
+    border: 1px solid var(--rpt-iron);
+    border-radius: 0;
+  }
+
+  .chat-message .message-header .message-sender {
+    font-family: var(--rpt-font-title);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rpt-hot);
+  }
+
+  .chat-message .message-header .message-metadata {
+    color: var(--rpt-muted);
+  }
+
+  .chat-message.whisper:not(.duality):not(.fate) {
+    border-color: var(--rpt-accent);
+    background: color-mix(in srgb, var(--rpt-accent) 10%, var(--rpt-panel));
+  }
+
+  .dice-roll .dice-formula,
+  .dice-roll .dice-total {
+    background: var(--rpt-void);
+    color: var(--rpt-text);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .dice-roll .dice-total {
+    font-family: var(--rpt-font-title);
+    font-weight: 800;
+    color: var(--rpt-accent);
+  }
+
+  #chat-message,
+  .chat-form textarea {
+    background: var(--rpt-void);
+    color: var(--rpt-text);
+    border: 0;
+    border-bottom: 2px solid var(--rpt-iron);
+    border-radius: 0;
+  }
+
+  #chat-message:focus,
+  .chat-form textarea:focus {
+    border-bottom-color: var(--rpt-accent);
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* ---------- Formulários ---------- */
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea {
+    --input-background-color: var(--rpt-void);
+    --input-border-color: var(--rpt-iron);
+    --input-text-color: var(--rpt-text);
+    --input-placeholder-color: #a592c0;
+    --input-focus-outline-color: var(--rpt-accent);
+  }
+
+  button,
+  a.button {
+    --button-background-color: var(--rpt-raised);
+    --button-border-color: var(--rpt-iron);
+    --button-text-color: var(--rpt-text);
+    --button-focus-outline-color: var(--rpt-accent);
+    --button-hover-background-color: var(--rpt-accent);
+    --button-hover-border-color: var(--rpt-accent);
+    --button-hover-text-color: var(--rpt-ink);
+  }
+
+  /* Botões de rodapé e de diálogo: o botão "de ação" do tema. */
+  .application .form-footer button,
+  .application .dialog-buttons button,
+  .app.window-app .dialog-buttons button {
+    --s: var(--rpt-chamfer-sm);
+
+    font-family: var(--rpt-font-title);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 0;
+    background: var(--rpt-raised);
+    color: var(--rpt-text);
+    box-shadow: inset 0 0 0 1px var(--rpt-iron);
+    clip-path: polygon(var(--s) 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%, 0 var(--s));
+  }
+
+  .application .form-footer button:hover,
+  .application .form-footer button:focus-visible,
+  .application .form-footer button[type="submit"],
+  .application .form-footer button[data-action="ok"],
+  .application .form-footer button[data-action="yes"],
+  .application .dialog-buttons button:hover,
+  .application .dialog-buttons button.default,
+  .app.window-app .dialog-buttons button:hover,
+  .app.window-app .dialog-buttons button.default {
+    background: var(--rpt-accent);
+    color: var(--rpt-ink);
+    font-weight: 800;
+    box-shadow: none;
+    outline: none;
+  }
+
+  fieldset {
+    border-color: var(--rpt-iron);
+    border-radius: 0;
+  }
+
+  fieldset > legend {
+    font-family: var(--rpt-font-title);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rpt-hot);
+  }
+
+  /* Abas dentro das janelas */
+  .application nav.tabs:not(#sidebar-tabs) [data-tab],
+  .app.window-app nav.tabs .item {
+    font-family: var(--rpt-font-title);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rpt-muted);
+    text-shadow: none;
+  }
+
+  .application nav.tabs:not(#sidebar-tabs) [data-tab].active,
+  .app.window-app nav.tabs .item.active {
+    color: var(--rpt-text);
+    box-shadow: inset 0 -3px 0 var(--rpt-accent);
+    text-shadow: none;
+  }
+
+  /* ---------- Texto e conteúdo ---------- */
+
+  .application .window-content :is(h1, h2, h3),
+  .journal-entry-page :is(h1, h2, h3) {
+    border-color: var(--rpt-iron);
+  }
+
+  a.content-link,
+  a.inline-roll {
+    background: var(--rpt-raised);
+    color: var(--rpt-text);
+    border: 1px solid var(--rpt-iron);
+    border-radius: 0;
+  }
+
+  a.content-link:hover,
+  a.inline-roll:hover {
+    border-color: var(--rpt-accent);
+    text-shadow: none;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--rpt-accent) 0 56px, var(--rpt-iron) 56px);
+  }
+
+  /* ---------- Sobreposições ---------- */
+
+  #tooltip,
+  .locked-tooltip,
+  #context-menu,
+  .controls-dropdown {
+    background: var(--rpt-abyss);
+    color: var(--rpt-text);
+    border: 1px solid var(--rpt-edge);
+    border-radius: 0;
+    box-shadow: var(--rpt-glow);
+  }
+
+  #context-menu li.context-item:hover,
+  .controls-dropdown li:hover {
+    background: var(--rpt-accent);
+    color: var(--rpt-ink);
+    text-shadow: none;
+  }
+
+  #notifications .notification {
+    border-radius: 0;
+    font-family: inherit;
+  }
+
+  #pause figcaption {
+    font-family: var(--rpt-font-title);
+    font-weight: 800;
+    letter-spacing: 0.4em;
+    color: var(--rpt-text);
+    text-shadow: 0 0 18px var(--rpt-accent);
+  }
+
+  #combat .combatant.active,
+  .combat-tracker .combatant.active {
+    background: color-mix(in srgb, var(--rpt-accent) 22%, transparent);
+    border-color: var(--rpt-accent);
+  }
+
+  ::selection {
+    background: var(--rpt-accent);
+    color: var(--rpt-ink);
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "dh-ruptura",
+  "title": "Ruptura — Temas de Interface",
+  "description": "Motor de temas visuais para o Foundry VTT, com suporte ao sistema Daggerheart. Inclui o tema Sombria (gótico e infernal, em tons de roxo) e permite adicionar novos temas.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "fernandowrpg"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351",
+    "maximum": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "daggerheart",
+        "type": "system",
+        "compatibility": {
+          "minimum": "1.9.0",
+          "verified": "1.9.14"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/widgets.css"
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://github.com/fernandowrpg/dh-ruptura",
+  "manifest": "https://github.com/fernandowrpg/dh-ruptura/releases/latest/download/module.json",
+  "download": "https://github.com/fernandowrpg/dh-ruptura/releases/latest/download/module.zip"
+}

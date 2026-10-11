@@ -1,0 +1,17 @@
+/* Regras do tema. Tudo fica dentro do seletor de escopo, para que o CSS só
+   tenha efeito quando este tema estiver ativo. Use themes/sombria como referência. */
+
+html[data-ruptura-theme="meu-tema"] {
+
+  body,
+  .themed {
+    --color-text-primary: var(--rpt-text);
+    --color-text-secondary: var(--rpt-muted);
+    --color-border: var(--rpt-iron);
+  }
+
+  .application {
+    --background: var(--rpt-panel);
+    box-shadow: var(--rpt-glow);
+  }
+}

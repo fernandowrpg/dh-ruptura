@@ -1,0 +1,7 @@
+node_modules/
+module.zip
+*.lock
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

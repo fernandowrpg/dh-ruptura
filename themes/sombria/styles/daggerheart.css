@@ -1,0 +1,62 @@
+/* Sombria — sistema Daggerheart (Foundryborne), verificado na 1.9.14.
+   O sistema lê as cores a partir de variáveis na raiz; trocar a paleta aqui
+   recolore fichas, cartões de chat, trilha de Medo e contagens. */
+
+html[data-ruptura-theme="sombria"] {
+  /* Dourado do sistema -> lilás */
+  --golden: var(--rpt-pale);
+  --golden-10: color-mix(in srgb, var(--rpt-pale) 6%, transparent);
+  --golden-40: color-mix(in srgb, var(--rpt-pale) 25%, transparent);
+  --golden-60: color-mix(in srgb, var(--rpt-pale) 38%, transparent);
+  --golden-90: color-mix(in srgb, var(--rpt-pale) 56%, transparent);
+  --golden-bg: color-mix(in srgb, var(--rpt-pale) 10%, transparent);
+  --golden-secondary: var(--rpt-accent);
+  --dark-golden: #1c0b33;
+  --dark-golden-40: color-mix(in srgb, #1c0b33 25%, transparent);
+  --dark-golden-80: color-mix(in srgb, #1c0b33 50%, transparent);
+
+  /* Azul-escuro do sistema -> roxo profundo */
+  --dark-blue: var(--rpt-panel);
+  --dark-blue-10: color-mix(in srgb, var(--rpt-panel) 6%, transparent);
+  --dark-blue-40: color-mix(in srgb, var(--rpt-panel) 25%, transparent);
+  --dark-blue-50: color-mix(in srgb, var(--rpt-panel) 31%, transparent);
+  --dark-blue-60: color-mix(in srgb, var(--rpt-panel) 38%, transparent);
+  --dark-blue-90: color-mix(in srgb, var(--rpt-panel) 56%, transparent);
+  --dark-blue-c0: color-mix(in srgb, var(--rpt-panel) 75%, transparent);
+  --semi-transparent-dark-blue: color-mix(in srgb, var(--rpt-panel) 33%, transparent);
+  --deep-black: var(--rpt-void);
+
+  /* Bege do sistema -> texto lavanda */
+  --beige: var(--rpt-text);
+  --beige-15: color-mix(in srgb, var(--rpt-text) 8%, transparent);
+  --beige-50: color-mix(in srgb, var(--rpt-text) 31%, transparent);
+  --beige-80: color-mix(in srgb, var(--rpt-text) 50%, transparent);
+
+  /* Rolagens de dualidade: Esperança = lilás (dourado), Medo = sangue, Crítico = ouro pálido */
+  --chat-blue: var(--rpt-blood);
+  --chat-blue-10: color-mix(in srgb, var(--rpt-blood) 6%, transparent);
+  --chat-blue-40: color-mix(in srgb, var(--rpt-blood) 25%, transparent);
+  --chat-blue-bg: color-mix(in srgb, #2a0a16 60%, transparent);
+  --chat-purple: var(--rpt-relic);
+  --chat-purple-10: color-mix(in srgb, var(--rpt-relic) 6%, transparent);
+  --chat-purple-40: color-mix(in srgb, var(--rpt-relic) 25%, transparent);
+  --chat-purple-bg: color-mix(in srgb, #2b1d03 60%, transparent);
+
+  --primary-color-fear: color-mix(in srgb, var(--rpt-accent) 75%, transparent);
+
+  /* Fontes do sistema: títulos seguem o tema; o corpo (Montserrat) fica como está */
+  --dh-font-title: var(--rpt-font-title);
+  --dh-font-subtitle: var(--rpt-font-title);
+
+  /* As fichas do sistema têm cantos arredondados próprios */
+  .application.daggerheart.sheet.dh-style,
+  .application.daggerheart.dh-style {
+    border-radius: 0;
+  }
+
+  .application.daggerheart .window-header h1,
+  .application.daggerheart .window-header .window-title {
+    font-family: var(--rpt-font-title);
+    color: var(--rpt-hot);
+  }
+}

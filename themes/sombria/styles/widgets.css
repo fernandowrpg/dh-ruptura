@@ -1,0 +1,41 @@
+/* Sombria — aparência dos widgets do módulo. */
+
+html[data-ruptura-theme="sombria"] {
+
+  .ruptura-vitals {
+    border: 0;
+    border-top: 3px solid var(--rpt-accent);
+    box-shadow: inset 0 0 0 1px var(--rpt-iron), var(--rpt-glow), 0 12px 28px rgba(0, 0, 0, 0.55);
+  }
+
+  .ruptura-vitals .rv-title {
+    font-family: var(--rpt-font-title);
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ruptura-vitals .rv-character {
+    --s: var(--rpt-chamfer-sm);
+    box-shadow: inset 0 0 0 1px var(--rpt-iron);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%);
+  }
+
+  .ruptura-vitals .rv-name {
+    font-family: var(--rpt-font-title);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ruptura-vitals .rv-pip {
+    transform: skewX(-20deg);
+  }
+
+  .ruptura-vitals .rv-hitPoints .rv-pip.on {
+    box-shadow: 0 0 6px color-mix(in srgb, var(--rpt-blood) 70%, transparent);
+  }
+}
+
+html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals .rv-pip.on {
+  box-shadow: none;
+}

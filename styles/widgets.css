@@ -1,0 +1,198 @@
+/* Estrutura dos widgets do módulo. As cores vêm dos tokens --rpt-* do tema ativo;
+   cada tema pode refinar a aparência no próprio CSS. */
+
+.ruptura-vitals {
+  position: fixed;
+  z-index: 70;
+  width: 250px;
+  max-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  background: var(--rpt-fill, rgba(20, 20, 24, 0.94));
+  color: var(--rpt-text, #eeeeee);
+  border: 1px solid var(--rpt-iron, #555555);
+  pointer-events: auto;
+}
+
+.ruptura-vitals .rv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 4px 4px 12px;
+  background: var(--rpt-raised, #26262c);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.ruptura-vitals .rv-header:active {
+  cursor: grabbing;
+}
+
+.ruptura-vitals .rv-title {
+  margin: 0;
+  border: 0;
+  font-size: 12px;
+  color: var(--rpt-hot, inherit);
+}
+
+.ruptura-vitals .rv-toggle {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ruptura-vitals .rv-toggle:hover,
+.ruptura-vitals .rv-toggle:focus-visible {
+  color: var(--rpt-ink, #111111);
+  background: var(--rpt-accent, #b44dff);
+  outline: none;
+  box-shadow: none;
+}
+
+.ruptura-vitals.collapsed .rv-toggle i {
+  transform: rotate(180deg);
+}
+
+.ruptura-vitals.collapsed .rv-list {
+  display: none;
+}
+
+.ruptura-vitals .rv-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.ruptura-vitals .rv-character {
+  margin: 0;
+  padding: 6px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--rpt-panel, #1c1c21);
+}
+
+.ruptura-vitals .rv-open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: auto;
+  min-height: 32px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ruptura-vitals .rv-open:hover .rv-name,
+.ruptura-vitals .rv-open:focus-visible .rv-name {
+  color: var(--rpt-hot, #ffffff);
+}
+
+.ruptura-vitals .rv-open:focus-visible {
+  outline: 1px solid var(--rpt-accent, #b44dff);
+  box-shadow: none;
+}
+
+.ruptura-vitals .rv-portrait {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid var(--rpt-iron, #555555);
+}
+
+.ruptura-vitals .rv-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ruptura-vitals .rv-resources {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ruptura-vitals .rv-resource {
+  --rv-color: var(--rpt-muted, #bbbbbb);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.ruptura-vitals .rv-resource > i {
+  flex: none;
+  width: 14px;
+  text-align: center;
+  color: var(--rv-color);
+}
+
+.ruptura-vitals .rv-hitPoints { --rv-color: var(--rpt-blood, #ff5c7a); }
+.ruptura-vitals .rv-armor { --rv-color: var(--rpt-muted, #c2c2c2); }
+.ruptura-vitals .rv-hope { --rv-color: var(--rpt-relic, #ffd27a); }
+.ruptura-vitals .rv-stress { --rv-color: var(--rpt-accent, #b44dff); }
+
+.ruptura-vitals .rv-pips {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ruptura-vitals .rv-pip {
+  flex: 1;
+  max-width: 14px;
+  height: 8px;
+  background: var(--rpt-void, #0c0c0e);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rv-color) 45%, transparent);
+}
+
+.ruptura-vitals .rv-pip.on {
+  background: var(--rv-color);
+  box-shadow: none;
+}
+
+.ruptura-vitals .rv-count {
+  flex: none;
+  margin-left: auto;
+  min-width: 34px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--rpt-muted, #bbbbbb);
+}
+
+/* Tudo marcado (vida, armadura, fadiga) ou esperança zerada: o número ganha destaque. */
+.ruptura-vitals .rv-full .rv-count,
+.ruptura-vitals .rv-empty .rv-count {
+  color: var(--rv-color);
+  font-weight: 700;
+}
+
+.ruptura-vitals .rv-none {
+  margin: 0;
+  padding: 8px;
+  font-size: 12px;
+  color: var(--rpt-muted, #bbbbbb);
+}

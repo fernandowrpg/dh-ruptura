@@ -1,0 +1,22 @@
+/* Tokens do tema. Mantenha o prefixo --rpt-: a cor de destaque escolhida pelo
+   jogador nas configurações é gravada em --rpt-accent. */
+
+html[data-ruptura-theme="meu-tema"] {
+  --rpt-accent: #b44dff;
+
+  --rpt-void: #0a0a0a;
+  --rpt-panel: #161616;
+  --rpt-raised: #222222;
+  --rpt-iron: #444444;
+
+  --rpt-text: #eeeeee;
+  --rpt-muted: #bbbbbb;
+  --rpt-ink: #111111;
+
+  --rpt-glow: 0 0 18px color-mix(in srgb, var(--rpt-accent) 35%, transparent);
+}
+
+/* Configuração "Reduzir efeitos". */
+html[data-ruptura-theme="meu-tema"][data-ruptura-fx="off"] {
+  --rpt-glow: none;
+}

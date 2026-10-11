@@ -1,0 +1,46 @@
+{
+  "RUPTURA": {
+    "Themes": {
+      "Sombria": {
+        "Label": "Sombria — Blood and Ember",
+        "Description": "Gothic and infernal, in shades of purple. A fragment of Tenebra's domain."
+      }
+    },
+    "Vitals": {
+      "Title": "Vigil",
+      "HitPoints": "Hit Points",
+      "Armor": "Armor",
+      "Hope": "Hope",
+      "Stress": "Stress",
+      "Toggle": "Collapse or expand",
+      "OpenSheet": "Open {name}'s sheet",
+      "Empty": "No visible player characters."
+    },
+    "Settings": {
+      "ShowVitals": {
+        "Name": "Vitals panel",
+        "Hint": "Shows each character's hit points, armor, hope and stress in real time. Available in themes that include the panel."
+      },
+      "Choice": {
+        "None": "None (default look)",
+        "World": "Follow the world theme"
+      },
+      "DefaultTheme": {
+        "Name": "World theme",
+        "Hint": "Theme used by every player who has not picked another one."
+      },
+      "Theme": {
+        "Name": "My theme",
+        "Hint": "Theme used in this browser only. Follows the world theme by default."
+      },
+      "Accent": {
+        "Name": "Accent color",
+        "Hint": "Changes the theme's accent color for you only. Leave empty to use the theme's color."
+      },
+      "ReduceEffects": {
+        "Name": "Reduce effects",
+        "Hint": "Removes the glow and the cut corners. Useful on slower computers."
+      }
+    }
+  }
+}

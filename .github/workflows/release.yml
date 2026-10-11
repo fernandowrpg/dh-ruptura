@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gravar a versão no manifesto
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+          jq --arg v "$VERSION" '.version = $v' module.json > module.tmp.json
+          mv module.tmp.json module.json
+
+      - name: Empacotar
+        run: zip -r module.zip module.json README.md LICENSE CHANGELOG.md scripts styles themes lang docs
+
+      - name: Publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" module.json module.zip --title "$TAG" --generate-notes
