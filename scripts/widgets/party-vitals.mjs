@@ -15,6 +15,9 @@ const RESOURCES = [
   { key: 'stress', icon: 'fa-bolt', label: 'RUPTURA.Vitals.Stress', marked: true }
 ];
 
+/** Adversários têm apenas vida e fadiga. */
+const ADVERSARY_RESOURCES = RESOURCES.filter((def) => ['hitPoints', 'stress'].includes(def.key));
+
 const LENSES = 'M20 56c0-3 2-4 5-4h26c3 0 5 2 5 5 0 12-8 20-18 20S20 68 20 56zM100 56c0-3-2-4-5-4H69c-3 0-5 2-5 5 0 12 8 20 18 20s18-9 18-21z';
 
 /** Crânio de óculos cromados. O brilho (.rv-glow) fica atrás das lentes e cresce com o Medo. */
@@ -210,20 +213,35 @@ function buildResource(actor, def) {
   return row;
 }
 
-function buildCharacter(actor) {
-  const item = el('li', 'rv-character');
+/** Adversários do combate em exibição; cada combatente usa o ator do próprio token. */
+function combatAdversaries() {
+  const combat = game.combat;
+  if (!combat) return [];
+  return combat.combatants
+    .filter((combatant) => combatant.actor?.type === 'adversary')
+    .map((combatant) => ({
+      actor: combatant.actor,
+      name: combatant.name,
+      img: combatant.img ?? combatant.actor.img,
+      defeated: !!(combatant.isDefeated ?? combatant.defeated)
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function buildCharacter(actor, { name = actor.name, img = actor.img, resources: defs = RESOURCES, className = '' } = {}) {
+  const item = el('li', `rv-character ${className}`.trim());
 
   const open = el('button', 'rv-open');
   open.type = 'button';
-  open.title = game.i18n.format('RUPTURA.Vitals.OpenSheet', { name: actor.name });
+  open.title = game.i18n.format('RUPTURA.Vitals.OpenSheet', { name });
   open.addEventListener('click', () => actor.sheet?.render(true));
   const portrait = el('img', 'rv-portrait');
-  portrait.src = actor.img;
+  portrait.src = img;
   portrait.alt = '';
-  open.append(portrait, el('span', 'rv-name', actor.name));
+  open.append(portrait, el('span', 'rv-name', name));
 
   const resources = el('div', 'rv-resources');
-  for (const def of RESOURCES) resources.append(buildResource(actor, def));
+  for (const def of defs) resources.append(buildResource(actor, def));
 
   item.append(open, resources);
   return item;
@@ -232,9 +250,19 @@ function buildCharacter(actor) {
 function renderList() {
   const list = element?.querySelector('.rv-list');
   if (!list) return;
-  const characters = partyCharacters();
-  if (characters.length) list.replaceChildren(...characters.map(buildCharacter));
-  else list.replaceChildren(el('li', 'rv-none', game.i18n.localize('RUPTURA.Vitals.Empty')));
+  const rows = partyCharacters().map((actor) => buildCharacter(actor));
+  if (!rows.length) rows.push(el('li', 'rv-none', game.i18n.localize('RUPTURA.Vitals.Empty')));
+
+  // Em combate, a Vigília também acompanha os adversários.
+  const adversaries = combatAdversaries();
+  if (adversaries.length) {
+    rows.push(el('li', 'rv-section', game.i18n.localize('RUPTURA.Vitals.Adversaries')));
+    for (const { actor, name, img, defeated } of adversaries) {
+      const className = defeated ? 'rv-adversary rv-defeated' : 'rv-adversary';
+      rows.push(buildCharacter(actor, { name, img, resources: ADVERSARY_RESOURCES, className }));
+    }
+  }
+  list.replaceChildren(...rows);
 }
 
 const refreshList = foundry.utils.debounce(renderList, 50);
@@ -346,7 +374,9 @@ export function registerVitalsWidget() {
     'createActor', 'updateActor', 'deleteActor',
     'createItem', 'updateItem', 'deleteItem',
     'createActiveEffect', 'updateActiveEffect', 'deleteActiveEffect',
-    'updateUser'
+    'updateUser', 'updateToken', 'updateActorDelta',
+    'createCombat', 'updateCombat', 'deleteCombat',
+    'createCombatant', 'updateCombatant', 'deleteCombatant'
   ];
   for (const event of events) Hooks.on(event, () => refreshList());
 

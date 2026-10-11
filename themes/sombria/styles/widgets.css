@@ -69,3 +69,11 @@ html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals :is(.r
   filter: none;
   box-shadow: none;
 }
+
+/* Adversários em combate */
+html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-section {
+  font-family: var(--rpt-font-title);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}

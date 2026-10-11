@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- Em combate, a Vigília do mestre também mostra a vida e a fadiga dos adversários.
+
 ## 0.2.0
 
 - Contador de Medo "Relicário" na Vigília, integrado ao Medo do sistema Daggerheart.

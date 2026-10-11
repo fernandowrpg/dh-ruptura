@@ -17,7 +17,8 @@
       "Empty": "Nenhum personagem de jogador visível.",
       "Fear": "Medo",
       "GainFear": "Ganhar Medo",
-      "SpendFear": "Gastar Medo"
+      "SpendFear": "Gastar Medo",
+      "Adversaries": "Inimigos"
     },
     "Settings": {
       "ShowVitals": {

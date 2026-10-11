@@ -336,3 +336,25 @@
   background: var(--rpt-accent, #b44dff);
   box-shadow: 0 0 10px color-mix(in srgb, var(--rpt-accent, #b44dff) 80%, transparent);
 }
+
+/* ---------- Adversários em combate ---------- */
+
+.ruptura-vitals .rv-section {
+  margin: 4px 0 0;
+  padding: 4px 2px 0;
+  border-top: 1px solid var(--rpt-iron, #555555);
+  font-size: 11px;
+  color: var(--rpt-blood, #ff5c7a);
+}
+
+.ruptura-vitals .rv-adversary .rv-portrait {
+  border-color: var(--rpt-blood, #ff5c7a);
+}
+
+.ruptura-vitals .rv-defeated {
+  opacity: 0.45;
+}
+
+.ruptura-vitals .rv-defeated .rv-name {
+  text-decoration: line-through;
+}
