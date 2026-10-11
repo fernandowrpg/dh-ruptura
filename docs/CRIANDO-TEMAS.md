@@ -29,7 +29,7 @@ O motor carrega só o CSS do tema ativo e marca o `<html>` com
 | `styles`      | sim         | Arquivos CSS, na ordem de carga, relativos à pasta do tema.    |
 | `description` | não         | Uma linha sobre o tema.                                        |
 | `accent`      | não         | Cor de destaque padrão, para referência.                       |
-| `widgets`     | não         | Widgets do módulo que o tema liga. Disponível: `party-vitals` (vida, armadura, esperança e fadiga dos personagens). |
+| `widgets`     | não         | Widgets do módulo que o tema liga. Disponível: `party-vitals` (contador de Medo e, para o mestre, vida, armadura, esperança e fadiga dos personagens). |
 | `basePath`    | não         | Pasta do tema, se ele não estiver em `modules/dh-ruptura/themes/<id>`. |
 
 ## Convenções de CSS

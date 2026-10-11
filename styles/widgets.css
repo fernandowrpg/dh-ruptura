@@ -196,3 +196,143 @@
   font-size: 12px;
   color: var(--rpt-muted, #bbbbbb);
 }
+
+/* ---------- Contador de Medo (relicário) ---------- */
+
+.ruptura-vitals .rv-fear {
+  padding: 10px 8px 8px;
+  border-bottom: 1px solid var(--rpt-iron, #555555);
+}
+
+.ruptura-vitals .rv-fear[hidden],
+.ruptura-vitals.collapsed .rv-fear {
+  display: none;
+}
+
+.ruptura-vitals .rv-fear-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ruptura-vitals .rv-fear-btn {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  background: var(--rpt-raised, #26262c);
+  color: var(--rpt-text, #eeeeee);
+  box-shadow: inset 0 0 0 1px var(--rpt-iron, #555555);
+}
+
+.ruptura-vitals .rv-fear-btn.rv-gain,
+.ruptura-vitals .rv-fear-btn:hover,
+.ruptura-vitals .rv-fear-btn:focus-visible {
+  background: var(--rpt-accent, #b44dff);
+  color: var(--rpt-ink, #111111);
+  font-weight: 700;
+  box-shadow: none;
+  outline: none;
+}
+
+.ruptura-vitals .rv-fear-label {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--rpt-muted, #bbbbbb);
+}
+
+.ruptura-vitals .rv-skull {
+  flex: none;
+  width: 78px;
+  line-height: 0;
+}
+
+.ruptura-vitals .rv-skull svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ruptura-vitals .rv-bone {
+  fill: var(--rpt-panel, #1c1c21);
+  stroke: var(--rpt-accent, #b44dff);
+  stroke-width: 4;
+}
+
+.ruptura-vitals .rv-hollow {
+  fill: var(--rpt-void, #0c0c0e);
+}
+
+.ruptura-vitals .rv-teeth {
+  fill: none;
+  stroke: var(--rpt-accent, #b44dff);
+  stroke-width: 3;
+}
+
+.ruptura-vitals .rv-glow-stop {
+  stop-color: var(--rpt-hot, #ff4dd8);
+}
+
+.ruptura-vitals .rv-glow {
+  transition: rx 0.4s ease, ry 0.4s ease, opacity 0.4s ease;
+}
+
+.ruptura-vitals .rv-tint {
+  fill: var(--rpt-hot, #ff4dd8);
+  transition: opacity 0.4s ease;
+}
+
+.ruptura-vitals .rv-number {
+  fill: var(--rpt-text, #eeeeee);
+  font-size: 30px;
+  font-weight: 800;
+}
+
+/* Jogador: só o crânio e o anel, sem moldura de painel. */
+.ruptura-vitals.rv-player {
+  width: 200px;
+  background: none;
+  border: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.ruptura-vitals.rv-player .rv-relic {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  padding: 0;
+  border: 0;
+}
+
+.ruptura-vitals.rv-player .rv-skull {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 112px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--rpt-accent, #b44dff) 45%, transparent));
+}
+
+.ruptura-vitals .rv-ring-pip {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--rpt-panel, #1c1c21);
+  box-shadow: inset 0 0 0 1px var(--rpt-iron, #555555);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ruptura-vitals .rv-ring-pip.on {
+  background: var(--rpt-accent, #b44dff);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rpt-accent, #b44dff) 80%, transparent);
+}

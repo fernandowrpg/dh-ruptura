@@ -29,11 +29,18 @@ Para desenvolver, clone o repositório dentro de `Data/modules/` com o nome `dh-
 
 ## Painel de vitais (Vigília)
 
-Nos temas que o incluem (como Sombria), um painel flutuante lista os personagens
-de jogadores com vida, armadura, esperança e fadiga, atualizado em tempo real.
-Arraste pelo cabeçalho para reposicionar, recolha pela seta e clique em um
-personagem para abrir a ficha. O mestre vê todos; cada jogador vê os personagens
-que tem permissão de observar.
+Nos temas que o incluem (como Sombria), o mestre vê um painel flutuante com:
+
+- o **contador de Medo**: um crânio de óculos cromados com o número na testa e
+  botões para ganhar e gastar. Ele lê e grava o Medo do próprio Daggerheart, então
+  anda junto com a trilha nativa do sistema;
+- os **personagens de jogadores**, com vida, armadura, esperança e fadiga,
+  atualizados em tempo real. Clique em um personagem para abrir a ficha.
+
+Os jogadores veem apenas o contador de Medo: o crânio com um anel de marcadores em
+volta. O brilho dos olhos cresce por trás das lentes conforme o Medo sobe.
+
+Arraste para reposicionar; o mestre também pode recolher o painel pela seta.
 
 Os temas são escuros e forçam o esquema escuro da interface enquanto estão ativos.
 

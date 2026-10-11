@@ -14,12 +14,15 @@
       "Stress": "Fadiga",
       "Toggle": "Recolher ou expandir",
       "OpenSheet": "Abrir a ficha de {name}",
-      "Empty": "Nenhum personagem de jogador visível."
+      "Empty": "Nenhum personagem de jogador visível.",
+      "Fear": "Medo",
+      "GainFear": "Ganhar Medo",
+      "SpendFear": "Gastar Medo"
     },
     "Settings": {
       "ShowVitals": {
         "Name": "Painel de vitais",
-        "Hint": "Mostra vida, armadura, esperança e fadiga de cada personagem, em tempo real. Disponível nos temas que incluem o painel."
+        "Hint": "O mestre vê o painel Vigília: o contador de Medo e a vida, armadura, esperança e fadiga de cada personagem, em tempo real. Os jogadores veem apenas o contador de Medo. Disponível nos temas que incluem o painel."
       },
       "Choice": {
         "None": "Nenhum (visual padrão)",

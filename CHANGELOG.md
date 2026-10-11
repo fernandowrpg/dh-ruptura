@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+- Contador de Medo "Relicário" na Vigília, integrado ao Medo do sistema Daggerheart.
+- Jogadores passam a ver apenas o contador de Medo; os vitais dos personagens ficam com o mestre.
+
 ## 0.1.0
 
 - Motor de temas: registro, tema do mundo, tema por jogador, cor de destaque e redução de efeitos.

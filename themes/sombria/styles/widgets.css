@@ -39,3 +39,33 @@ html[data-ruptura-theme="sombria"] {
 html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals .rv-pip.on {
   box-shadow: none;
 }
+
+/* Contador de Medo */
+html[data-ruptura-theme="sombria"] {
+
+  .ruptura-vitals.rv-player {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .ruptura-vitals .rv-fear-btn {
+    --s: var(--rpt-chamfer-sm);
+    clip-path: polygon(var(--s) 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%, 0 var(--s));
+  }
+
+  .ruptura-vitals .rv-fear-label {
+    font-family: var(--rpt-font-title);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ruptura-vitals .rv-number {
+    font-family: var(--rpt-font-title);
+  }
+}
+
+html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals :is(.rv-skull, .rv-ring-pip.on) {
+  filter: none;
+  box-shadow: none;
+}

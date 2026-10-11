@@ -14,12 +14,15 @@
       "Stress": "Stress",
       "Toggle": "Collapse or expand",
       "OpenSheet": "Open {name}'s sheet",
-      "Empty": "No visible player characters."
+      "Empty": "No visible player characters.",
+      "Fear": "Fear",
+      "GainFear": "Gain Fear",
+      "SpendFear": "Spend Fear"
     },
     "Settings": {
       "ShowVitals": {
         "Name": "Vitals panel",
-        "Hint": "Shows each character's hit points, armor, hope and stress in real time. Available in themes that include the panel."
+        "Hint": "The GM sees the Vigil panel: the Fear counter and each character's hit points, armor, hope and stress, in real time. Players see only the Fear counter. Available in themes that include the panel."
       },
       "Choice": {
         "None": "None (default look)",
