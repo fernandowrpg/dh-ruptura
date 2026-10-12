@@ -70,10 +70,15 @@ html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals :is(.r
   box-shadow: none;
 }
 
-/* Adversários em combate */
-html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-section {
-  font-family: var(--rpt-font-title);
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+/* Janela dos adversários */
+html[data-ruptura-theme="sombria"] .ruptura-vitals.rv-adversaries {
+  border-top-color: var(--rpt-blood);
+  box-shadow:
+    inset 0 0 0 1px var(--rpt-iron),
+    0 0 18px color-mix(in srgb, var(--rpt-blood) 30%, transparent),
+    0 12px 28px rgba(0, 0, 0, 0.55);
+}
+
+html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals.rv-adversaries {
+  box-shadow: inset 0 0 0 1px var(--rpt-iron);
 }

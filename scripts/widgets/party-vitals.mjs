@@ -2,6 +2,7 @@ import { MODULE_ID, resolveActiveTheme } from '../theme-manager.mjs';
 
 export const WIDGET_ID = 'party-vitals';
 const ELEMENT_ID = 'ruptura-vitals';
+const ADVERSARY_ELEMENT_ID = 'ruptura-adversaries';
 const MAX_PIPS = 12;
 const DH_ID = 'daggerheart';
 const DH_FEAR = 'ResourcesFear';
@@ -48,6 +49,7 @@ const SKULL_SVG = `
 </svg>`;
 
 let element = null;
+let adversaryElement = null;
 
 function setting(key, fallback) {
   try {
@@ -252,50 +254,44 @@ function renderList() {
   if (!list) return;
   const rows = partyCharacters().map((actor) => buildCharacter(actor));
   if (!rows.length) rows.push(el('li', 'rv-none', game.i18n.localize('RUPTURA.Vitals.Empty')));
-
-  // Em combate, a Vigília também acompanha os adversários.
-  const adversaries = combatAdversaries();
-  if (adversaries.length) {
-    rows.push(el('li', 'rv-section', game.i18n.localize('RUPTURA.Vitals.Adversaries')));
-    for (const { actor, name, img, defeated } of adversaries) {
-      const className = defeated ? 'rv-adversary rv-defeated' : 'rv-adversary';
-      rows.push(buildCharacter(actor, { name, img, resources: ADVERSARY_RESOURCES, className }));
-    }
-  }
   list.replaceChildren(...rows);
 }
 
-const refreshList = foundry.utils.debounce(renderList, 50);
-
-/* ---------- Painel ---------- */
+/* ---------- Painéis ---------- */
 
 function saveState(patch) {
   const state = { ...(setting('vitalsState', {}) ?? {}), ...patch };
   game.settings.set(MODULE_ID, 'vitalsState', state);
 }
 
-function place(left, top) {
-  const maxLeft = Math.max(0, window.innerWidth - element.offsetWidth);
-  const maxTop = Math.max(0, window.innerHeight - 40);
-  element.style.left = `${Math.min(Math.max(0, left), maxLeft)}px`;
-  element.style.top = `${Math.min(Math.max(0, top), maxTop)}px`;
+function saveAdversaryState(patch) {
+  const current = (setting('vitalsState', {}) ?? {}).adversaries ?? {};
+  saveState({ adversaries: { ...current, ...patch } });
 }
 
-function enableDrag(handle) {
+function place(target, left, top) {
+  const maxLeft = Math.max(0, window.innerWidth - target.offsetWidth);
+  const maxTop = Math.max(0, window.innerHeight - 40);
+  target.style.left = `${Math.min(Math.max(0, left), maxLeft)}px`;
+  target.style.top = `${Math.min(Math.max(0, top), maxTop)}px`;
+}
+
+/** Arrasta `target` pelo `handle` e grava a posição final com `save`. */
+function enableDrag(target, handle, save) {
   handle.addEventListener('pointerdown', (event) => {
     if (event.button !== 0 || event.target.closest('button')) return;
-    const rect = element.getBoundingClientRect();
+    const rect = target.getBoundingClientRect();
     const offsetX = event.clientX - rect.left;
     const offsetY = event.clientY - rect.top;
     handle.setPointerCapture(event.pointerId);
 
-    const move = (ev) => place(ev.clientX - offsetX, ev.clientY - offsetY);
+    const move = (ev) => place(target, ev.clientX - offsetX, ev.clientY - offsetY);
     const stop = () => {
       handle.removeEventListener('pointermove', move);
       handle.removeEventListener('pointerup', stop);
       handle.removeEventListener('pointercancel', stop);
-      const end = element.getBoundingClientRect();
-      saveState({ left: Math.round(end.left), top: Math.round(end.top) });
+      const end = target.getBoundingClientRect();
+      save({ left: Math.round(end.left), top: Math.round(end.top) });
     };
     handle.addEventListener('pointermove', move);
     handle.addEventListener('pointerup', stop);
@@ -303,35 +299,72 @@ function enableDrag(handle) {
   });
 }
 
-/** Mestre: Vigília completa, com o Medo no topo e os vitais de cada personagem. */
-function mountGM(state) {
-  element.classList.toggle('collapsed', !!state.collapsed);
-
+/** Cabeçalho de painel: título, botão de recolher e alça de arrasto. */
+function buildHeader(target, titleKey, save) {
   const header = el('header', 'rv-header');
-  header.append(el('h3', 'rv-title', game.i18n.localize('RUPTURA.Vitals.Title')));
+  header.append(el('h3', 'rv-title', game.i18n.localize(titleKey)));
   const toggle = el('button', 'rv-toggle');
   toggle.type = 'button';
   toggle.setAttribute('aria-label', game.i18n.localize('RUPTURA.Vitals.Toggle'));
   toggle.title = game.i18n.localize('RUPTURA.Vitals.Toggle');
   toggle.append(icon('fa-chevron-up'));
-  toggle.addEventListener('click', () => {
-    const collapsed = element.classList.toggle('collapsed');
-    saveState({ collapsed });
-  });
+  toggle.addEventListener('click', () => save({ collapsed: target.classList.toggle('collapsed') }));
   header.append(toggle);
+  enableDrag(target, header, save);
+  return header;
+}
 
-  element.append(header);
+/** Mestre: Vigília com o Medo no topo e os vitais de cada personagem. */
+function mountGM(state) {
+  element.classList.toggle('collapsed', !!state.collapsed);
+  element.append(buildHeader(element, 'RUPTURA.Vitals.Title', saveState));
   if (fearState()) element.append(buildFearGM());
   element.append(el('ul', 'rv-list'));
-  enableDrag(header);
 }
 
 /** Jogador: apenas o contador de Medo. */
 function mountPlayer() {
   element.classList.add('rv-player');
   element.append(buildFearPlayer());
-  enableDrag(element);
+  enableDrag(element, element, saveState);
 }
+
+function unmountAdversaries() {
+  adversaryElement?.remove();
+  adversaryElement = null;
+}
+
+/** Janela própria dos adversários: só para o mestre e só enquanto houver combate com eles. */
+function renderAdversaries() {
+  const adversaries = element && game.user.isGM ? combatAdversaries() : [];
+  if (!adversaries.length) return unmountAdversaries();
+
+  const rows = adversaries.map(({ actor, name, img, defeated }) => {
+    const className = defeated ? 'rv-adversary rv-defeated' : 'rv-adversary';
+    return buildCharacter(actor, { name, img, resources: ADVERSARY_RESOURCES, className });
+  });
+
+  if (adversaryElement) {
+    adversaryElement.querySelector('.rv-list').replaceChildren(...rows);
+    return;
+  }
+
+  const state = (setting('vitalsState', {}) ?? {}).adversaries ?? {};
+  adversaryElement = el('aside', 'ruptura-vitals rv-adversaries');
+  adversaryElement.id = ADVERSARY_ELEMENT_ID;
+  adversaryElement.setAttribute('aria-label', game.i18n.localize('RUPTURA.Vitals.Adversaries'));
+  adversaryElement.classList.toggle('collapsed', !!state.collapsed);
+  const list = el('ul', 'rv-list');
+  list.append(...rows);
+  adversaryElement.append(buildHeader(adversaryElement, 'RUPTURA.Vitals.Adversaries', saveAdversaryState), list);
+  document.body.append(adversaryElement);
+  place(adversaryElement, state.left ?? 400, state.top ?? 80);
+}
+
+const refreshList = foundry.utils.debounce(() => {
+  renderList();
+  renderAdversaries();
+}, 50);
 
 function mount() {
   if (element) return;
@@ -348,10 +381,12 @@ function mount() {
 
   renderFear();
   renderList();
-  place(state.left ?? 130, state.top ?? 80);
+  place(element, state.left ?? 130, state.top ?? 80);
+  renderAdversaries();
 }
 
 function unmount() {
+  unmountAdversaries();
   element?.remove();
   element = null;
 }
@@ -369,7 +404,7 @@ export function registerVitalsWidget() {
   Hooks.on('ruptura.themeApplied', syncVitalsWidget);
   Hooks.once('ready', syncVitalsWidget);
 
-  // Qualquer mudança que possa afetar os recursos redesenha a lista.
+  // Qualquer mudança que possa afetar os recursos ou o combate redesenha as listas.
   const events = [
     'createActor', 'updateActor', 'deleteActor',
     'createItem', 'updateItem', 'deleteItem',

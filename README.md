@@ -35,14 +35,16 @@ Nos temas que o incluem (como Sombria), o mestre vê um painel flutuante com:
   botões para ganhar e gastar. Ele lê e grava o Medo do próprio Daggerheart, então
   anda junto com a trilha nativa do sistema;
 - os **personagens de jogadores**, com vida, armadura, esperança e fadiga,
-  atualizados em tempo real. Clique em um personagem para abrir a ficha;
-- em combate, os **adversários** do encontro, com vida e fadiga de cada token.
-  Os derrotados ficam esmaecidos.
+  atualizados em tempo real. Clique em um personagem para abrir a ficha.
+
+Em combate, o mestre ganha uma segunda janela, **Inimigos**, com vida e fadiga de
+cada adversário do encontro; os derrotados ficam esmaecidos. Ela tem posição e
+estado de recolhimento próprios e some quando o combate termina.
 
 Os jogadores veem apenas o contador de Medo: o crânio com um anel de marcadores em
 volta. O brilho dos olhos cresce por trás das lentes conforme o Medo sobe.
 
-Arraste para reposicionar; o mestre também pode recolher o painel pela seta.
+Arraste para reposicionar; o mestre também pode recolher cada painel pela seta.
 
 Os temas são escuros e forçam o esquema escuro da interface enquanto estão ativos.
 

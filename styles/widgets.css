@@ -339,11 +339,11 @@
 
 /* ---------- Adversários em combate ---------- */
 
-.ruptura-vitals .rv-section {
-  margin: 4px 0 0;
-  padding: 4px 2px 0;
-  border-top: 1px solid var(--rpt-iron, #555555);
-  font-size: 11px;
+.ruptura-vitals.rv-adversaries {
+  border-color: var(--rpt-blood, #ff5c7a);
+}
+
+.ruptura-vitals.rv-adversaries .rv-title {
   color: var(--rpt-blood, #ff5c7a);
 }
 

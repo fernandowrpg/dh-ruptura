@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Os adversários em combate ganham uma janela própria, separada da Vigília e do Medo.
+
 ## 0.3.0
 
 - Em combate, a Vigília do mestre também mostra a vida e a fadiga dos adversários.
