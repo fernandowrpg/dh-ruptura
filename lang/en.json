@@ -18,7 +18,10 @@
       "Fear": "Fear",
       "GainFear": "Gain Fear",
       "SpendFear": "Spend Fear",
-      "Adversaries": "Adversaries"
+      "Adversaries": "Adversaries",
+      "Thresholds": "Damage thresholds",
+      "Major": "Major",
+      "Severe": "Severe"
     },
     "Settings": {
       "ShowVitals": {

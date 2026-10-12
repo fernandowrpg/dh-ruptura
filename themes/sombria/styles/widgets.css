@@ -82,3 +82,17 @@ html[data-ruptura-theme="sombria"] .ruptura-vitals.rv-adversaries {
 html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-vitals.rv-adversaries {
   box-shadow: inset 0 0 0 1px var(--rpt-iron);
 }
+
+/* Limiares de dano */
+html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-threshold-label {
+  font-family: var(--rpt-font-title);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-threshold-value {
+  font-family: var(--rpt-font-title);
+  font-weight: 800;
+}

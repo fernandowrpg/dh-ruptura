@@ -18,7 +18,10 @@
       "Fear": "Medo",
       "GainFear": "Ganhar Medo",
       "SpendFear": "Gastar Medo",
-      "Adversaries": "Inimigos"
+      "Adversaries": "Inimigos",
+      "Thresholds": "Limiares de dano",
+      "Major": "Maior",
+      "Severe": "Grave"
     },
     "Settings": {
       "ShowVitals": {

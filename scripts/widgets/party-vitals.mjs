@@ -215,6 +215,29 @@ function buildResource(actor, def) {
   return row;
 }
 
+/** Limiares de dano (Maior e Grave) do ator, ou `null` se ele não os tiver. */
+function buildThresholds(actor) {
+  const data = actor.system?.damageThresholds;
+  const major = Number(data?.major);
+  const severe = Number(data?.severe);
+  if (!Number.isFinite(major) || !Number.isFinite(severe) || (!major && !severe)) return null;
+
+  const majorLabel = game.i18n.localize('RUPTURA.Vitals.Major');
+  const severeLabel = game.i18n.localize('RUPTURA.Vitals.Severe');
+  const row = el('div', 'rv-thresholds');
+  const summary = `${game.i18n.localize('RUPTURA.Vitals.Thresholds')}: ${majorLabel} ${major}, ${severeLabel} ${severe}`;
+  row.title = summary;
+  row.setAttribute('aria-label', summary);
+
+  for (const [label, value] of [[majorLabel, major], [severeLabel, severe]]) {
+    const chip = el('span', 'rv-threshold');
+    chip.setAttribute('aria-hidden', 'true');
+    chip.append(el('span', 'rv-threshold-label', label), el('span', 'rv-threshold-value', String(value)));
+    row.append(chip);
+  }
+  return row;
+}
+
 /** Adversários do combate em exibição; cada combatente usa o ator do próprio token. */
 function combatAdversaries() {
   const combat = game.combat;
@@ -245,7 +268,10 @@ function buildCharacter(actor, { name = actor.name, img = actor.img, resources: 
   const resources = el('div', 'rv-resources');
   for (const def of defs) resources.append(buildResource(actor, def));
 
-  item.append(open, resources);
+  item.append(open);
+  const thresholds = buildThresholds(actor);
+  if (thresholds) item.append(thresholds);
+  item.append(resources);
   return item;
 }
 

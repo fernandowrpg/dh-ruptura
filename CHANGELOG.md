@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Limiares de dano (Maior e Grave) nos painéis dos personagens e dos adversários.
+
 ## 0.4.0
 
 - Os adversários em combate ganham uma janela própria, separada da Vigília e do Medo.
