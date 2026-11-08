@@ -151,11 +151,11 @@ td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var
         <span><i class="dot" style="background:var(--rest)"></i>R repouso</span>
         <span><i class="dot" style="background:var(--combat)"></i>M combate</span>
         <span><i class="dot" style="background:var(--elite)"></i>E elite</span>
-        <span><i class="dot" style="background:var(--event)"></i>? evento</span>
+        <span><i class="dot" style="background:var(--event)"></i>? mistério</span>
         <span><i class="dot" style="background:var(--treasure)"></i>T tesouro</span>
         <span><i class="dot" style="background:var(--boss)"></i>B boss</span>
       </div>
-      <p class="foot">Conexões reproduzidas da imagem do spire map.</p>
+      <p class="foot">? é um mistério: pode virar qualquer tipo de nó, menos boss. Conexões reproduzidas da imagem do spire map.</p>
     </section>
 
     <section class="detail" id="detail" aria-live="polite"></section>
@@ -207,21 +207,21 @@ const N = [
     notes:["Primeiro contato com os mímicos: todos começam Escondidos.","Deixe o baú enorme do altar bem à vista. Quem tocar dispara a Emboscada.","Os três pontos de entrada chegam aqui."],
     maps:[{k:"Mapa",name:"Dragon's Hoard",url:CZ+"maps/dragons-hoard",v:"Shadowfell (depois: No Gold, quando os mímicos se revelam)"},{k:"Cena",name:"Dragon's Hoard",url:CZ+"scenes/dragons-hoard",v:"Shadowfell Hoard"}]},
 
-  {id:"q3a",type:"Q",row:3,x:40,pos:"esquerda",title:"A Oficina do Inventor",
+  {id:"q3a",type:"Q",reveal:"Loja",row:3,x:40,pos:"esquerda",title:"A Loja que Some",
+    body:"O mistério se revela um mercador que aparece entre as paredes do Cofre e some logo depois. É a loja do caminho da esquerda.",
+    notes:["Vende os consumíveis do andar: Pasta Ácida, Frasco de Fumaça Negra, Poção de Vida, Poção de Vigor.","Itens permanentes à venda (um por visita): Chicote laminado ou Chave Mestra.","Cada item tem 1 chance em 6 de ser um Mímico¹, que usa a Emboscada ao ser pego."],
+    maps:[{k:"Mapa",name:"Magic Popup Shop",url:CZ+"maps/magic-popup-shop",v:"Dark ou Errant Spell"},{k:"Cena",name:"Magic Popup Shop",url:CZ+"scenes/magic-popup-shop",v:"Original"}]},
+  {id:"q3b",type:"Q",reveal:"Evento",row:3,x:154,pos:"centro",title:"A Oficina do Inventor",
     body:"Uma oficina abandonada com desenhos de um \"cofre para uma mente\". Primeira pista do Demiurgo, o inventor da Imortalidade.",
     notes:["Instinto 14 encontra um bilhete com o timbre da Organização.","Sem combate. Bom lugar para um interlúdio de personagem."],
     maps:[{k:"Mapa",name:"Inventor's Workshop",url:CZ+"maps/inventors-workshop",v:"Interior Night (alternativa: Dark)"}]},
-  {id:"q3b",type:"Q",row:3,x:154,pos:"centro",title:"A Loja que Some",
-    body:"Um mercador que aparece entre as paredes do Cofre e some logo depois.",
-    notes:["Vende consumíveis do andar: Pasta Ácida, Frasco de Fumaça Negra, Poção de Vida.","Cada item tem 1 chance em 6 de ser um Mímico¹, que usa a Emboscada ao ser pego."],
-    maps:[{k:"Mapa",name:"Magic Popup Shop",url:CZ+"maps/magic-popup-shop",v:"Dark ou Errant Spell"},{k:"Cena",name:"Magic Popup Shop",url:CZ+"scenes/magic-popup-shop",v:"Original"}]},
-  {id:"q3c",type:"Q",row:3,x:212,pos:"centro-direita",title:"O Cofre Giratório",
+  {id:"q3c",type:"Q",reveal:"Evento",row:3,x:212,pos:"centro-direita",title:"O Cofre Giratório",
     body:"Um quebra-cabeça de engrenagens que tranca a passagem.",
     notes:["Contagem de progresso 4, com testes de Conhecimento ou Acuidade 14.","Cada falha ativa o Cofre Giratório sem gastar Medo: todos fazem reação de Agilidade 14 ou ficam Vulneráveis até agirem."],
     maps:[{k:"Mapa",name:"Arcane Clocktower",url:CZ+"maps/arcane-clocktower",v:"Gear Room"}]},
-  {id:"q3d",type:"Q",row:3,x:263,pos:"direita",title:"A Adega",
-    body:"Barris e garrafas até o teto. Alguns guardam bebida boa; outros têm dentes.",
-    notes:["Instinto 14 antes de beber.","Bebida boa: +1 Esperança. Mimibarril¹: Emboscada contra quem encheu o copo."],
+  {id:"q3d",type:"Q",reveal:"Loja",row:3,x:263,pos:"direita",title:"A Adega do Mercador",
+    body:"O mistério se revela uma adega onde um mercador vende bebidas, poções e bugigangas entre os barris. É a loja do lado direito: todo grupo que passar pelo N1 pode chegar aqui.",
+    notes:["Vende os consumíveis do andar: Poção de Vida, Poção de Vigor, Folhas de Varik, Frasco de Fumaça Negra.","Item permanente à venda (um por visita): Pedra do Poder ou Bacamarte.","Instinto 14 antes de beber de um barril: alguns são Mimibarris¹ (Emboscada contra quem encheu o copo)."],
     maps:[{k:"Mapa",name:"Verem Cellars",url:CZ+"maps/verem-cellars",v:"Cellars Night ou Dark"}]},
 
   {id:"t4a",type:"T",row:4,x:100,pos:"esquerda",title:"Arsenal escondido",
@@ -241,13 +241,13 @@ const N = [
     comp:[["3 Experimentos fracassados",6],["2 Crânios do caos",4],["Espectador",2],["Mimicarroça",4]],total:"16",
     notes:["O Experimento resiste a dano físico e o Crânio resiste a dano mágico: o grupo precisa dividir alvos.","Investida Cambaleante dá focos extras pagos em PF, sem Medo.","Se o grupo passou pelo Arquivo dos Experimentos, tem vantagem contra os Experimentos."],
     maps:[{k:"Mapa",name:"Experimental Surgery Theatre",url:CZ+"maps/experimental-surgery-theatre",v:"Floor 2 Blackboard Mimic Study"},{k:"Cena",name:"Alchemy Dungeon",url:CZ+"scenes/alchemy-dungeon",v:"Failed Spell ou Dark Matter"}]},
-  {id:"q5a",type:"Q",row:5,x:148,pos:"centro",title:"O Olho que Dorme",
+  {id:"q5a",type:"Q",reveal:"Evento (pode virar combate)",row:5,x:148,pos:"centro",title:"O Olho que Dorme",
     body:"Um olho gigante dorme no centro da sala. É uma prévia do andar 5: alguém observa o Cofre.",
-    notes:["Passar em silêncio: teste em grupo de Acuidade 15.","Se falhar, o olho acorda e chama 2 Espectadores + 4 Olhos solitários¹ (combate curto, ~6 PB)."],
+    notes:["Passar em silêncio: teste em grupo de Acuidade 15.","Se falhar, o mistério vira combate: o olho acorda e chama 2 Espectadores + 4 Olhos solitários¹ (luta curta, ~6 PB)."],
     maps:[{k:"Mapa",name:"Lair of the Many Eyed God",url:CZ+"maps/lair-of-the-many-eyed-god",v:"Night"},{k:"Cena",name:"Lair of the Many Eyed God",url:CZ+"scenes/lair-of-the-many-eyed-god",v:"Sleepy (dormindo) ou Suspicious"}]},
-  {id:"q5b",type:"Q",row:5,x:197,pos:"centro-direita",title:"Arquivo dos Experimentos",
-    body:"Fichas e registros das tentativas da Organização de abrir o Cofre.",
-    notes:["Dá vantagem contra os Experimentos fracassados na elite ou no boss.","Mais uma pista da Organização."],
+  {id:"q5b",type:"Q",reveal:"Descanso",row:5,x:197,pos:"centro-direita",title:"Arquivo dos Experimentos",
+    body:"O mistério se revela uma sala segura: o arquivo onde a Organização guarda as fichas dos Experimentos fracassados. Como o mapa não tem descanso antes do boss, este nó cumpre esse papel.",
+    notes:["Descanso curto sem risco (o mestre recebe 1d4 Medo, como sempre).","As fichas dão vantagem contra os Experimentos fracassados no Arsenal ou no Depósito.","Mais uma pista da Organização."],
     maps:[{k:"Mapa",name:"Monster Genealogy Lab",url:CZ+"maps/monster-genealogy-lab",v:"Night ou Lapse in Tenure"}]},
   {id:"m5",type:"M",row:5,x:262,pos:"direita",code:"N5",title:"Barricada de Carroças",
     comp:[["Mimicarroça",4],["Mímico gigante",2],["2 Mimibarris¹",4],["Mimijoias¹",2],["Crânio do caos",2],["4 Olhos solitários¹",1]],total:"15 (14+1)",
@@ -279,9 +279,9 @@ const E = [["r1","e2"],["r1","m2"],["r2","m2"],["r3","m2"],["e2","q3a"],["q3a","
   ["q3c","t4c"],["q3d","t4c"],["t4c","q5b"],["t4c","m5"],["q5b","m6b"],["q5b","m6c"],["m5","m6c"],
   ["m6a","b"],["m6b","b"],["m6c","b"]];
 const PATHS = {
-  esq:{nodes:["r1","e2","q3a","t4a","e5","m6a","b"],note:"Esquerda: as duas elites e só um combate normal. O caminho mais duro e o mais rico."},
-  centro:{nodes:["r2","m2","q3b","t4b","q5a","m6a","b"],note:"Centro: dois combates normais e dois eventos. O caminho mais leve."},
-  dir:{nodes:["r3","m2","q3d","t4c","m5","m6c","b"],note:"Direita: até três combates normais. Pode trocar o N5 pelo Arquivo dos Experimentos."}
+  esq:{nodes:["r1","e2","q3a","t4a","e5","m6a","b"],note:"Esquerda: as duas elites e só um combate normal, com a Loja que Some na linha 3. O caminho mais duro e o mais rico."},
+  centro:{nodes:["r2","m2","q3b","t4b","q5a","m6a","b"],note:"Centro: dois combates normais e dois eventos. O caminho mais leve. Quem quiser loja pode desviar do N1 para a Adega do Mercador."},
+  dir:{nodes:["r3","m2","q3d","t4c","m5","m6c","b"],note:"Direita: Adega do Mercador (loja) na linha 3 e até três combates normais. Pode trocar o N5 pelo Arquivo dos Experimentos, que vira descanso."}
 };
 // Fichas resumidas (texto das habilidades parafraseado; confira o livro na página indicada).
 // tag: "medo" = custa Medo · "pf" = custa Fadiga · "grátis" = sem custo
@@ -351,7 +351,7 @@ const T = {
       ["Seu Medo É Meu Refúgio","reação","Duas vezes por cena: quando um PJ falha com Medo, o cultista recupera 1 PF."]]}
 };
 const MATCH = [[/Caixa de Batalha/,"caixa"],[/Mimicarroça/,"mimicarroca"],[/Mímicos? gigantes?/,"mimgig"],[/Mímicos? venenosos?/,"mimven"],[/Mimibarris?|Mimibarril/,"mimibarril"],[/Mimijoias/,"mimijoias"],[/^(\d+ )?Mímicos?¹/,"mimico"],[/Olhos? solitários?/,"olhosol"],[/Olho comandante/,"olhocom"],[/Espectador/,"espectador"],[/Experimentos? fracassados?/,"experimento"],[/Crânios? do caos/,"cranio"],[/Cultista adepto/,"cultista"]];
-const EXTRA = {r1:["mimico"],r2:["mimico"],r3:["mimico"],q3b:["mimico"],q3d:["mimibarril"],t4a:["mimico"],t4b:["mimico"],t4c:["mimico"],q5a:["espectador","olhosol"],q5b:["experimento"]};
+const EXTRA = {r1:["mimico"],r2:["mimico"],r3:["mimico"],q3a:["mimico"],q3d:["mimibarril"],t4a:["mimico"],t4b:["mimico"],t4c:["mimico"],q5a:["espectador","olhosol"]};
 function threatsOf(n){
   const keys=[];
   (n.comp||[]).forEach(([name])=>{ for(const [re,k] of MATCH){ if(re.test(name)){ if(!keys.includes(k)) keys.push(k); break; } } });
@@ -385,7 +385,7 @@ const edgeEls = E.map(([a,b])=>{
 const nodeEls = {};
 for(const n of N){
   const t=TYPES[n.type];
-  const g=el("g",{class:"node",tabindex:"0",role:"button","aria-label":`${t.name}: ${n.title}`});
+  const g=el("g",{class:"node",tabindex:"0",role:"button","aria-label":`${n.reveal?"Mistério ("+n.reveal+")":t.name}: ${n.title}`});
   const r = n.type==="B" ? 19 : 13;
   g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r:r+5,class:"ring"}));
   const c=el("circle",{cx:n.x,cy:Y[n.row],r,class:"body",style:`fill:var(--panel-2);stroke:${t.color}`});
@@ -401,7 +401,7 @@ const detail=document.getElementById("detail");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function render(n){
   const t=TYPES[n.type];
-  let h=`<div class="dhead"><span class="badge" style="background:${t.color}">${t.name}${n.code&&n.code!==t.name?" · "+esc(n.code):""}</span>
+  let h=`<div class="dhead"><span class="badge" style="background:${t.color}">${n.reveal?"Mistério → "+esc(n.reveal):t.name}${n.code&&n.code!==t.name?" · "+esc(n.code):""}</span>
     <h2 class="dtitle">${esc(n.title)}</h2>
     <div class="meta">Linha ${n.row===7?"★":n.row} · nó da ${esc(n.pos)}</div></div>`;
   if(n.body) h+=`<p class="prose">${esc(n.body)}</p>`;
@@ -446,7 +446,7 @@ const order=[...N].sort((a,b)=>a.row-b.row||a.x-b.x);
 for(const n of order){
   const tr=document.createElement("tr"); tr.dataset.id=n.id; tr.tabIndex=0;
   const m=n.maps[0];
-  tr.innerHTML=`<td class="mono">${n.row===7?"★":n.row}</td><td><span class="badge" style="background:${TYPES[n.type].color}">${TYPES[n.type].letter||n.type}</span></td><td>${n.code?esc(n.code)+" · ":""}${esc(n.title)}</td><td class="mono">${n.total?esc(n.total):"—"}</td><td><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)}</a></td><td>${esc(m.v)}</td>`;
+  tr.innerHTML=`<td class="mono">${n.row===7?"★":n.row}</td><td><span class="badge" style="background:${TYPES[n.type].color}">${TYPES[n.type].letter||n.type}</span></td><td>${n.code?esc(n.code)+" · ":""}${n.reveal?esc(n.reveal)+" · ":""}${esc(n.title)}</td><td class="mono">${n.total?esc(n.total):"—"}</td><td><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)}</a></td><td>${esc(m.v)}</td>`;
   tr.addEventListener("click",e=>{ if(e.target.closest("a")) return; select(n.id); detail.scrollIntoView({behavior:"smooth",block:"nearest"}); });
   tr.addEventListener("keydown",e=>{ if(e.key==="Enter"){ select(n.id); } });
   rows.appendChild(tr);
