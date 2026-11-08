@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mapa clicável do andar 3 da Esfera dos Mistérios (Daggerheart): encontros, fichas das ameaças e mapas da Czepeku.">
+<title>O Cofre que Mente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: mapa do andar à esquerda (fixo ao rolar), ficha do nó à direita; empilha no celular. Visual único e escuro, como o spire map. */
+:root{
+  --bg:#17130f;
+  --panel:#211b15;
+  --panel-2:#2a221a;
+  --line:#5a4a37;
+  --fg:#ece2d0;
+  --muted:#a8987f;
+  --accent:#e0a54a;
+  --combat:#a5503f;
+  --elite:#c2413a;
+  --event:#5d7f93;
+  --treasure:#b8902e;
+  --rest:#e07a2e;
+  --boss:#9b2d3a;
+  --font-display:"IM Fell English SC", "Palatino Linotype", Georgia, serif;
+  --font-body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono:"Spline Sans Mono", ui-monospace, Consolas, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:24px 48px;
+}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,.node:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:20px}
+header{display:grid;gap:6px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--font-display);font-weight:400;font-size:clamp(30px,5vw,44px);line-height:1.05;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0;max-width:70ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--font-mono);font-size:12px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--fg);background:var(--panel)}
+.layout{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}}
+.mapcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:12px;position:sticky;top:max(12px, env(safe-area-inset-top, 0px))}
+@media (max-width:820px){.mapcard{position:static}}
+.mapcard h2,.detail h2,.all h2{font-family:var(--font-display);font-weight:400;font-size:20px;margin:0}
+svg{width:100%;height:auto;display:block}
+.edge{stroke:var(--line);stroke-width:1.6;stroke-dasharray:4 4;fill:none;transition:stroke .2s}
+.edge.on{stroke:var(--accent);stroke-width:2.4;stroke-dasharray:none}
+.rowlabel{fill:var(--muted);font-family:var(--font-mono);font-size:10px}
+.node{cursor:pointer}
+.node circle.body{stroke-width:2;transition:transform .15s}
+.node text{font-family:var(--font-display);font-size:14px;fill:var(--fg);pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.node:hover circle.body{stroke:var(--fg)}
+.node .ring{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:0}
+.node.sel .ring{opacity:1}
+.node.dim{opacity:.35}
+.paths{display:flex;flex-wrap:wrap;gap:8px}
+.paths button{font:inherit;font-size:14px;background:var(--panel-2);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+.paths button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.pathnote{font-size:14px;color:var(--muted);margin:0;min-height:2.6em}
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.detail{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:16px;min-width:0}
+.dhead{display:grid;gap:6px}
+.badge{justify-self:start;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;color:var(--bg);font-weight:500}
+.dtitle{font-family:var(--font-display);font-size:30px;line-height:1.1;margin:0;text-wrap:balance}
+.meta{font-family:var(--font-mono);font-size:13px;color:var(--muted)}
+.block{display:grid;gap:8px}
+.block h3{margin:0;font-size:12px;font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.comp{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.comp li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:4px}
+.comp li span:last-child{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.comp li.total{border-bottom:none;font-weight:700}
+.comp li.total span:last-child{color:var(--accent)}
+.prose{margin:0;max-width:68ch}
+.notes{margin:0;padding-left:1.1em;display:grid;gap:4px;max-width:68ch}
+.maps{display:grid;gap:8px}
+.mapref{display:grid;gap:2px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mapref .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mapref a{font-weight:700;text-decoration:none}
+.mapref a:hover{text-decoration:underline}
+.mapref .v{font-size:14px;color:var(--fg)}
+.foot{font-size:13px;color:var(--muted)}
+.all{display:grid;gap:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:400;background:var(--panel)}
+tbody tr{cursor:pointer}
+tbody tr:hover,tbody tr.sel{background:var(--panel-2)}
+td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.threats{display:grid;gap:8px}
+.threat{background:var(--panel-2);border:1px solid var(--line);border-radius:8px}
+.threat summary{cursor:pointer;padding:10px 12px;display:grid;gap:4px;list-style:none}
+.threat summary::-webkit-details-marker{display:none}
+.threat summary .tn{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.threat summary .tn b{font-family:var(--font-display);font-weight:400;font-size:19px}
+.threat summary .tn i{font-style:normal;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.statline{display:flex;flex-wrap:wrap;gap:6px}
+.stat{font-family:var(--font-mono);font-size:12px;font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:4px;padding:2px 7px;background:var(--panel)}
+.stat em{font-style:normal;color:var(--muted);margin-right:4px}
+.atk{font-size:14px;color:var(--fg)}
+.threat summary .more{font-size:12px;color:var(--accent)}
+.threat[open] summary .more{display:none}
+.abil{list-style:none;margin:0;padding:0 12px 12px;display:grid;gap:8px}
+.abil li{font-size:15px;max-width:68ch}
+.abil b{color:var(--fg)}
+.tag{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-left:4px}
+.tag.fear{color:var(--elite)}
+.tag.free{color:var(--treasure)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Esfera dos Mistérios · Andar 3 · Folia</div>
+    <h1>O Cofre que Mente</h1>
+    <p class="sub">Clique em um nó do mapa para ver o encontro, a composição em Pontos de Batalha, as fichas das ameaças, o mapa da Czepeku e as cenas.</p>
+    <div class="chips">
+      <span class="chip">Nível 3 · 2º patamar</span>
+      <span class="chip">4 PJs · 14 PB por encontro</span>
+      <span class="chip">Pressão da Esfera: Inventário (ciclo 4)</span>
+      <span class="chip">Descanso curto depois da linha 6</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="mapcard" aria-label="Mapa do andar">
+      <h2>Mapa do andar</h2>
+      <svg id="map" viewBox="0 0 320 400" role="group" aria-label="Nós do mapa do andar 3"></svg>
+      <div class="paths" role="group" aria-label="Destacar caminho">
+        <button type="button" id="p-esq" data-path="esq" aria-pressed="false">Esquerda</button>
+        <button type="button" id="p-centro" data-path="centro" aria-pressed="false">Centro</button>
+        <button type="button" id="p-dir" data-path="dir" aria-pressed="false">Direita</button>
+      </div>
+      <p class="pathnote" id="pathnote">Escolha um caminho para destacá-lo no mapa.</p>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--rest)"></i>R repouso</span>
+        <span><i class="dot" style="background:var(--combat)"></i>M combate</span>
+        <span><i class="dot" style="background:var(--elite)"></i>E elite</span>
+        <span><i class="dot" style="background:var(--event)"></i>? evento</span>
+        <span><i class="dot" style="background:var(--treasure)"></i>T tesouro</span>
+        <span><i class="dot" style="background:var(--boss)"></i>B boss</span>
+      </div>
+      <p class="foot">Conexões reproduzidas da imagem do spire map.</p>
+    </section>
+
+    <section class="detail" id="detail" aria-live="polite"></section>
+  </div>
+
+  <section class="all">
+    <h2>Todos os nós</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Linha</th><th>Nó</th><th>Encontro</th><th>PB</th><th>Mapa</th><th>Variante</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="foot">¹ adversário de 1º patamar (+1 PB no orçamento). Fontes: Bestiário do Medo (mímicos p.76–77, olhos p.104) e Livro Básico (Caixa de Batalha p.221, Experimento fracassado, Crânio do caos e Cultista adepto no 2º patamar).</p>
+  </section>
+</div>
+
+<script>
+const CZ = "https://www.czepeku.com/fantasy/";
+const TYPES = {
+  R:{name:"Repouso", color:"var(--rest)"},
+  M:{name:"Combate", color:"var(--combat)"},
+  E:{name:"Elite", color:"var(--elite)"},
+  Q:{name:"Evento", color:"var(--event)", letter:"?"},
+  T:{name:"Tesouro", color:"var(--treasure)"},
+  B:{name:"Boss", color:"var(--boss)"}
+};
+const Y = {1:362, 2:310, 3:258, 4:206, 5:154, 6:102, 7:46};
+const restBody = "O grupo cruza a ponte sobre o abismo do Plano das Sombras e entra no Cofre. Tudo que brilha aqui pode morder.";
+const restNotes = [
+  "Descanso de entrada: o mestre recebe 1d4 Medo (curto) ou 1d4 + nº de PJs (longo).",
+  "Ative a Pressão da Esfera — Inventário: contagem padrão, ciclo 4. Ao zerar, um objeto da cena vira Mímico¹ e usa a Emboscada (foco sem Medo). Máximo de 2 por cena.",
+  "Tudo é Suspeito: Instinto 14 nota um mímico; sucesso com Esperança revela todos da sala."
+];
+const N = [
+  {id:"r1",type:"R",row:1,x:141,pos:"esquerda",title:"Chegada pela esquerda",body:restBody,notes:restNotes,
+    maps:[{k:"Cena",name:"Shadow Fortress Bridge",url:CZ+"scenes/shadow-fortress-bridge",v:"Silence"}]},
+  {id:"r2",type:"R",row:1,x:201,pos:"centro",title:"Chegada pelo centro",body:restBody,notes:restNotes,
+    maps:[{k:"Cena",name:"Shadow Fortress Bridge",url:CZ+"scenes/shadow-fortress-bridge",v:"Original"}]},
+  {id:"r3",type:"R",row:1,x:263,pos:"direita",title:"Chegada pela direita",body:restBody,notes:restNotes,
+    maps:[{k:"Cena",name:"Shadow Fortress Bridge",url:CZ+"scenes/shadow-fortress-bridge",v:"Haunted"}]},
+
+  {id:"e2",type:"E",row:2,x:86,pos:"esquerda",code:"E1",title:"A Garagem",
+    comp:[["Mimicarroça",4],["2 Mímicos gigantes",4],["2 Mímicos venenosos",4],["2 Experimentos fracassados",4]],total:"16",
+    notes:["Elite logo na linha 2: o caminho da esquerda é o mais perigoso.","A Mimicarroça começa disfarçada de carroça. Quem subir nela dispara a Emboscada: foco sem Medo, vantagem e dano direto.","Investida Cambaleante: os Experimentos entram em foco pagando 1 PF, sem gastar Medo."],
+    maps:[{k:"Mapa",name:"Royal Stables",url:CZ+"maps/royal-stables",v:"Abandoned (alternativas: Dark, Haunted)"}]},
+  {id:"m2",type:"M",row:2,x:206,pos:"hub",code:"N1",title:"Tesouro Fácil Demais",
+    comp:[["2 Mímicos gigantes",4],["Mímico venenoso",2],["Mimijoias¹",2],["2 Mímicos¹",4],["Mimibarril¹",2],["4 Olhos solitários¹",1]],total:"15 (14+1)",
+    notes:["Primeiro contato com os mímicos: todos começam Escondidos.","Deixe o baú enorme do altar bem à vista. Quem tocar dispara a Emboscada.","Os três pontos de entrada chegam aqui."],
+    maps:[{k:"Mapa",name:"Dragon's Hoard",url:CZ+"maps/dragons-hoard",v:"Shadowfell (depois: No Gold, quando os mímicos se revelam)"},{k:"Cena",name:"Dragon's Hoard",url:CZ+"scenes/dragons-hoard",v:"Shadowfell Hoard"}]},
+
+  {id:"q3a",type:"Q",row:3,x:40,pos:"esquerda",title:"A Oficina do Inventor",
+    body:"Uma oficina abandonada com desenhos de um \"cofre para uma mente\". Primeira pista do Demiurgo, o inventor da Imortalidade.",
+    notes:["Instinto 14 encontra um bilhete com o timbre da Organização.","Sem combate. Bom lugar para um interlúdio de personagem."],
+    maps:[{k:"Mapa",name:"Inventor's Workshop",url:CZ+"maps/inventors-workshop",v:"Interior Night (alternativa: Dark)"}]},
+  {id:"q3b",type:"Q",row:3,x:154,pos:"centro",title:"A Loja que Some",
+    body:"Um mercador que aparece entre as paredes do Cofre e some logo depois.",
+    notes:["Vende consumíveis do andar: Pasta Ácida, Frasco de Fumaça Negra, Poção de Vida.","Cada item tem 1 chance em 6 de ser um Mímico¹, que usa a Emboscada ao ser pego."],
+    maps:[{k:"Mapa",name:"Magic Popup Shop",url:CZ+"maps/magic-popup-shop",v:"Dark ou Errant Spell"},{k:"Cena",name:"Magic Popup Shop",url:CZ+"scenes/magic-popup-shop",v:"Original"}]},
+  {id:"q3c",type:"Q",row:3,x:212,pos:"centro-direita",title:"O Cofre Giratório",
+    body:"Um quebra-cabeça de engrenagens que tranca a passagem.",
+    notes:["Contagem de progresso 4, com testes de Conhecimento ou Acuidade 14.","Cada falha ativa o Cofre Giratório sem gastar Medo: todos fazem reação de Agilidade 14 ou ficam Vulneráveis até agirem."],
+    maps:[{k:"Mapa",name:"Arcane Clocktower",url:CZ+"maps/arcane-clocktower",v:"Gear Room"}]},
+  {id:"q3d",type:"Q",row:3,x:263,pos:"direita",title:"A Adega",
+    body:"Barris e garrafas até o teto. Alguns guardam bebida boa; outros têm dentes.",
+    notes:["Instinto 14 antes de beber.","Bebida boa: +1 Esperança. Mimibarril¹: Emboscada contra quem encheu o copo."],
+    maps:[{k:"Mapa",name:"Verem Cellars",url:CZ+"maps/verem-cellars",v:"Cellars Night ou Dark"}]},
+
+  {id:"t4a",type:"T",row:4,x:100,pos:"esquerda",title:"Arsenal escondido",
+    loot:["Bacamarte ou Chicote laminado (LB p.116)","Pedra do Poder (LB p.130)"],
+    notes:["Tudo é Suspeito: Instinto 14 antes de abrir. O baú pode ser um Mímico¹."],
+    maps:[{k:"Mapa",name:"Forge of the Wizard Blacksmith",url:CZ+"maps/forge-of-the-wizard-blacksmith",v:"No Magic Night"}]},
+  {id:"t4b",type:"T",row:4,x:145,pos:"centro",title:"Cofre menor",
+    loot:["Lâmina do Ego (LB p.117)","Chave Mestra (LB p.129)"],
+    notes:["Tudo é Suspeito: Instinto 14 antes de abrir. O baú pode ser um Mímico¹."],
+    maps:[{k:"Mapa",name:"Wizard Bank Interior",url:CZ+"maps/wizard-bank-interior",v:"Floor B2 Silent Night"}]},
+  {id:"t4c",type:"T",row:4,x:260,pos:"direita",title:"Caixa-forte",
+    loot:["Adaga Aparadora (LB p.124)","Baú Vazio (LB p.129)"],
+    notes:["Tudo é Suspeito: Instinto 14 antes de abrir. O baú pode ser um Mímico¹."],
+    maps:[{k:"Mapa",name:"Wizard Bank Interior",url:CZ+"maps/wizard-bank-interior",v:"Floor B1 Night Lights"}]},
+
+  {id:"e5",type:"E",row:5,x:88,pos:"esquerda",code:"E2",title:"Laboratório de Refinamento",
+    comp:[["3 Experimentos fracassados",6],["2 Crânios do caos",4],["Espectador",2],["Mimicarroça",4]],total:"16",
+    notes:["O Experimento resiste a dano físico e o Crânio resiste a dano mágico: o grupo precisa dividir alvos.","Investida Cambaleante dá focos extras pagos em PF, sem Medo.","Se o grupo passou pelo Arquivo dos Experimentos, tem vantagem contra os Experimentos."],
+    maps:[{k:"Mapa",name:"Experimental Surgery Theatre",url:CZ+"maps/experimental-surgery-theatre",v:"Floor 2 Blackboard Mimic Study"},{k:"Cena",name:"Alchemy Dungeon",url:CZ+"scenes/alchemy-dungeon",v:"Failed Spell ou Dark Matter"}]},
+  {id:"q5a",type:"Q",row:5,x:148,pos:"centro",title:"O Olho que Dorme",
+    body:"Um olho gigante dorme no centro da sala. É uma prévia do andar 5: alguém observa o Cofre.",
+    notes:["Passar em silêncio: teste em grupo de Acuidade 15.","Se falhar, o olho acorda e chama 2 Espectadores + 4 Olhos solitários¹ (combate curto, ~6 PB)."],
+    maps:[{k:"Mapa",name:"Lair of the Many Eyed God",url:CZ+"maps/lair-of-the-many-eyed-god",v:"Night"},{k:"Cena",name:"Lair of the Many Eyed God",url:CZ+"scenes/lair-of-the-many-eyed-god",v:"Sleepy (dormindo) ou Suspicious"}]},
+  {id:"q5b",type:"Q",row:5,x:197,pos:"centro-direita",title:"Arquivo dos Experimentos",
+    body:"Fichas e registros das tentativas da Organização de abrir o Cofre.",
+    notes:["Dá vantagem contra os Experimentos fracassados na elite ou no boss.","Mais uma pista da Organização."],
+    maps:[{k:"Mapa",name:"Monster Genealogy Lab",url:CZ+"maps/monster-genealogy-lab",v:"Night ou Lapse in Tenure"}]},
+  {id:"m5",type:"M",row:5,x:262,pos:"direita",code:"N5",title:"Barricada de Carroças",
+    comp:[["Mimicarroça",4],["Mímico gigante",2],["2 Mimibarris¹",4],["Mimijoias¹",2],["Crânio do caos",2],["4 Olhos solitários¹",1]],total:"15 (14+1)",
+    notes:["Caixas, pacotes e carroças empilhados: qualquer coisa pode ser mímico.","Use a Emboscada da Mimicarroça para abrir a luta sem gastar Medo."],
+    maps:[{k:"Mapa",name:"Hippogriff Postal Centre Interior",url:CZ+"maps/hippogriff-postal-centre-interior",v:"Underground Dark"}]},
+
+  {id:"m6a",type:"M",row:6,x:150,pos:"esquerda/centro",code:"N2",title:"Corredor dos Olhos",
+    comp:[["2 Espectadores",4],["Olho comandante¹",3],["8 Olhos solitários¹",2],["2 Experimentos fracassados",4],["Mímico venenoso",2]],total:"15 (14+1)",
+    notes:["Os caminhos da esquerda e do centro passam por aqui.","Depois desta luta, deixe o grupo fazer um descanso curto antes do boss."],
+    maps:[{k:"Mapa",name:"Bismuth Labyrinth",url:CZ+"maps/bismuth-labyrinth",v:"Dark ou Boon of Deceit"}]},
+  {id:"m6b",type:"M",row:6,x:202,pos:"centro-direita",code:"N4",title:"Arsenal",
+    comp:[["2 Mímicos venenosos",4],["2 Crânios do caos",4],["2 Mímicos gigantes",4],["Experimento fracassado",2],["Cultista adepto \"supervisor\"",1]],total:"15 (14+1 sem pesados)",
+    notes:["O supervisor usa um crachá sem nome e não lembra como entrou no Cofre (gancho da Organização).","Depois desta luta, deixe o grupo fazer um descanso curto antes do boss."],
+    maps:[{k:"Mapa",name:"Muniment Chamber",url:CZ+"maps/muniment-chamber",v:"Ebony (alternativas: Arcane, Haunted)"},{k:"Alternativa",name:"Forge of the Wizard Blacksmith",url:CZ+"maps/forge-of-the-wizard-blacksmith",v:"Original Night, Distortion"}]},
+  {id:"m6c",type:"M",row:6,x:256,pos:"direita",code:"N3",title:"Depósito",
+    comp:[["3 Experimentos fracassados",6],["Crânio do caos",2],["2 Mímicos gigantes",4],["Mímico venenoso",2]],total:"14",
+    notes:["Objetos gigantes flutuando: espada, escudo, chaves. Qualquer um pode ser mímico.","Depois desta luta, deixe o grupo fazer um descanso curto antes do boss."],
+    maps:[{k:"Mapa",name:"Inside a Bag of Holding",url:CZ+"maps/inside-a-bag-of-holding",v:"Trap ou Dark"}]},
+
+  {id:"b",type:"B",row:7,x:148,pos:"topo",code:"Boss",title:"O Cofre-Mestre",
+    comp:[["Caixa de Batalha (Solo)",5],["Mimicarroça",4],["2 Mímicos gigantes",4],["Mímico venenoso",2],["8 Olhos solitários¹",2]],total:"17 (14+2+1)",
+    body:"A Caixa de Batalha gira no centro do cofre: um cubo com uma runa em cada face. A sexta face é o Sigilo da Folia.",
+    notes:["Caixa de Batalha: Dificuldade 15 · 10/20 · 8 PV · 6 PF · Inclemente (2).","Táticas Aleatórias (1d6, pagas em PF). O Ganido Psiônico causa 2d4+9 de dano mágico direto em todos os próximos.","Sobrecarga: +1d6 no ataque e gera 1 Medo. Abra a luta com ela.","Fase 2 (regra da casa): ao marcar 4 PV, a Caixa ganha Inclemente (3) e +1d4 no dano. A porta do cofre abre: troque o mapa para a variante Open.","Terremoto da Morte: explode ao marcar o último PV."],
+    loot:["Armadura Flutuante de Runetan ou Caixa das Muitas Posses","Sigilo da Folia"],
+    maps:[{k:"Mapa",name:"Wizard Vault",url:CZ+"maps/wizard-vault",v:"Original Night Locked → Open na fase 2"},{k:"Alternativa",name:"Ancient Tech Treasury",url:CZ+"maps/ancient-tech-treasury",v:"Dark ou Hells Vault"},{k:"Cena",name:"Ancient Tech Treasury",url:CZ+"scenes/ancient-tech-treasury",v:"Hells Vault (revelação do cofre)"}]}
+];
+const E = [["r1","e2"],["r1","m2"],["r2","m2"],["r3","m2"],["e2","q3a"],["q3a","t4a"],["t4a","e5"],["e5","m6a"],
+  ["m2","q3b"],["m2","q3c"],["m2","q3d"],["q3b","t4b"],["t4b","q5a"],["q5a","m6a"],
+  ["q3c","t4c"],["q3d","t4c"],["t4c","q5b"],["t4c","m5"],["q5b","m6b"],["q5b","m6c"],["m5","m6c"],
+  ["m6a","b"],["m6b","b"],["m6c","b"]];
+const PATHS = {
+  esq:{nodes:["r1","e2","q3a","t4a","e5","m6a","b"],note:"Esquerda: as duas elites e só um combate normal. O caminho mais duro e o mais rico."},
+  centro:{nodes:["r2","m2","q3b","t4b","q5a","m6a","b"],note:"Centro: dois combates normais e dois eventos. O caminho mais leve."},
+  dir:{nodes:["r3","m2","q3d","t4c","m5","m6c","b"],note:"Direita: até três combates normais. Pode trocar o N5 pelo Arquivo dos Experimentos."}
+};
+// Fichas resumidas (texto das habilidades parafraseado; confira o livro na página indicada).
+// tag: "medo" = custa Medo · "pf" = custa Fadiga · "grátis" = sem custo
+const T = {
+  caixa:{n:"Caixa de Batalha",role:"Solo · 2º patamar",src:"LB p.221",dif:15,lim:"10/20",pv:8,pf:6,atq:"+2",atk:"Pancada · corpo a corpo · 2d6+3 fís",exp:"Camuflagem +2",
+    ab:[["Inclemente (2)","passiva","Pode entrar em foco até 2 vezes por turno do mestre. Cada foco ainda custa Medo normalmente."],
+      ["Táticas Aleatórias","pf","Marque 1 PF e role 1d6. 1 Feixe de Mana: ataque a um alvo distante, 2d10+2 mág. 2 Jatos de Fogo: ataque contra todos os próximos, 2d8 fís. 3 Atropelar: ataque contra todos os próximos, 1d6+5 fís, e quem for atingido fica Vulnerável até rolar com Esperança. 4 Gás Eletrizado: próximos fazem reação de Acuidade ou marcam 3 PF. 5 Impacto Atordoante: muito próximos fazem reação de Força ou ficam Vulneráveis até a Caixa ser derrotada. 6 Ganido Psiônico: próximos fazem reação de Presença ou sofrem 2d4+9 mág direto."],
+      ["Sobrecarga","pf","Reação, antes de rolar o dano: marque 1 PF para somar 1d6 ao teste de ataque. Você também recebe 1 Medo."],
+      ["Terremoto da Morte","reação","Ao marcar o último PV, explode: todos os próximos fazem reação de Instinto ou sofrem 2d8+1 mág."],
+      ["Fase 2 (regra da casa)","passiva","Ao marcar 4 PV: Inclemente (3) e +1d4 no dano. A porta do cofre se abre."]]},
+  mimicarroca:{n:"Mimicarroça",role:"Brutamonte · 2º patamar",src:"BdM p.77",dif:15,lim:"12/23",pv:5,pf:4,atq:"+4",atk:"Rodas · muito próximo · 2d10+5 fís",exp:"Camuflagem +3",
+    ab:[["Forma de Carroça","passiva","Começa a cena Escondida, disfarçada de carroça."],
+      ["Atropelar","pf","Marque 1 PF: ataque contra até três alvos em corpo a corpo."],
+      ["Devorar","medo","Reação: quando um PJ em corpo a corpo falha com Medo num teste de Agilidade, gaste 1 Medo. O alvo é engolido e fica Imobilizado até passar em Força."],
+      ["Emboscada","grátis","Reação: quando alguém tenta subir nela, entra em foco sem gastar Medo, com vantagem no ataque e causando dano direto."]]},
+  mimgig:{n:"Mímico gigante",role:"Comum · 2º patamar",src:"BdM p.77",dif:14,lim:"11/19",pv:6,pf:3,atq:"+3",atk:"Presas · corpo a corpo · 2d8+3 fís",exp:"Camuflagem +3",
+    ab:[["Forma de Baú","passiva","Começa a cena Escondido, como um baú."],
+      ["Voadora","pf","Marque 1 PF: avança até um alvo próximo e ataca. Se acertar, causa 2d10+5 fís."],
+      ["Emboscada","grátis","Reação: quando alguém tenta abrir o baú, entra em foco sem Medo, com vantagem e dano direto."],
+      ["Fechar o Baú","medo","Reação: ao acertar, gaste 1 Medo para prender o alvo, que fica Imobilizado até passar em Força."]]},
+  mimven:{n:"Mímico venenoso",role:"Atirador · 2º patamar",src:"BdM p.77",dif:15,lim:"6/13",pv:3,pf:3,atq:"+4",atk:"Disparo · distante · 2d8+4 fís",exp:"Camuflagem +3",
+    ab:[["Forma de Arma","passiva","Começa a cena Escondido, como uma besta ou pistola."],
+      ["Tiros Venenosos","passiva","Quem marcar PV por um disparo fica Vulnerável até recuperar 1 PV."],
+      ["Saraivada","medo","Gaste 1 Medo: ataque padrão contra até três alvos distantes."],
+      ["Cair Atirando","medo","Reação: ao marcar o último PV, gaste 1 Medo para um ataque padrão final."],
+      ["Emboscada","grátis","Reação: quando alguém tenta disparar com a arma, entra em foco sem Medo, com vantagem e dano direto."]]},
+  mimico:{n:"Mímico",role:"Oportunista · 1º patamar",src:"BdM p.76",dif:12,lim:"5/8",pv:3,pf:2,atq:"+2",atk:"Presas · corpo a corpo · 1d8+4 fís",exp:"Camuflagem +2",
+    ab:[["Forma de Baú","passiva","Começa a cena Escondido, como um baú."],
+      ["Emboscada","grátis","Reação: quando alguém tenta abrir o baú, entra em foco sem Medo, com vantagem e dano direto."],
+      ["Fechar o Baú","medo","Reação: ao acertar, gaste 1 Medo para prender o alvo (Imobilizado até passar em Força)."]]},
+  mimibarril:{n:"Mimibarril",role:"Oportunista · 1º patamar",src:"BdM p.76",dif:12,lim:"5/8",pv:3,pf:2,atq:"+2",atk:"Presas · corpo a corpo · 1d8+4 fís",exp:"Camuflagem +2",
+    ab:[["Forma de Barril","passiva","Começa a cena Escondido, como um barril de bebida."],
+      ["Emboscada","grátis","Reação: quando alguém tenta encher um copo, entra em foco sem Medo, com vantagem e dano direto."],
+      ["Prender a Mão","medo","Reação: ao acertar, gaste 1 Medo. A mão do alvo fica presa: ele fica Vulnerável e não usa a arma daquela mão até passar em Força."]]},
+  mimijoias:{n:"Mimijoias",role:"Horda (3/PV) · 1º patamar",src:"BdM p.76",dif:11,lim:"5/8",pv:4,pf:2,atq:"+0",atk:"Ácido · corpo a corpo · 1d8+2 fís",exp:"Camuflagem +2",
+    ab:[["Horda (1d4+1)","passiva","Com metade dos PV marcados, o ataque padrão passa a causar 1d4+1."],
+      ["Forma de Joias","passiva","Começa a cena Escondida, como um punhado de joias."],
+      ["Derreter Armadura","pf","Reação: ao acertar, marque 1 PF. O alvo marca 1 PA sem receber o benefício (ainda pode gastar PA para reduzir o dano)."],
+      ["Emboscada","grátis","Reação: quando alguém tenta pegar uma joia, entra em foco sem Medo, com vantagem e dano direto."]]},
+  olhosol:{n:"Olho solitário",role:"Lacaio · 1º patamar",src:"BdM p.104",dif:11,lim:"nenhum",pv:1,pf:1,atq:"+0",atk:"Raio mágico · distante · 2 mág",exp:"Conhecimento Místico +2",
+    ab:[["Lacaio (3)","passiva","Derrotado com qualquer dano. Cada 3 pontos de dano derrotam mais um olho no alcance do ataque."],
+      ["Ataque em Grupo","medo","Gaste 1 Medo: todos os olhos próximos do alvo entram em foco e fazem um teste compartilhado. Se acertarem, cada um causa 2 mág, somados."],
+      ["Tentáculos","pf","Reação: quando atingido em corpo a corpo, marque 1 PF para causar 2 de dano no atacante."]]},
+  olhocom:{n:"Olho comandante",role:"Líder · 1º patamar",src:"BdM p.104",dif:13,lim:"7/13",pv:5,pf:4,atq:"+2",atk:"Raio mágico · distante · 1d8+5 mág",exp:"Conhecimento Místico +2, Intimidação +2, Intuição +2",
+    ab:[["Voador","passiva","Em voo, +1 na Dificuldade."],
+      ["Raio Paralisante","pf","Marque 1 PF: um alvo distante faz reação de Agilidade ou fica Imobilizado até passar em Força."],
+      ["Sinal de Ataque","medo","Gaste 1 Medo: põe 1d4 aliados próximos em foco. Os ataques deles causam metade do dano."],
+      ["Tentáculos","pf","Reação: quando atingido em corpo a corpo, marque 1 PF para causar 1d8 no atacante."]]},
+  espectador:{n:"Espectador",role:"Comum · 2º patamar",src:"BdM p.104",dif:14,lim:"10/19",pv:6,pf:4,atq:"+3",atk:"Raio mágico · distante · 2d8+2 fís",exp:"Conhecimento Místico +3",
+    ab:[["Voador","passiva","Em voo, +1 na Dificuldade."],
+      ["Raio Congelante","pf","Marque 1 PF: ataque a um alvo distante. Se acertar, o alvo faz reação de Força ou fica Imobilizado até passar em Força."],
+      ["Raio Fulminante","pf","Marque 1 PF: ataque padrão a um alvo distante. Se acertar, causa dano direto."],
+      ["Tentáculos","pf","Reação: quando atingido em corpo a corpo, marque 1 PF para causar 2d8 no atacante."]]},
+  experimento:{n:"Experimento fracassado",role:"Comum · 2º patamar",src:"LB, 2º patamar",dif:13,lim:"12/23",pv:3,pf:3,atq:"+1",atk:"Mordida e garras · corpo a corpo · 2d6+5 fís",exp:"Imitador +3",
+    ab:[["Resistência Distorcida","passiva","Resistente a dano físico."],
+      ["Investida Cambaleante","pf","Marque 1 PF: entra em foco como movimento extra do mestre, sem gastar Medo."],
+      ["Exceder","reação","Quando ataca um alvo que está muito próximo de outros adversários, causa dano dobrado."]]},
+  cranio:{n:"Crânio do caos",role:"Atirador · 2º patamar",src:"LB p.222",dif:15,lim:"8/16",pv:5,pf:4,atq:"+2",atk:"Raio de energia · próximo · 2d8+3 mág",exp:"—",
+    ab:[["Levitação","passiva","Flutua e não pode ser Imobilizado."],
+      ["Proteção","passiva","Resistente a dano mágico."],
+      ["Explosão Mágica","pf","Marque 1 PF: ataque contra todos os alvos próximos, 2d6+4 mág."],
+      ["Sorver Magia","medo","Gaste 1 Medo: ataque a um PJ muito próximo que tenha atributo de conjuração. Se acertar, o alvo marca 1d4 PF, o crânio recupera o mesmo tanto e pode entrar em foco de novo na hora."]]},
+  cultista:{n:"Cultista adepto (o \"supervisor\")",role:"Assistente · 2º patamar",src:"LB p.223",dif:14,lim:"9/18",pv:4,pf:6,atq:"+2",atk:"Cajado de runas · distante · 2d4+3 mág",exp:"Conhecimento Perdido +2, Rituais +2",
+    ab:[["Ataque Inquietante","medo","Gaste 1 Medo: ataque padrão. Se acertar, o alvo também marca 1 PF."],
+      ["Grilhões de Sombra","medo","Gaste 1 Medo e escolha um ponto distante: todos os próximos dele ficam Imobilizados até passar em Força ou Instinto, e cada tentativa custa 1 Esperança."],
+      ["Manto dos Caídos","pf","Marque 1 PF: um aliado próximo fica resistente a todo tipo de dano até o cultista marcar o último PV."],
+      ["Seu Medo É Meu Refúgio","reação","Duas vezes por cena: quando um PJ falha com Medo, o cultista recupera 1 PF."]]}
+};
+const MATCH = [[/Caixa de Batalha/,"caixa"],[/Mimicarroça/,"mimicarroca"],[/Mímicos? gigantes?/,"mimgig"],[/Mímicos? venenosos?/,"mimven"],[/Mimibarris?|Mimibarril/,"mimibarril"],[/Mimijoias/,"mimijoias"],[/^(\d+ )?Mímicos?¹/,"mimico"],[/Olhos? solitários?/,"olhosol"],[/Olho comandante/,"olhocom"],[/Espectador/,"espectador"],[/Experimentos? fracassados?/,"experimento"],[/Crânios? do caos/,"cranio"],[/Cultista adepto/,"cultista"]];
+const EXTRA = {r1:["mimico"],r2:["mimico"],r3:["mimico"],q3b:["mimico"],q3d:["mimibarril"],t4a:["mimico"],t4b:["mimico"],t4c:["mimico"],q5a:["espectador","olhosol"],q5b:["experimento"]};
+function threatsOf(n){
+  const keys=[];
+  (n.comp||[]).forEach(([name])=>{ for(const [re,k] of MATCH){ if(re.test(name)){ if(!keys.includes(k)) keys.push(k); break; } } });
+  (EXTRA[n.id]||[]).forEach(k=>{ if(!keys.includes(k)) keys.push(k); });
+  return keys;
+}
+const TAGTXT={medo:["1 Medo","fear"],pf:["PF","pf"],"grátis":["sem custo","free"],passiva:["passiva",""],"reação":["reação",""]};
+function threatCard(k){
+  const t=T[k];
+  const ab=t.ab.map(([nm,tag,tx])=>{ const [lbl,cls]=TAGTXT[tag]||[tag,""]; return `<li><b>${esc(nm)}</b><span class="tag ${cls}">${esc(lbl)}</span> — ${esc(tx)}</li>`; }).join("");
+  return `<details class="threat"><summary>
+    <span class="tn"><b>${esc(t.n)}</b><i>${esc(t.role)} · ${esc(t.src)}</i></span>
+    <span class="statline"><span class="stat"><em>Dif</em>${t.dif}</span><span class="stat"><em>Limiares</em>${esc(t.lim)}</span><span class="stat"><em>PV</em>${t.pv}</span><span class="stat"><em>PF</em>${t.pf}</span><span class="stat"><em>ATQ</em>${esc(t.atq)}</span></span>
+    <span class="atk">${esc(t.atk)} · Experiências: ${esc(t.exp)}</span>
+    <span class="more">Ver habilidades ▾</span></summary>
+    <ul class="abil">${ab}</ul></details>`;
+}
+const byId = Object.fromEntries(N.map(n=>[n.id,n]));
+const svg = document.getElementById("map");
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs={}) => { const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; };
+
+for(let r=1;r<=6;r++){ const t=el("text",{x:8,y:Y[r]+4,class:"rowlabel"}); t.textContent=r; svg.appendChild(t); }
+const star=el("text",{x:8,y:Y[7]+4,class:"rowlabel"}); star.textContent="★"; svg.appendChild(star);
+
+const edgeEls = E.map(([a,b])=>{
+  const A=byId[a],B=byId[b];
+  const l=el("line",{x1:A.x,y1:Y[A.row],x2:B.x,y2:Y[B.row],class:"edge"});
+  l.dataset.a=a; l.dataset.b=b; svg.appendChild(l); return l;
+});
+const nodeEls = {};
+for(const n of N){
+  const t=TYPES[n.type];
+  const g=el("g",{class:"node",tabindex:"0",role:"button","aria-label":`${t.name}: ${n.title}`});
+  const r = n.type==="B" ? 19 : 13;
+  g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r:r+5,class:"ring"}));
+  const c=el("circle",{cx:n.x,cy:Y[n.row],r,class:"body",style:`fill:var(--panel-2);stroke:${t.color}`});
+  g.appendChild(c);
+  const inner=el("circle",{cx:n.x,cy:Y[n.row],r:r-3,style:`fill:${t.color};opacity:.35;pointer-events:none`}); g.appendChild(inner);
+  const tx=el("text",{x:n.x,y:Y[n.row]+1}); tx.textContent=t.letter||n.type; if(n.type==="B") tx.setAttribute("font-size","20"); g.appendChild(tx);
+  g.addEventListener("click",()=>select(n.id));
+  g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); select(n.id);} });
+  svg.appendChild(g); nodeEls[n.id]=g;
+}
+
+const detail=document.getElementById("detail");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function render(n){
+  const t=TYPES[n.type];
+  let h=`<div class="dhead"><span class="badge" style="background:${t.color}">${t.name}${n.code?" · "+esc(n.code):""}</span>
+    <h2 class="dtitle">${esc(n.title)}</h2>
+    <div class="meta">Linha ${n.row===7?"★":n.row} · nó da ${esc(n.pos)}</div></div>`;
+  if(n.body) h+=`<p class="prose">${esc(n.body)}</p>`;
+  if(n.comp){
+    h+=`<div class="block"><h3>Composição</h3><ul class="comp">${n.comp.map(([a,p])=>`<li><span>${esc(a)}</span><span>${p} PB</span></li>`).join("")}<li class="total"><span>Total</span><span>${esc(n.total)} PB</span></li></ul></div>`;
+  }
+  if(n.loot) h+=`<div class="block"><h3>${n.type==="B"?"Recompensa":"Tesouro"}</h3><ul class="notes">${n.loot.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  if(n.notes) h+=`<div class="block"><h3>Como usar</h3><ul class="notes">${n.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  const tk=threatsOf(n);
+  if(tk.length) h+=`<div class="block"><h3>${n.comp?"Fichas das ameaças":"Ameaças possíveis"}</h3><div class="threats">${tk.map(threatCard).join("")}</div></div>`;
+  h+=`<div class="block"><h3>Mapas e cenas</h3><div class="maps">${n.maps.map(m=>`<div class="mapref"><span class="k">${esc(m.k)}</span><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)} ↗</a><span class="v">Variante: ${esc(m.v)}</span></div>`).join("")}</div></div>`;
+  detail.innerHTML=h;
+}
+let current=null;
+function select(id){
+  current=id;
+  for(const k in nodeEls) nodeEls[k].classList.toggle("sel",k===id);
+  document.querySelectorAll("#rows tr").forEach(tr=>tr.classList.toggle("sel",tr.dataset.id===id));
+  render(byId[id]);
+  try{ localStorage.setItem("andar3-no",id); }catch(e){}
+}
+
+let activePath=null;
+const pathnote=document.getElementById("pathnote");
+document.querySelectorAll(".paths button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const p=btn.dataset.path;
+    activePath = activePath===p ? null : p;
+    document.querySelectorAll(".paths button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.path===activePath)));
+    const set = activePath ? PATHS[activePath].nodes : null;
+    edgeEls.forEach(l=>{
+      const on = set && set.some((id,i)=> i<set.length-1 && ((set[i]===l.dataset.a && set[i+1]===l.dataset.b)));
+      l.classList.toggle("on",!!on);
+    });
+    for(const k in nodeEls) nodeEls[k].classList.toggle("dim", !!set && !set.includes(k));
+    pathnote.textContent = activePath ? PATHS[activePath].note : "Escolha um caminho para destacá-lo no mapa.";
+  });
+});
+
+const rows=document.getElementById("rows");
+const order=[...N].sort((a,b)=>a.row-b.row||a.x-b.x);
+for(const n of order){
+  const tr=document.createElement("tr"); tr.dataset.id=n.id; tr.tabIndex=0;
+  const m=n.maps[0];
+  tr.innerHTML=`<td class="mono">${n.row===7?"★":n.row}</td><td><span class="badge" style="background:${TYPES[n.type].color}">${TYPES[n.type].letter||n.type}</span></td><td>${n.code?esc(n.code)+" · ":""}${esc(n.title)}</td><td class="mono">${n.total?esc(n.total):"—"}</td><td><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)}</a></td><td>${esc(m.v)}</td>`;
+  tr.addEventListener("click",e=>{ if(e.target.closest("a")) return; select(n.id); detail.scrollIntoView({behavior:"smooth",block:"nearest"}); });
+  tr.addEventListener("keydown",e=>{ if(e.key==="Enter"){ select(n.id); } });
+  rows.appendChild(tr);
+}
+
+let start="b";
+try{ const s=localStorage.getItem("andar3-no"); if(s && byId[s]) start=s; }catch(e){}
+select(start);
+</script>
+
+</body>
+</html>
