@@ -13,7 +13,7 @@ html[data-ruptura-theme="sombria"] {
     --color-warm-1: var(--rpt-hot);
     --color-warm-2: var(--rpt-accent);
     --color-warm-3: var(--rpt-iron);
-    --color-cool-3: #6a4a9c;
+    --color-cool-3: var(--rpt-cool);
     --color-cool-4: var(--rpt-raised);
     --color-cool-5: var(--rpt-void);
     --color-cool-5-75: color-mix(in srgb, var(--rpt-void) 75%, transparent);
@@ -23,19 +23,19 @@ html[data-ruptura-theme="sombria"] {
     --color-dark-2: var(--rpt-abyss);
     --color-dark-3: var(--rpt-panel);
     --color-dark-4: var(--rpt-raised);
-    --color-dark-5: #382058;
+    --color-dark-5: var(--rpt-shade);
     --color-dark-6: var(--rpt-iron);
 
-    --color-light-1: #f6effb;
+    --color-light-1: var(--rpt-bright);
     --color-light-2: var(--rpt-text);
-    --color-light-3: #d9c9ea;
+    --color-light-3: var(--rpt-soft);
     --color-light-4: var(--rpt-muted);
-    --color-light-5: #a592c0;
-    --color-light-6: #8a78a6;
+    --color-light-5: var(--rpt-subtle);
+    --color-light-6: var(--rpt-faint);
 
     --color-text-primary: var(--rpt-text);
     --color-text-secondary: var(--rpt-muted);
-    --color-text-subtle: #a592c0;
+    --color-text-subtle: var(--rpt-subtle);
     --color-text-emphatic: #ffffff;
     --color-text-hyperlink: var(--rpt-hot);
     --color-text-accent: var(--rpt-hot);
@@ -44,7 +44,7 @@ html[data-ruptura-theme="sombria"] {
     --color-fieldset-border: var(--rpt-iron);
     --color-form-label: var(--rpt-muted);
     --color-form-label-hover: var(--rpt-text);
-    --color-form-hint: #a592c0;
+    --color-form-hint: var(--rpt-subtle);
     --color-form-hint-hover: var(--rpt-muted);
     --color-shadow-primary: var(--rpt-accent);
     --color-shadow-highlight: var(--rpt-hot);
@@ -153,7 +153,7 @@ html[data-ruptura-theme="sombria"] {
   /* ---------- Barra lateral e listas ---------- */
 
   #sidebar-content {
-    background: var(--sidebar-background);
+    background: var(--rpt-pattern), var(--sidebar-background);
     border: 0;
     border-left: 2px solid var(--rpt-accent);
     border-radius: 0;
@@ -255,7 +255,7 @@ html[data-ruptura-theme="sombria"] {
     --input-background-color: var(--rpt-void);
     --input-border-color: var(--rpt-iron);
     --input-text-color: var(--rpt-text);
-    --input-placeholder-color: #a592c0;
+    --input-placeholder-color: var(--rpt-subtle);
     --input-focus-outline-color: var(--rpt-accent);
   }
 

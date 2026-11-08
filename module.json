@@ -1,8 +1,8 @@
 {
   "id": "dh-ruptura",
   "title": "Ruptura — Temas de Interface",
-  "description": "Motor de temas visuais para o Foundry VTT, com suporte ao sistema Daggerheart. Inclui o tema Sombria (gótico e infernal, em tons de roxo) e permite adicionar novos temas.",
-  "version": "0.5.0",
+  "description": "Motor de temas visuais para o Foundry VTT, com suporte ao sistema Daggerheart. Inclui o tema Sombria (gótico e infernal, em tons de roxo), com uma variante visual para cada andar da Esfera dos Mistérios, e permite adicionar novos temas.",
+  "version": "0.6.0",
   "authors": [
     {
       "name": "fernandowrpg"

@@ -11,9 +11,9 @@ html[data-ruptura-theme="sombria"] {
   --golden-90: color-mix(in srgb, var(--rpt-pale) 56%, transparent);
   --golden-bg: color-mix(in srgb, var(--rpt-pale) 10%, transparent);
   --golden-secondary: var(--rpt-accent);
-  --dark-golden: #1c0b33;
-  --dark-golden-40: color-mix(in srgb, #1c0b33 25%, transparent);
-  --dark-golden-80: color-mix(in srgb, #1c0b33 50%, transparent);
+  --dark-golden: var(--rpt-deep);
+  --dark-golden-40: color-mix(in srgb, var(--rpt-deep) 25%, transparent);
+  --dark-golden-80: color-mix(in srgb, var(--rpt-deep) 50%, transparent);
 
   /* Azul-escuro do sistema -> roxo profundo */
   --dark-blue: var(--rpt-panel);
@@ -36,11 +36,11 @@ html[data-ruptura-theme="sombria"] {
   --chat-blue: var(--rpt-blood);
   --chat-blue-10: color-mix(in srgb, var(--rpt-blood) 6%, transparent);
   --chat-blue-40: color-mix(in srgb, var(--rpt-blood) 25%, transparent);
-  --chat-blue-bg: color-mix(in srgb, #2a0a16 60%, transparent);
+  --chat-blue-bg: color-mix(in srgb, var(--rpt-fear-bg) 60%, transparent);
   --chat-purple: var(--rpt-relic);
   --chat-purple-10: color-mix(in srgb, var(--rpt-relic) 6%, transparent);
   --chat-purple-40: color-mix(in srgb, var(--rpt-relic) 25%, transparent);
-  --chat-purple-bg: color-mix(in srgb, #2b1d03 60%, transparent);
+  --chat-purple-bg: color-mix(in srgb, var(--rpt-crit-bg) 60%, transparent);
 
   --primary-color-fear: color-mix(in srgb, var(--rpt-accent) 75%, transparent);
 

@@ -1,5 +1,6 @@
 /* Sombria — fragmento do domínio de Tenebra.
-   Tokens do tema. Todo o resto do CSS lê apenas estas variáveis. */
+   Tokens do tema. Todo o resto do CSS lê apenas estas variáveis.
+   Os andares da Esfera (floors.css) redefinem estes mesmos tokens. */
 
 html[data-ruptura-theme="sombria"] {
   /* Destaques */
@@ -14,17 +15,31 @@ html[data-ruptura-theme="sombria"] {
   --rpt-abyss: #120919;
   --rpt-panel: #190d26;
   --rpt-raised: #24123a;
+  --rpt-shade: #382058;    /* entre o painel elevado e o ferro */
   --rpt-iron: #4d2a78;
+  --rpt-cool: #6a4a9c;     /* bordas frias do núcleo */
+  --rpt-deep: #1c0b33;     /* fundo escuro do dourado do sistema */
 
   /* Texto */
+  --rpt-bright: #f6effb;   /* texto mais claro */
   --rpt-text: #ecdff5;
+  --rpt-soft: #d9c9ea;     /* entre o texto e o apagado */
   --rpt-muted: #c2b3d6;
+  --rpt-subtle: #a592c0;   /* dicas e marcadores */
+  --rpt-faint: #8a78a6;
   --rpt-ink: #12051f;      /* texto sobre a cor de destaque */
+
+  /* Fundos das rolagens de dualidade */
+  --rpt-fear-bg: #2a0a16;
+  --rpt-crit-bg: #2b1d03;
 
   /* Derivadas */
   --rpt-edge: color-mix(in srgb, var(--rpt-accent) 60%, var(--rpt-iron));
   --rpt-fill: color-mix(in srgb, var(--rpt-abyss) 94%, transparent);
   --rpt-glow: 0 0 18px color-mix(in srgb, var(--rpt-accent) 35%, transparent);
+
+  /* Textura de fundo da barra lateral e dos painéis (camadas de background, ou none) */
+  --rpt-pattern: none;
 
   /* Forma */
   --rpt-chamfer: 14px;     /* corte dos cantos das janelas */

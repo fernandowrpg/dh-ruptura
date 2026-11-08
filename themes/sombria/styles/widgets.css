@@ -3,6 +3,7 @@
 html[data-ruptura-theme="sombria"] {
 
   .ruptura-vitals {
+    background: var(--rpt-pattern), var(--rpt-fill);
     border: 0;
     border-top: 3px solid var(--rpt-accent);
     box-shadow: inset 0 0 0 1px var(--rpt-iron), var(--rpt-glow), 0 12px 28px rgba(0, 0, 0, 0.55);
@@ -95,4 +96,21 @@ html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-threshold-label {
 html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-threshold-value {
   font-family: var(--rpt-font-title);
   font-weight: 800;
+}
+
+/* Andar da Esfera na Vigília e cartão de abertura */
+html[data-ruptura-theme="sombria"] .ruptura-vitals .rv-variant {
+  font-family: var(--rpt-font-title);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-ruptura-theme="sombria"] .ruptura-variant-card {
+  --s: var(--rpt-chamfer);
+  clip-path: polygon(var(--s) 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%, 0 var(--s));
+}
+
+html[data-ruptura-theme="sombria"] .ruptura-variant-card :is(.rvc-kicker, .rvc-title, .rvc-subtitle) {
+  font-family: var(--rpt-font-title);
+  text-transform: uppercase;
 }

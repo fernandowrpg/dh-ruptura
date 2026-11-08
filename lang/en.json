@@ -30,7 +30,9 @@
       },
       "Choice": {
         "None": "None (default look)",
-        "World": "Follow the world theme"
+        "World": "Follow the world theme",
+        "Base": "Sombria (no floor)",
+        "VariantWorld": "Follow the world floor"
       },
       "DefaultTheme": {
         "Name": "World theme",
@@ -47,6 +49,92 @@
       "ReduceEffects": {
         "Name": "Reduce effects",
         "Hint": "Removes the glow and the cut corners. Useful on slower computers."
+      },
+      "Variant": {
+        "Name": "Sphere floor",
+        "Hint": "Visual variant of the Sombria theme for every player: each floor of the Sphere of Mysteries has its own palette, corners, texture and titles. A scene can set its own floor in the scene configuration."
+      },
+      "SceneVariant": {
+        "Name": "Sphere floor (theme)",
+        "Hint": "While this scene is being viewed, the interface uses this floor of the Sombria theme. \"Follow the world floor\" uses the floor chosen in the module settings."
+      },
+      "AnnounceVariant": {
+        "Name": "Announce floor changes",
+        "Hint": "Shows a card with the floor name when the GM changes floor or when the scene switches to a different floor."
+      }
+    },
+    "Floors": {
+      "Ossario": {
+        "Label": "Floor 1 — The Ossuary",
+        "Kicker": "Floor 1",
+        "Title": "The Ossuary",
+        "Subtitle": "Death"
+      },
+      "Teia": {
+        "Label": "Floor 2 — The Web of Anansi",
+        "Kicker": "Floor 2",
+        "Title": "The Web of Anansi",
+        "Subtitle": "Web"
+      },
+      "Cofre": {
+        "Label": "Floor 3 — The Lying Vault",
+        "Kicker": "Floor 3",
+        "Title": "The Lying Vault",
+        "Subtitle": "Frolic"
+      },
+      "Galeria": {
+        "Label": "Floor 4 — The Gallery of Memories",
+        "Kicker": "Floor 4",
+        "Title": "The Gallery of Memories",
+        "Subtitle": "Woe"
+      },
+      "Tabuleiro": {
+        "Label": "Floor 5 — The Eye's Gameboard",
+        "Kicker": "Floor 5",
+        "Title": "The Eye's Gameboard",
+        "Subtitle": "Dread"
+      },
+      "Cisterna": {
+        "Label": "Floor 6 — The Cistern of Will",
+        "Kicker": "Floor 6",
+        "Title": "The Cistern of Will",
+        "Subtitle": "Malice"
+      },
+      "Corte": {
+        "Label": "Floor 7 — The Court of Endless Night",
+        "Kicker": "Floor 7",
+        "Title": "The Court of Endless Night",
+        "Subtitle": "Hunger"
+      },
+      "Cacada": {
+        "Label": "Floor 8 — The Moonless Hunt",
+        "Kicker": "Floor 8",
+        "Title": "The Moonless Hunt",
+        "Subtitle": "Instinct"
+      },
+      "Departamento": {
+        "Label": "Floor 9 — The Department",
+        "Kicker": "Floor 9",
+        "Title": "The Department",
+        "Subtitle": "Order"
+      },
+      "Teatro": {
+        "Label": "Floor 10 — The Yellow Theater",
+        "Kicker": "Floor 10",
+        "Title": "The Yellow Theater",
+        "Subtitle": "Reason"
+      },
+      "Tribunal": {
+        "Label": "Floor 11 — The Tribunal of the Furies",
+        "Kicker": "Floor 11",
+        "Title": "The Tribunal of the Furies",
+        "Subtitle": "Guilt"
+      },
+      "Olho": {
+        "Label": "Floor 12 — The Eye Behind Everything",
+        "Kicker": "Floor 12",
+        "Title": "The Eye Behind Everything",
+        "Subtitle": "Consciousness"
       }
     }
   }

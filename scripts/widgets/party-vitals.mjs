@@ -1,4 +1,4 @@
-import { MODULE_ID, resolveActiveTheme } from '../theme-manager.mjs';
+import { MODULE_ID, resolveActiveTheme, resolveActiveVariant } from '../theme-manager.mjs';
 
 export const WIDGET_ID = 'party-vitals';
 const ELEMENT_ID = 'ruptura-vitals';
@@ -340,10 +340,21 @@ function buildHeader(target, titleKey, save) {
   return header;
 }
 
+/** Linha da Vigília com a variante ativa (por exemplo, o andar da Esfera). */
+function renderVariant(variant = resolveActiveVariant()) {
+  const line = element?.querySelector('.rv-variant');
+  if (!line) return;
+  line.hidden = !variant;
+  line.replaceChildren();
+  if (!variant) return;
+  if (variant.icon) line.append(icon(variant.icon));
+  line.append(el('span', null, game.i18n.localize(variant.label)));
+}
+
 /** Mestre: Vigília com o Medo no topo e os vitais de cada personagem. */
 function mountGM(state) {
   element.classList.toggle('collapsed', !!state.collapsed);
-  element.append(buildHeader(element, 'RUPTURA.Vitals.Title', saveState));
+  element.append(buildHeader(element, 'RUPTURA.Vitals.Title', saveState), el('p', 'rv-variant'));
   if (fearState()) element.append(buildFearGM());
   element.append(el('ul', 'rv-list'));
 }
@@ -405,6 +416,7 @@ function mount() {
   else mountPlayer();
   document.body.append(element);
 
+  renderVariant();
   renderFear();
   renderList();
   place(element, state.left ?? 130, state.top ?? 80);
@@ -427,7 +439,10 @@ export function syncVitalsWidget() {
 }
 
 export function registerVitalsWidget() {
-  Hooks.on('ruptura.themeApplied', syncVitalsWidget);
+  Hooks.on('ruptura.themeApplied', (_theme, variant) => {
+    syncVitalsWidget();
+    renderVariant(variant);
+  });
   Hooks.once('ready', syncVitalsWidget);
 
   // Qualquer mudança que possa afetar os recursos ou o combate redesenha as listas.

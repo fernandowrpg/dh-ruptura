@@ -1,0 +1,376 @@
+/* Sombria — Andares da Esfera dos Mistérios.
+   Cada andar é uma variante: redefine só os tokens de tokens.css (paleta, recorte,
+   textura e fonte dos títulos). core.css, daggerheart.css e widgets.css não mudam.
+   O mestre escolhe o andar em Configurações → Ruptura, ou por cena. */
+
+/* ---------- Derivadas comuns a todos os andares ---------- */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant] {
+  --rpt-bright: color-mix(in srgb, var(--rpt-text) 55%, #ffffff);
+  --rpt-soft: color-mix(in srgb, var(--rpt-text) 55%, var(--rpt-muted));
+  --rpt-subtle: color-mix(in srgb, var(--rpt-muted) 72%, var(--rpt-iron));
+  --rpt-faint: color-mix(in srgb, var(--rpt-muted) 52%, var(--rpt-iron));
+  --rpt-shade: color-mix(in srgb, var(--rpt-raised) 55%, var(--rpt-iron));
+  --rpt-cool: color-mix(in srgb, var(--rpt-iron) 65%, var(--rpt-accent));
+  --rpt-deep: color-mix(in srgb, var(--rpt-pale) 12%, var(--rpt-void));
+  --rpt-fear-bg: color-mix(in srgb, var(--rpt-blood) 16%, var(--rpt-void));
+  --rpt-crit-bg: color-mix(in srgb, var(--rpt-relic) 14%, var(--rpt-void));
+
+  /* Traço das texturas: a cor de destaque bem diluída */
+  --rpt-line: color-mix(in srgb, var(--rpt-accent) 9%, transparent);
+  --rpt-line-strong: color-mix(in srgb, var(--rpt-accent) 16%, transparent);
+}
+
+/* ---------- Andar 1 · O Ossário (Morte) ----------
+   Mortos-vivos e esqueletos: osso, cinza de cripta e fogo-fátuo verde. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="ossario"] {
+  --rpt-accent: #7fe0a6;
+  --rpt-hot: #efe4c4;
+  --rpt-pale: #cfd8b6;
+  --rpt-blood: #ff6b6b;
+  --rpt-relic: #f2d98a;
+
+  --rpt-void: #070908;
+  --rpt-abyss: #0d110e;
+  --rpt-panel: #141a16;
+  --rpt-raised: #1d261f;
+  --rpt-iron: #3c4e41;
+
+  --rpt-text: #ebe8dc;
+  --rpt-muted: #b9bfae;
+  --rpt-ink: #06140c;
+
+  --rpt-chamfer: 10px;
+  --rpt-chamfer-sm: 6px;
+  --rpt-font-title: 'Modesto Condensed', 'Cinzel', serif;
+
+  /* pó de osso */
+  --rpt-pattern:
+    radial-gradient(circle at 2px 2px, color-mix(in srgb, var(--rpt-hot) 9%, transparent) 1px, transparent 1.6px) 0 0 / 16px 16px,
+    linear-gradient(180deg, color-mix(in srgb, var(--rpt-accent) 7%, transparent), transparent 220px);
+}
+
+/* ---------- Andar 2 · A Teia de Anansi (Teia) ----------
+   Aranhas e o contador de histórias: âmbar, ocre e fios de seda. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="teia"] {
+  --rpt-accent: #e8a33c;
+  --rpt-hot: #ffd27a;
+  --rpt-pale: #e6cf9f;
+  --rpt-blood: #ff5c5c;
+  --rpt-relic: #fff0b8;
+
+  --rpt-void: #0b0806;
+  --rpt-abyss: #130e0a;
+  --rpt-panel: #1b140e;
+  --rpt-raised: #271c13;
+  --rpt-iron: #5a4026;
+
+  --rpt-text: #f1e6d4;
+  --rpt-muted: #c9b89c;
+  --rpt-ink: #1a0f03;
+
+  --rpt-chamfer: 18px;
+  --rpt-chamfer-sm: 9px;
+
+  /* teia a partir do canto */
+  --rpt-pattern:
+    repeating-conic-gradient(from 0deg at 0 0, var(--rpt-line-strong) 0 0.6deg, transparent 0.6deg 12deg),
+    repeating-radial-gradient(circle at 0 0, transparent 0 46px, var(--rpt-line) 46px 47px);
+}
+
+/* ---------- Andar 3 · O Cofre que Mente (Folia) ----------
+   Mímicos e tesouro falso: ouro, bronze oxidado e grade de cofre. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="cofre"] {
+  --rpt-accent: #f0b429;
+  --rpt-hot: #5fe3c0;
+  --rpt-pale: #f3d892;
+  --rpt-blood: #ff5c7a;
+  --rpt-relic: #fff3c4;
+
+  --rpt-void: #07090a;
+  --rpt-abyss: #0e1314;
+  --rpt-panel: #151c1d;
+  --rpt-raised: #1f292a;
+  --rpt-iron: #6b5426;
+
+  --rpt-text: #f0ead8;
+  --rpt-muted: #c4bea6;
+  --rpt-ink: #1a1203;
+
+  --rpt-chamfer: 6px;
+  --rpt-chamfer-sm: 4px;
+
+  /* grade de losangos */
+  --rpt-pattern:
+    repeating-linear-gradient(45deg, var(--rpt-line) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(-45deg, var(--rpt-line) 0 1px, transparent 1px 20px);
+}
+
+/* ---------- Andar 4 · A Galeria das Lembranças (Aflição) ----------
+   Espíritos e a mansão do Demiurgo: azul espectral e papel de parede desbotado. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="galeria"] {
+  --rpt-accent: #8fb8ff;
+  --rpt-hot: #d4e1ff;
+  --rpt-pale: #b9c6e0;
+  --rpt-blood: #ff7a9a;
+  --rpt-relic: #f5e1a8;
+
+  --rpt-void: #06080d;
+  --rpt-abyss: #0b0f18;
+  --rpt-panel: #111827;
+  --rpt-raised: #1a2336;
+  --rpt-iron: #34446a;
+
+  --rpt-text: #e6ebf7;
+  --rpt-muted: #b3bdd4;
+  --rpt-ink: #060c1c;
+
+  --rpt-glow: 0 0 22px color-mix(in srgb, var(--rpt-accent) 30%, transparent);
+
+  /* listras de papel de parede e névoa no alto */
+  --rpt-pattern:
+    linear-gradient(180deg, color-mix(in srgb, var(--rpt-hot) 8%, transparent), transparent 260px),
+    repeating-linear-gradient(90deg, var(--rpt-line) 0 1px, transparent 1px 7px, var(--rpt-line) 7px 8px, transparent 8px 28px);
+}
+
+/* ---------- Andar 5 · O Tabuleiro do Olho (Pavor) ----------
+   Crias do Vazio e o tirano que joga: negro do Vazio, olho laranja e casas do tabuleiro. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="tabuleiro"] {
+  --rpt-accent: #ff6a2b;
+  --rpt-hot: #ffc46b;
+  --rpt-pale: #d9b8ff;
+  --rpt-blood: #ff3d6e;
+  --rpt-relic: #ffe38a;
+
+  --rpt-void: #050507;
+  --rpt-abyss: #0a0a0f;
+  --rpt-panel: #121219;
+  --rpt-raised: #1b1b26;
+  --rpt-iron: #3b3552;
+
+  --rpt-text: #ece8f4;
+  --rpt-muted: #b7b0c8;
+  --rpt-ink: #1a0800;
+
+  --rpt-chamfer: 0px;
+  --rpt-chamfer-sm: 0px;
+
+  /* casas do tabuleiro */
+  --rpt-pattern:
+    repeating-conic-gradient(var(--rpt-line) 0 25%, transparent 0 50%) 0 0 / 36px 36px;
+}
+
+/* ---------- Andar 6 · A Cisterna da Vontade (Malícia) ----------
+   O aboleth e os funcionários: verde-água bioluminescente e ondas no escuro. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="cisterna"] {
+  --rpt-accent: #2fd6c8;
+  --rpt-hot: #a6f5ea;
+  --rpt-pale: #a8d8d2;
+  --rpt-blood: #ff6f7d;
+  --rpt-relic: #f4e7a1;
+
+  --rpt-void: #03090b;
+  --rpt-abyss: #071215;
+  --rpt-panel: #0b1b20;
+  --rpt-raised: #12282f;
+  --rpt-iron: #1f4a52;
+
+  --rpt-text: #e2f3f1;
+  --rpt-muted: #a9c7c3;
+  --rpt-ink: #021412;
+
+  --rpt-chamfer: 20px;
+  --rpt-chamfer-sm: 10px;
+  --rpt-glow: 0 0 24px color-mix(in srgb, var(--rpt-accent) 32%, transparent);
+
+  /* ondulações vindas do fundo */
+  --rpt-pattern:
+    repeating-radial-gradient(ellipse at 50% 115%, transparent 0 14px, var(--rpt-line) 14px 15px);
+}
+
+/* ---------- Andar 7 · A Corte da Noite Eterna (Fome) ----------
+   Vampiros: carmesim, ouro velho e sangue escorrendo do alto. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="corte"] {
+  --rpt-accent: #d4243f;
+  --rpt-hot: #ff8a8a;
+  --rpt-pale: #e8c27a;
+  --rpt-blood: #ff4d4d;
+  --rpt-relic: #ffe2a0;
+
+  --rpt-void: #0b0405;
+  --rpt-abyss: #140709;
+  --rpt-panel: #1e0b0e;
+  --rpt-raised: #2b1015;
+  --rpt-iron: #5e1b26;
+
+  --rpt-text: #f5e4e2;
+  --rpt-muted: #cfaeaa;
+  --rpt-ink: #fff2ee;      /* o carmesim é escuro: texto claro sobre ele */
+
+  /* gotejado e brocado */
+  --rpt-pattern:
+    linear-gradient(180deg, color-mix(in srgb, var(--rpt-accent) 14%, transparent), transparent 160px),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--rpt-pale) 7%, transparent) 2px, transparent 2.5px) 0 0 / 24px 24px;
+}
+
+/* ---------- Andar 8 · A Caçada sem Lua (Instinto) ----------
+   Lobisomens na floresta de sombra: prata de lua, musgo e troncos. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="cacada"] {
+  --rpt-accent: #9cc3e6;
+  --rpt-hot: #e6eef7;
+  --rpt-pale: #a8c29a;
+  --rpt-blood: #ff6363;
+  --rpt-relic: #f2e2a4;
+
+  --rpt-void: #050806;
+  --rpt-abyss: #0a100c;
+  --rpt-panel: #101912;
+  --rpt-raised: #18241b;
+  --rpt-iron: #34503b;
+
+  --rpt-text: #e8eee6;
+  --rpt-muted: #b2c0b0;
+  --rpt-ink: #06121c;
+
+  --rpt-chamfer: 12px;
+
+  /* brilho da lua no canto e troncos */
+  --rpt-pattern:
+    radial-gradient(circle at 88% 6%, color-mix(in srgb, var(--rpt-hot) 14%, transparent) 0 26px, transparent 110px),
+    repeating-linear-gradient(94deg, transparent 0 38px, var(--rpt-line) 38px 41px, transparent 41px 70px);
+}
+
+/* ---------- Andar 9 · O Departamento (Ordem) ----------
+   A Organização: escritório estéril, verde de terminal, cantos retos e letra de máquina. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="departamento"] {
+  --rpt-accent: #5fd3a6;
+  --rpt-hot: #eaf3ef;
+  --rpt-pale: #9ccab8;
+  --rpt-blood: #ff6b6b;
+  --rpt-relic: #e8f0a0;
+
+  --rpt-void: #070b0a;
+  --rpt-abyss: #0c1312;
+  --rpt-panel: #121b1a;
+  --rpt-raised: #1a2624;
+  --rpt-iron: #2f4a45;
+
+  --rpt-text: #e3ece9;
+  --rpt-muted: #a8bdb7;
+  --rpt-ink: #04140d;
+
+  --rpt-chamfer: 0px;
+  --rpt-chamfer-sm: 0px;
+  --rpt-glow: 0 0 10px color-mix(in srgb, var(--rpt-accent) 20%, transparent);
+  --rpt-font-title: 'Consolas', 'Courier New', ui-monospace, monospace;
+
+  /* linhas de varredura e quadriculado de planilha */
+  --rpt-pattern:
+    repeating-linear-gradient(0deg, var(--rpt-line) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, var(--rpt-line) 0 1px, transparent 1px 48px);
+}
+
+/* ---------- Andar 10 · O Teatro Amarelo (Razão) ----------
+   A Máscara Amarela: amarelo doentio, cortina e palco. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="teatro"] {
+  --rpt-accent: #ffd400;
+  --rpt-hot: #fff27a;
+  --rpt-pale: #e8d77a;
+  --rpt-blood: #ff5a3c;
+  --rpt-relic: #ffffff;
+
+  --rpt-void: #0a0903;
+  --rpt-abyss: #121006;
+  --rpt-panel: #1b1809;
+  --rpt-raised: #26220d;
+  --rpt-iron: #5a4f14;
+
+  --rpt-text: #f6f0d2;
+  --rpt-muted: #cfc69c;
+  --rpt-ink: #161200;
+
+  --rpt-chamfer: 16px;
+  --rpt-glow: 0 0 20px color-mix(in srgb, var(--rpt-accent) 26%, transparent);
+
+  /* dobras de cortina e luz de ribalta embaixo */
+  --rpt-pattern:
+    linear-gradient(0deg, color-mix(in srgb, var(--rpt-accent) 10%, transparent), transparent 200px),
+    repeating-linear-gradient(90deg, var(--rpt-line-strong) 0 2px, transparent 2px 14px, var(--rpt-line) 14px 15px, transparent 15px 28px);
+}
+
+/* ---------- Andar 11 · O Tribunal das Fúrias (Culpa) ----------
+   Harpias e o julgamento: mármore negro, bronze e pena vermelha. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="tribunal"] {
+  --rpt-accent: #e0623a;
+  --rpt-hot: #ffd3a8;
+  --rpt-pale: #e6d2b5;
+  --rpt-blood: #ff4d4d;
+  --rpt-relic: #fff1c9;
+
+  --rpt-void: #0a0808;
+  --rpt-abyss: #121010;
+  --rpt-panel: #1a1716;
+  --rpt-raised: #25201e;
+  --rpt-iron: #5b4a40;
+
+  --rpt-text: #f3ebe4;
+  --rpt-muted: #c8bbb0;
+  --rpt-ink: #1c0800;
+
+  --rpt-chamfer: 8px;
+
+  /* colunas e luz que desce do alto */
+  --rpt-pattern:
+    linear-gradient(180deg, color-mix(in srgb, var(--rpt-hot) 9%, transparent), transparent 240px),
+    repeating-linear-gradient(90deg, transparent 0 44px, var(--rpt-line) 44px 46px, transparent 46px 52px, var(--rpt-line) 52px 53px);
+}
+
+/* ---------- Andar 12 · O Olho por Trás de Tudo (Consciência) ----------
+   Harkon e o fim do Vazio: negro absoluto, magenta e íris em anéis. */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant="olho"] {
+  --rpt-accent: #ff2e88;
+  --rpt-hot: #5ef0ff;
+  --rpt-pale: #c5b8ff;
+  --rpt-blood: #ff3b5c;
+  --rpt-relic: #fff07a;
+
+  --rpt-void: #020203;
+  --rpt-abyss: #07070b;
+  --rpt-panel: #0d0d14;
+  --rpt-raised: #15151f;
+  --rpt-iron: #3d2d5c;
+
+  --rpt-text: #efeaff;
+  --rpt-muted: #b9b2d4;
+  --rpt-ink: #18000b;
+
+  --rpt-chamfer: 22px;
+  --rpt-chamfer-sm: 11px;
+  --rpt-glow: 0 0 26px color-mix(in srgb, var(--rpt-accent) 40%, transparent);
+
+  /* íris em anéis concêntricos */
+  --rpt-pattern:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--rpt-hot) 10%, transparent) 0 18px, transparent 60px),
+    repeating-radial-gradient(circle at 50% 38%, transparent 0 16px, var(--rpt-line) 16px 17px);
+}
+
+/* ---------- "Reduzir efeitos" vale também para os andares ---------- */
+
+html[data-ruptura-theme="sombria"][data-ruptura-variant][data-ruptura-fx="off"] {
+  --rpt-chamfer: 0px;
+  --rpt-chamfer-sm: 0px;
+  --rpt-glow: none;
+  --rpt-pattern: none;
+}

@@ -30,7 +30,9 @@
       },
       "Choice": {
         "None": "Nenhum (visual padrão)",
-        "World": "Seguir o tema do mundo"
+        "World": "Seguir o tema do mundo",
+        "Base": "Sombria (sem andar)",
+        "VariantWorld": "Seguir o andar do mundo"
       },
       "DefaultTheme": {
         "Name": "Tema do mundo",
@@ -47,6 +49,92 @@
       "ReduceEffects": {
         "Name": "Reduzir efeitos",
         "Hint": "Remove o brilho e os cantos cortados. Útil em computadores mais lentos."
+      },
+      "Variant": {
+        "Name": "Andar da Esfera",
+        "Hint": "Variante visual do tema Sombria para todos os jogadores: cada andar da Esfera dos Mistérios tem paleta, recortes, textura e títulos próprios. Uma cena pode ter um andar próprio na configuração da cena."
+      },
+      "SceneVariant": {
+        "Name": "Andar da Esfera (tema)",
+        "Hint": "Enquanto esta cena estiver em exibição, a interface usa este andar do tema Sombria. \"Seguir o andar do mundo\" usa o andar escolhido nas configurações do módulo."
+      },
+      "AnnounceVariant": {
+        "Name": "Anunciar troca de andar",
+        "Hint": "Mostra um cartão com o nome do andar quando o mestre troca de andar ou quando a cena muda para um andar diferente."
+      }
+    },
+    "Floors": {
+      "Ossario": {
+        "Label": "Andar 1 — O Ossário",
+        "Kicker": "Andar 1",
+        "Title": "O Ossário",
+        "Subtitle": "Morte"
+      },
+      "Teia": {
+        "Label": "Andar 2 — A Teia de Anansi",
+        "Kicker": "Andar 2",
+        "Title": "A Teia de Anansi",
+        "Subtitle": "Teia"
+      },
+      "Cofre": {
+        "Label": "Andar 3 — O Cofre que Mente",
+        "Kicker": "Andar 3",
+        "Title": "O Cofre que Mente",
+        "Subtitle": "Folia"
+      },
+      "Galeria": {
+        "Label": "Andar 4 — A Galeria das Lembranças",
+        "Kicker": "Andar 4",
+        "Title": "A Galeria das Lembranças",
+        "Subtitle": "Aflição"
+      },
+      "Tabuleiro": {
+        "Label": "Andar 5 — O Tabuleiro do Olho",
+        "Kicker": "Andar 5",
+        "Title": "O Tabuleiro do Olho",
+        "Subtitle": "Pavor"
+      },
+      "Cisterna": {
+        "Label": "Andar 6 — A Cisterna da Vontade",
+        "Kicker": "Andar 6",
+        "Title": "A Cisterna da Vontade",
+        "Subtitle": "Malícia"
+      },
+      "Corte": {
+        "Label": "Andar 7 — A Corte da Noite Eterna",
+        "Kicker": "Andar 7",
+        "Title": "A Corte da Noite Eterna",
+        "Subtitle": "Fome"
+      },
+      "Cacada": {
+        "Label": "Andar 8 — A Caçada sem Lua",
+        "Kicker": "Andar 8",
+        "Title": "A Caçada sem Lua",
+        "Subtitle": "Instinto"
+      },
+      "Departamento": {
+        "Label": "Andar 9 — O Departamento",
+        "Kicker": "Andar 9",
+        "Title": "O Departamento",
+        "Subtitle": "Ordem"
+      },
+      "Teatro": {
+        "Label": "Andar 10 — O Teatro Amarelo",
+        "Kicker": "Andar 10",
+        "Title": "O Teatro Amarelo",
+        "Subtitle": "Razão"
+      },
+      "Tribunal": {
+        "Label": "Andar 11 — O Tribunal das Fúrias",
+        "Kicker": "Andar 11",
+        "Title": "O Tribunal das Fúrias",
+        "Subtitle": "Culpa"
+      },
+      "Olho": {
+        "Label": "Andar 12 — O Olho por Trás de Tudo",
+        "Kicker": "Andar 12",
+        "Title": "O Olho por Trás de Tudo",
+        "Subtitle": "Consciência"
       }
     }
   }

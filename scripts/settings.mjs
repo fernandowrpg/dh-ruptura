@@ -1,5 +1,13 @@
-import { MODULE_ID, THEME_NONE, THEME_WORLD, applyTheme, getThemes } from './theme-manager.mjs';
+import { MODULE_ID, THEME_NONE, THEME_WORLD, VARIANT_BASE, applyTheme, getThemes, getVariants } from './theme-manager.mjs';
 import { syncVitalsWidget } from './widgets/party-vitals.mjs';
+
+/** Opções de variante: o tema sem variante seguido de todas as variantes registradas. */
+export function variantChoices() {
+  return {
+    [VARIANT_BASE]: 'RUPTURA.Settings.Choice.Base',
+    ...Object.fromEntries(getVariants().map((variant) => [variant.id, variant.label]))
+  };
+}
 
 export function registerSettings() {
   const themeChoices = Object.fromEntries(getThemes().map((theme) => [theme.id, theme.label]));
@@ -14,6 +22,28 @@ export function registerSettings() {
     choices: { ...themeChoices, [THEME_NONE]: 'RUPTURA.Settings.Choice.None' },
     default: firstTheme,
     onChange: () => applyTheme()
+  });
+
+  if (getVariants().length) {
+    game.settings.register(MODULE_ID, 'variant', {
+      name: 'RUPTURA.Settings.Variant.Name',
+      hint: 'RUPTURA.Settings.Variant.Hint',
+      scope: 'world',
+      config: true,
+      type: String,
+      choices: variantChoices(),
+      default: VARIANT_BASE,
+      onChange: () => applyTheme()
+    });
+  }
+
+  game.settings.register(MODULE_ID, 'announceVariant', {
+    name: 'RUPTURA.Settings.AnnounceVariant.Name',
+    hint: 'RUPTURA.Settings.AnnounceVariant.Hint',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true
   });
 
   game.settings.register(MODULE_ID, 'theme', {
