@@ -401,7 +401,7 @@ const detail=document.getElementById("detail");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function render(n){
   const t=TYPES[n.type];
-  let h=`<div class="dhead"><span class="badge" style="background:${t.color}">${t.name}${n.code?" · "+esc(n.code):""}</span>
+  let h=`<div class="dhead"><span class="badge" style="background:${t.color}">${t.name}${n.code&&n.code!==t.name?" · "+esc(n.code):""}</span>
     <h2 class="dtitle">${esc(n.title)}</h2>
     <div class="meta">Linha ${n.row===7?"★":n.row} · nó da ${esc(n.pos)}</div></div>`;
   if(n.body) h+=`<p class="prose">${esc(n.body)}</p>`;
