@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- **Tokens do andar 3 (O Cofre que Mente):** 13 tokens em `tokens/andar-3`, com moldura no tema do andar e tamanho do Foundry no nome do arquivo (256 px por quadrado). Arte de 9 deles do 2-Minute Tabletop; os outros 4 são genéricos.
+- O pacote do módulo passa a incluir a pasta `tokens`.
+
 ## 0.6.0
 
 - **Andares da Esfera:** doze variantes do tema Sombria, uma por andar, cada uma com paleta, recorte dos cantos, textura e fonte dos títulos próprios.
