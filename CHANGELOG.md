@@ -1,5 +1,11 @@
 # Changelog
 
+## Próxima versão
+
+- **Ampulhetas:** janela de contadores da aventura no estilo da Vigília. Cada contador é uma ampulheta com passos que descem um a um, reinício com giro, visibilidade por contador para os jogadores e aviso sussurrado ao mestre quando zera.
+- Contagens prontas dos andares 3 a 6 (Pressão da Esfera, Jogos Mortais, Brincar com as Vítimas, O Aboleth Espreita), com o andar ativo primeiro.
+- Configuração **Ampulhetas** para mostrar ou esconder a janela; API `countdowns` para macros.
+
 ## 0.7.0
 
 - **Tokens do andar 3 (O Cofre que Mente):** 13 tokens em `tokens/andar-3`, com moldura no tema do andar e tamanho do Foundry no nome do arquivo (256 px por quadrado). Arte de 9 deles do 2-Minute Tabletop; os outros 4 são genéricos.

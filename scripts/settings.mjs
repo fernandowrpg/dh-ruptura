@@ -1,5 +1,6 @@
 import { MODULE_ID, THEME_NONE, THEME_WORLD, VARIANT_BASE, applyTheme, getThemes, getVariants } from './theme-manager.mjs';
 import { syncVitalsWidget } from './widgets/party-vitals.mjs';
+import { syncCountdownsWidget } from './widgets/countdowns.mjs';
 
 /** Opções de variante: o tema sem variante seguido de todas as variantes registradas. */
 export function variantChoices() {
@@ -83,6 +84,32 @@ export function registerSettings() {
 
   // Posição e estado (recolhido) do painel de vitais; gravado ao arrastar.
   game.settings.register(MODULE_ID, 'vitalsState', {
+    scope: 'client',
+    config: false,
+    type: Object,
+    default: {}
+  });
+
+  game.settings.register(MODULE_ID, 'showCountdowns', {
+    name: 'RUPTURA.Settings.ShowCountdowns.Name',
+    hint: 'RUPTURA.Settings.ShowCountdowns.Hint',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: () => syncCountdownsWidget()
+  });
+
+  // Ampulhetas da aventura: o mestre grava, todos leem (os jogadores só as visíveis).
+  game.settings.register(MODULE_ID, 'countdowns', {
+    scope: 'world',
+    config: false,
+    type: Array,
+    default: []
+  });
+
+  // Posição e estado (recolhido) da janela de ampulhetas.
+  game.settings.register(MODULE_ID, 'countdownsState', {
     scope: 'client',
     config: false,
     type: Object,

@@ -11,9 +11,11 @@ import {
 import { registerSettings } from './settings.mjs';
 import { announceVariant, registerVariantHooks } from './variants.mjs';
 import { registerVitalsWidget } from './widgets/party-vitals.mjs';
+import { countdownsApi, registerCountdownsWidget } from './widgets/countdowns.mjs';
 import builtinThemes from '../themes/index.mjs';
 
 registerVitalsWidget();
+registerCountdownsWidget();
 registerVariantHooks();
 
 const api = {
@@ -23,6 +25,7 @@ const api = {
   applyTheme,
   getVariants,
   setVariant,
+  countdowns: countdownsApi,
   getActiveVariant: () => resolveActiveVariant(),
   announceVariant: (id) => announceVariant(id ? getVariants().find((variant) => variant.id === id) : resolveActiveVariant())
 };

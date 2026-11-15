@@ -30,7 +30,7 @@ O motor carrega só o CSS do tema ativo e marca o `<html>` com
 | `description` | não         | Uma linha sobre o tema.                                        |
 | `accent`      | não         | Cor de destaque padrão, para referência.                       |
 | `variants`    | não         | Variantes que o mestre escolhe por mundo ou por cena. Veja "Variantes". |
-| `widgets`     | não         | Widgets do módulo que o tema liga. Disponível: `party-vitals` (contador de Medo e, para o mestre, vida, armadura, esperança e fadiga dos personagens). |
+| `widgets`     | não         | Widgets do módulo que o tema liga. Disponível: `party-vitals` (contador de Medo e, para o mestre, vida, armadura, esperança e fadiga dos personagens) e `countdowns` (Ampulhetas: contadores da aventura). Uma variante pode declarar `countdowns` com contagens prontas (veja `themes/sombria/floors.mjs`). |
 | `basePath`    | não         | Pasta do tema, se ele não estiver em `modules/dh-ruptura/themes/<id>`. |
 
 ## Convenções de CSS

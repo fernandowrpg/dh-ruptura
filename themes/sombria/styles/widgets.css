@@ -114,3 +114,45 @@ html[data-ruptura-theme="sombria"] .ruptura-variant-card :is(.rvc-kicker, .rvc-t
   font-family: var(--rpt-font-title);
   text-transform: uppercase;
 }
+
+/* Ampulhetas */
+html[data-ruptura-theme="sombria"] {
+
+  .ruptura-countdowns .rc-card {
+    --s: var(--rpt-chamfer-sm);
+    box-shadow: inset 0 0 0 1px var(--rpt-iron);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%);
+  }
+
+  .ruptura-countdowns .rc-card.rc-zero {
+    box-shadow:
+      inset 0 0 0 1px var(--rpt-blood),
+      inset 0 0 18px color-mix(in srgb, var(--rpt-blood) 25%, transparent);
+  }
+
+  .ruptura-countdowns .rc-hourglass {
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--rc-sand) 45%, transparent));
+  }
+
+  .ruptura-countdowns :is(.rc-name, .rc-count, .rc-meta, .rc-add) {
+    font-family: var(--rpt-font-title);
+    letter-spacing: 0.06em;
+  }
+
+  .ruptura-countdowns .rc-name {
+    text-transform: uppercase;
+  }
+
+  .ruptura-countdowns .rc-pip {
+    transform: skewX(-20deg);
+  }
+
+  .ruptura-countdowns :is(.rc-btn, .rc-add) {
+    --s: 5px;
+    clip-path: polygon(var(--s) 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%, 0 var(--s));
+  }
+}
+
+html[data-ruptura-theme="sombria"][data-ruptura-fx="off"] .ruptura-countdowns .rc-hourglass {
+  filter: none;
+}

@@ -492,3 +492,315 @@ html[data-ruptura-fx="off"] .ruptura-variant-card .rvc-icon {
     animation: none;
   }
 }
+
+/* ---------- Ampulhetas (contadores da aventura) ---------- */
+
+.ruptura-vitals.ruptura-countdowns {
+  width: 270px;
+}
+
+.ruptura-countdowns.collapsed .rc-footer {
+  display: none;
+}
+
+.ruptura-countdowns .rc-card {
+  --rc-sand: var(--rpt-accent, #b44dff);
+  margin: 0;
+  padding: 6px 8px;
+  display: flex;
+  gap: 8px;
+  background: var(--rpt-panel, #1c1c21);
+}
+
+.ruptura-countdowns .rc-card.rc-zero {
+  --rc-sand: var(--rpt-blood, #ff5c7a);
+  box-shadow: inset 0 0 0 1px var(--rpt-blood, #ff5c7a);
+}
+
+/* Oculta dos jogadores: o mestre a vê esmaecida e tracejada. */
+.ruptura-countdowns:not(.rv-player-view) .rc-card.rc-hidden {
+  background: color-mix(in srgb, var(--rpt-panel, #1c1c21) 60%, transparent);
+  outline: 1px dashed var(--rpt-iron, #555555);
+  outline-offset: -1px;
+}
+
+.ruptura-countdowns .rc-hourglass {
+  flex: none;
+  width: 46px;
+  align-self: center;
+  line-height: 0;
+}
+
+.ruptura-countdowns .rc-hourglass svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ruptura-countdowns .rc-glass {
+  fill: color-mix(in srgb, var(--rpt-void, #0c0c0e) 85%, transparent);
+}
+
+.ruptura-countdowns .rc-glass-edge {
+  fill: none;
+  stroke: var(--rpt-pale, #cccccc);
+  stroke-opacity: 0.55;
+  stroke-width: 1.5;
+}
+
+.ruptura-countdowns .rc-frame {
+  fill: var(--rpt-raised, #26262c);
+  stroke: var(--rpt-iron, #555555);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.ruptura-countdowns .rc-sand {
+  fill: var(--rc-sand);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.6s ease, fill 0.3s ease;
+}
+
+/* A areia de cima afunda em direção ao gargalo; a de baixo sobe do fundo. */
+.ruptura-countdowns .rc-sand-top {
+  transform: scaleY(var(--rc-ratio, 1));
+}
+
+.ruptura-countdowns .rc-sand-bottom {
+  transform: scaleY(calc(1 - var(--rc-ratio, 1)));
+}
+
+.ruptura-countdowns .rc-stream {
+  stroke: var(--rc-sand);
+  stroke-width: 1.6;
+  stroke-dasharray: 3 3;
+  opacity: 0;
+  animation: rc-stream 0.6s linear infinite;
+}
+
+.ruptura-countdowns .rc-card:not(.rc-zero) .rc-hourglass:not(.rc-full) .rc-stream {
+  opacity: 0.9;
+}
+
+@keyframes rc-stream {
+  to { stroke-dashoffset: -6; }
+}
+
+/* Virada: começa de cabeça para baixo (parece vazia) e gira até ficar cheia. */
+.ruptura-countdowns .rc-hourglass.rc-flipping svg {
+  animation: rc-flip 0.7s ease-in-out;
+}
+
+@keyframes rc-flip {
+  from { transform: rotate(180deg); }
+  to { transform: rotate(0deg); }
+}
+
+.ruptura-countdowns .rc-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ruptura-countdowns .rc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ruptura-countdowns .rc-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.ruptura-countdowns .rc-count {
+  flex: none;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--rc-sand);
+}
+
+.ruptura-countdowns .rc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 10px;
+  color: var(--rpt-muted, #bbbbbb);
+}
+
+.ruptura-countdowns .rc-loop {
+  color: var(--rpt-pale, #cccccc);
+}
+
+.ruptura-countdowns .rc-zero-tag {
+  font-weight: 700;
+  color: var(--rpt-blood, #ff5c7a);
+}
+
+.ruptura-countdowns .rc-pips {
+  display: flex;
+  gap: 2px;
+}
+
+.ruptura-countdowns .rc-pip {
+  flex: 1;
+  max-width: 14px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  background: var(--rpt-void, #0c0c0e);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rc-sand) 45%, transparent);
+}
+
+.ruptura-countdowns button.rc-pip {
+  cursor: pointer;
+}
+
+.ruptura-countdowns .rc-pip.on {
+  background: var(--rc-sand);
+  box-shadow: none;
+}
+
+.ruptura-countdowns button.rc-pip:hover,
+.ruptura-countdowns button.rc-pip:focus-visible {
+  outline: 1px solid var(--rpt-hot, #ffffff);
+  outline-offset: 1px;
+}
+
+.ruptura-countdowns .rc-effect {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--rpt-muted, #bbbbbb);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ruptura-countdowns .rc-effect[hidden] {
+  display: none;
+}
+
+.ruptura-countdowns .rc-card.rc-zero .rc-effect {
+  color: var(--rpt-text, #eeeeee);
+  -webkit-line-clamp: unset;
+}
+
+.ruptura-countdowns .rc-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.ruptura-countdowns .rc-btn {
+  flex: none;
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  background: var(--rpt-raised, #26262c);
+  color: var(--rpt-text, #eeeeee);
+  box-shadow: inset 0 0 0 1px var(--rpt-iron, #555555);
+}
+
+.ruptura-countdowns .rc-btn.rc-step {
+  width: 40px;
+  background: var(--rc-sand);
+  color: var(--rpt-ink, #111111);
+  box-shadow: none;
+}
+
+.ruptura-countdowns .rc-btn.rc-remove {
+  margin-left: auto;
+}
+
+.ruptura-countdowns .rc-btn:hover,
+.ruptura-countdowns .rc-btn:focus-visible {
+  background: var(--rpt-accent, #b44dff);
+  color: var(--rpt-ink, #111111);
+  box-shadow: none;
+  outline: none;
+}
+
+.ruptura-countdowns .rc-btn.rc-remove:hover,
+.ruptura-countdowns .rc-btn.rc-remove:focus-visible {
+  background: var(--rpt-blood, #ff5c7a);
+}
+
+.ruptura-countdowns .rc-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ruptura-countdowns .rc-footer {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border-top: 1px solid var(--rpt-iron, #555555);
+}
+
+.ruptura-countdowns .rc-add {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  font-size: 11px;
+  cursor: pointer;
+  background: var(--rpt-raised, #26262c);
+  color: var(--rpt-text, #eeeeee);
+  box-shadow: inset 0 0 0 1px var(--rpt-iron, #555555);
+}
+
+.ruptura-countdowns .rc-add:hover,
+.ruptura-countdowns .rc-add:focus-visible {
+  background: var(--rpt-accent, #b44dff);
+  color: var(--rpt-ink, #111111);
+  box-shadow: none;
+  outline: none;
+}
+
+.ruptura-countdowns .rc-presets {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  font-size: 11px;
+}
+
+.ruptura-countdowns .rc-presets[hidden] {
+  display: none;
+}
+
+/* Jogadores: só as ampulhetas, sem controles. */
+.ruptura-countdowns.rv-player-view {
+  width: 230px;
+}
+
+html[data-ruptura-fx="off"] .ruptura-countdowns :is(.rc-stream, .rc-hourglass.rc-flipping svg) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ruptura-countdowns :is(.rc-stream, .rc-hourglass.rc-flipping svg) {
+    animation: none;
+  }
+
+  .ruptura-countdowns .rc-sand {
+    transition: none;
+  }
+}

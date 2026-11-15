@@ -23,10 +23,82 @@
       "Major": "Maior",
       "Severe": "Grave"
     },
+    "Countdowns": {
+      "Title": "Ampulhetas",
+      "Empty": "Nenhuma ampulheta. Crie uma ou adicione uma contagem do andar.",
+      "Untitled": "Ampulheta",
+      "New": "Nova ampulheta",
+      "Edit": "Editar ampulheta",
+      "Create": "Criar",
+      "Save": "Salvar",
+      "Remove": "Remover ampulheta",
+      "RemoveConfirm": "Remover a ampulheta <strong>{name}</strong>?",
+      "FromFloor": "Contagem do andar…",
+      "Step": "Descer um passo",
+      "Back": "Devolver um passo",
+      "Flip": "Virar a ampulheta (reiniciar)",
+      "Visible": "Visível para os jogadores",
+      "HiddenFromPlayers": "Oculta dos jogadores",
+      "SetSteps": "Deixar {value} passos",
+      "Remaining": "{value} de {max} passos",
+      "Loop": "ciclo",
+      "Zero": "zerou",
+      "LoopHint": "A contagem reinicia: vire a ampulheta.",
+      "Trigger": {
+        "test": "desce a cada teste",
+        "fail": "desce a cada falha",
+        "attack": "desce a cada ataque dos PJs",
+        "spotlight": "desce a cada foco",
+        "custom": "desce quando o mestre quiser"
+      },
+      "Field": {
+        "Name": "Nome",
+        "Steps": "Passos",
+        "Value": "Passos restantes",
+        "Trigger": "Desce",
+        "Loop": "Reinicia ao zerar",
+        "Visible": "Visível para os jogadores",
+        "Effect": "Ao zerar"
+      },
+      "Presets": {
+        "Inventario": {
+          "Name": "Pressão da Esfera — Inventário",
+          "Effect": "Um objeto da cena se revela mímico de 1º patamar e usa a Emboscada contra o PJ mais próximo (foco sem Medo). Máximo de 2 por cena."
+        },
+        "EcoDaLembranca": {
+          "Name": "Pressão da Esfera — Eco da Lembrança",
+          "Effect": "O PJ com mais Esperança faz teste de reação de Presença (14). Falha: perde 1 Esperança e o mestre ganha 1 Medo. Sucesso: tem uma visão de uma memória do Demiurgo."
+        },
+        "OlharDoVazio": {
+          "Name": "Pressão da Esfera — Olhar do Vazio",
+          "Effect": "Todos os PJs distantes de qualquer cria do Vazio fazem teste de reação de Instinto (14) ou ficam Aterrorizados até entrar em foco."
+        },
+        "JogosMortais": {
+          "Name": "Jogos Mortais",
+          "Effect": "Desce a cada desafio vencido. Ao zerar, o Senhor das Masmorras vai embora satisfeito e entrega a recompensa e o sigilo."
+        },
+        "BrincarComAsVitimas": {
+          "Name": "Brincar com as Vítimas",
+          "Effect": "O Tirano Místico libera o Raio Desintegrador (1 Medo): o alvo atingido faz movimento de morte."
+        },
+        "Sussurro": {
+          "Name": "Pressão da Esfera — Sussurro",
+          "Effect": "O PJ com mais Esperança faz teste de reação de Conhecimento (14). Falha: recebe 1 Marcador de Transformação (some num descanso longo)."
+        },
+        "AbolethEspreita": {
+          "Name": "O Aboleth Espreita",
+          "Effect": "O Aboleth usa Tentáculo das Profundezas: teste de reação de Agilidade; falha = 2d10+6 de dano físico e Imobilizado."
+        }
+      }
+    },
     "Settings": {
       "ShowVitals": {
         "Name": "Painel de vitais",
         "Hint": "O mestre vê o painel Vigília: o contador de Medo e a vida, armadura, esperança e fadiga de cada personagem, em tempo real. Os jogadores veem apenas o contador de Medo. Disponível nos temas que incluem o painel."
+      },
+      "ShowCountdowns": {
+        "Name": "Ampulhetas",
+        "Hint": "Janela de contadores da aventura em forma de ampulheta. O mestre cria e anda com elas; os jogadores veem só as marcadas como visíveis. Disponível nos temas que incluem a janela."
       },
       "Choice": {
         "None": "Nenhum (visual padrão)",

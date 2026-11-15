@@ -23,10 +23,82 @@
       "Major": "Major",
       "Severe": "Severe"
     },
+    "Countdowns": {
+      "Title": "Hourglasses",
+      "Empty": "No hourglasses. Create one or add a floor countdown.",
+      "Untitled": "Hourglass",
+      "New": "New hourglass",
+      "Edit": "Edit hourglass",
+      "Create": "Create",
+      "Save": "Save",
+      "Remove": "Remove hourglass",
+      "RemoveConfirm": "Remove the hourglass <strong>{name}</strong>?",
+      "FromFloor": "Floor countdown…",
+      "Step": "Tick one step down",
+      "Back": "Give one step back",
+      "Flip": "Flip the hourglass (reset)",
+      "Visible": "Visible to players",
+      "HiddenFromPlayers": "Hidden from players",
+      "SetSteps": "Set to {value} steps",
+      "Remaining": "{value} of {max} steps",
+      "Loop": "loop",
+      "Zero": "done",
+      "LoopHint": "The countdown loops: flip the hourglass.",
+      "Trigger": {
+        "test": "ticks on every roll",
+        "fail": "ticks on every failure",
+        "attack": "ticks on every PC attack",
+        "spotlight": "ticks on every spotlight",
+        "custom": "ticks when the GM says"
+      },
+      "Field": {
+        "Name": "Name",
+        "Steps": "Steps",
+        "Value": "Steps left",
+        "Trigger": "Ticks",
+        "Loop": "Loops when it runs out",
+        "Visible": "Visible to players",
+        "Effect": "When it runs out"
+      },
+      "Presets": {
+        "Inventario": {
+          "Name": "Sphere Pressure — Inventory",
+          "Effect": "An object in the scene reveals itself as a tier 1 mimic and uses Ambush on the nearest PC (spotlight without Fear). At most 2 per scene."
+        },
+        "EcoDaLembranca": {
+          "Name": "Sphere Pressure — Echo of Memory",
+          "Effect": "The PC with the most Hope makes a Presence reaction roll (14). Failure: loses 1 Hope and the GM gains 1 Fear. Success: sees a vision of one of the Demiurge's memories."
+        },
+        "OlharDoVazio": {
+          "Name": "Sphere Pressure — Gaze of the Void",
+          "Effect": "Every PC far from any Void spawn makes an Instinct reaction roll (14) or becomes Terrified until spotlighted."
+        },
+        "JogosMortais": {
+          "Name": "Deadly Games",
+          "Effect": "Ticks on each challenge cleared. When it runs out, the Dungeon Master leaves satisfied and hands over the reward and the sigil."
+        },
+        "BrincarComAsVitimas": {
+          "Name": "Toying with the Victims",
+          "Effect": "The Mystic Tyrant unleashes the Disintegration Ray (1 Fear): the target hit makes a death move."
+        },
+        "Sussurro": {
+          "Name": "Sphere Pressure — Whisper",
+          "Effect": "The PC with the most Hope makes a Knowledge reaction roll (14). Failure: gains 1 Transformation Token (cleared on a long rest)."
+        },
+        "AbolethEspreita": {
+          "Name": "The Aboleth Lurks",
+          "Effect": "The Aboleth uses Tentacle of the Deep: Agility reaction roll; failure = 2d10+6 physical damage and Restrained."
+        }
+      }
+    },
     "Settings": {
       "ShowVitals": {
         "Name": "Vitals panel",
         "Hint": "The GM sees the Vigil panel: the Fear counter and each character's hit points, armor, hope and stress, in real time. Players see only the Fear counter. Available in themes that include the panel."
+      },
+      "ShowCountdowns": {
+        "Name": "Hourglasses",
+        "Hint": "Window with the adventure's countdowns drawn as hourglasses. The GM creates and ticks them; players only see the ones marked visible. Available in themes that include the window."
       },
       "Choice": {
         "None": "None (default look)",

@@ -64,6 +64,7 @@ Para desenvolver, clone o repositório dentro de `Data/modules/` com o nome `dh-
 - **Anunciar troca de andar**: mostra ou esconde o cartão de abertura do andar.
 - **Cor de destaque**: troca a cor de destaque só para você.
 - **Painel de vitais**: mostra ou esconde o painel "Vigília".
+- **Ampulhetas**: mostra ou esconde a janela de contadores da aventura.
 - **Reduzir efeitos**: remove brilho e cantos cortados.
 
 ## Painel de vitais (Vigília)
@@ -85,6 +86,33 @@ volta. O brilho dos olhos cresce por trás das lentes conforme o Medo sobe.
 
 Arraste para reposicionar; o mestre também pode recolher cada painel pela seta.
 
+## Ampulhetas (contadores da aventura)
+
+Uma janela no mesmo estilo da Vigília para as contagens da aventura. Cada contador é
+uma ampulheta com um número de passos; a areia desce um passo por vez e a ampulheta
+fica vermelha ao zerar.
+
+- **Nova ampulheta:** nome, passos, o que a faz descer (cada teste, cada falha, cada
+  ataque dos PJs, cada foco ou quando o mestre quiser), se reinicia ao zerar, se os
+  jogadores a veem e o efeito ao zerar.
+- **Contagem do andar…:** adiciona as contagens prontas da Esfera, com o andar ativo
+  primeiro (Pressão da Esfera dos andares 3 a 6, Jogos Mortais, Brincar com as
+  Vítimas e O Aboleth Espreita).
+- **Controles:** descer um passo, devolver um passo, virar a ampulheta (reinicia com
+  uma animação de giro), mostrar ou ocultar dos jogadores, editar e remover. Clicar
+  num marcador define quantos passos restam.
+- Ao zerar, o mestre recebe uma mensagem sussurrada com o efeito.
+- Os jogadores veem só as ampulhetas marcadas como visíveis, sem os efeitos.
+
+Por macro:
+
+```js
+const { countdowns } = game.modules.get('dh-ruptura').api;
+const item = await countdowns.add({ name: 'Ritual', max: 6, trigger: 'test', visible: true });
+await countdowns.step(item.id);   // desce um passo
+await countdowns.reset(item.id);  // vira a ampulheta
+```
+
 Os temas são escuros e forçam o esquema escuro da interface enquanto estão ativos.
 
 ## Estrutura
@@ -96,12 +124,16 @@ scripts/
   theme-manager.mjs   registro e aplicação de temas e variantes
   settings.mjs        configurações
   variants.mjs        andar por cena e cartão de abertura
+  widgets/
+    ui.mjs            peças comuns das janelas (arrastar, recolher)
+    party-vitals.mjs  Vigília, Medo e Inimigos
+    countdowns.mjs    Ampulhetas
 themes/
   index.mjs           lista dos temas embutidos
   _template/          ponto de partida para um tema novo
   sombria/
     theme.mjs         manifesto do tema
-    floors.mjs        os doze andares (variantes)
+    floors.mjs        os doze andares (variantes) e as contagens de cada um
     styles/
       tokens.css      cores, formas e fontes
       floors.css      tokens de cada andar
