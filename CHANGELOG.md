@@ -1,6 +1,6 @@
 # Changelog
 
-## Próxima versão
+## 0.8.0
 
 - **Ampulhetas:** janela de contadores da aventura no estilo da Vigília. Cada contador é uma ampulheta com passos que descem um a um, reinício com giro, visibilidade por contador para os jogadores e aviso sussurrado ao mestre quando zera.
 - Contagens prontas dos andares 3 a 6 (Pressão da Esfera, Jogos Mortais, Brincar com as Vítimas, O Aboleth Espreita), com o andar ativo primeiro.
