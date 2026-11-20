@@ -1,10 +1,14 @@
-"""Gera os tokens do andar 3 (O Cofre que Mente) no tamanho do Foundry.
-256 px por quadrado do grid: 0.5 -> 128, 1 -> 256, 2 -> 512."""
+"""Gera os tokens de um andar da Esfera no tamanho do Foundry.
+256 px por quadrado do grid: 0.5 -> 128, 1 -> 256, 2 -> 512.
+
+Uso: python make_tokens.py <andar> <pasta de saída>
+     python make_tokens.py 4 tokens/andar-4"""
 import math, os, sys, json
 from PIL import Image, ImageDraw, ImageFilter, ImageOps, ImageChops
 
 SRC = os.path.join(os.path.dirname(__file__), "src2mt")  # artes do 2-Minute Tabletop
-OUT = sys.argv[1]
+FLOOR = int(sys.argv[1])
+OUT = sys.argv[2]
 os.makedirs(OUT, exist_ok=True)
 W = 1024  # desenho interno, reduzido no fim
 PX = 256
@@ -29,10 +33,44 @@ def sticker(draw_fn):
     base = Image.alpha_composite(base, art)
     return base
 
+# ---------- tema de cada andar: aro, textura do fundo e selo do boss ----------
+def cofre_pattern(gd):
+    """Andar 3: grade de cofre sutil."""
+    for x in range(0, W, 96):
+        gd.line([(x, 0), (x, W)], fill=(255, 220, 160, 14), width=3)
+        gd.line([(0, x), (W, x)], fill=(255, 220, 160, 14), width=3)
+
+def cofre_seal(rd, light, dark):
+    """Andar 3: runa em losango (a face da Caixa)."""
+    rd.ellipse([W / 2 - 46, 8, W / 2 + 46, 100], fill=dark + (255,), outline=light + (255,), width=6)
+    rd.polygon([(W / 2, 26), (W / 2 + 22, 54), (W / 2, 84), (W / 2 - 22, 54)], outline=light + (255,), width=6)
+
+def galeria_pattern(gd):
+    """Andar 4: listras de papel de parede desbotado, como o tema da Galeria."""
+    for x in range(0, W, 112):
+        gd.line([(x, 0), (x, W)], fill=(185, 205, 255, 16), width=3)
+        gd.line([(x + 28, 0), (x + 28, W)], fill=(185, 205, 255, 10), width=2)
+        gd.line([(x + 34, 0), (x + 34, W)], fill=(185, 205, 255, 10), width=2)
+
+def galeria_seal(rd, light, dark):
+    """Andar 4: lágrima (Aflição)."""
+    rd.ellipse([W / 2 - 46, 8, W / 2 + 46, 100], fill=dark + (255,), outline=light + (255,), width=6)
+    rd.polygon([(W / 2, 22), (W / 2 + 20, 60), (W / 2 - 20, 60)], fill=light + (255,))
+    rd.ellipse([W / 2 - 21, 46, W / 2 + 21, 86], fill=light + (255,))
+
+THEMES = {
+    3: {"ring": [(247, 207, 166), (179, 110, 54), (92, 48, 16), (36, 18, 4)],
+        "boss": [(255, 236, 170), (214, 162, 58), (124, 82, 16), (46, 28, 4)],
+        "pattern": cofre_pattern, "seal": cofre_seal},
+    # aro de prata azulada; o boss ganha o dourado pálido de relíquia do tema
+    4: {"ring": [(226, 236, 255), (132, 160, 212), (44, 58, 98), (8, 12, 26)],
+        "boss": [(250, 236, 196), (206, 178, 112), (104, 82, 40), (30, 20, 8)],
+        "pattern": galeria_pattern, "seal": galeria_seal},
+}
+THEME = THEMES[FLOOR]
+
 def ring_colors(kind):
-    if kind == "boss":
-        return [(255, 236, 170), (214, 162, 58), (124, 82, 16), (46, 28, 4)]
-    return [(247, 207, 166), (179, 110, 54), (92, 48, 16), (36, 18, 4)]
+    return THEME["boss"] if kind == "boss" else THEME["ring"]
 
 def make_token(art, kind, bg):
     tok = Image.new("RGBA", (W, W), (0, 0, 0, 0))
@@ -48,11 +86,7 @@ def make_token(art, kind, bg):
         rr = int((W / 2) * (1 - t))
         c = tuple(int(bg[1][k] + (bg[0][k] - bg[1][k]) * t) for k in range(3))
         gd.ellipse([W / 2 - rr, W / 2 - rr * 0.95 - 40 * t, W / 2 + rr, W / 2 + rr * 0.95 - 40 * t], fill=c + (255,))
-    # grade de cofre sutil
-    gd2 = ImageDraw.Draw(g)
-    for x in range(0, W, 96):
-        gd2.line([(x, 0), (x, W)], fill=(255, 220, 160, 14), width=3)
-        gd2.line([(0, x), (W, x)], fill=(255, 220, 160, 14), width=3)
+    THEME["pattern"](ImageDraw.Draw(g))
     tok.paste(g, (0, 0), m)
     # arte centralizada, ocupa ~78% do disco
     bbox = art.getbbox()
@@ -88,9 +122,7 @@ def make_token(art, kind, bg):
         cy = W / 2 + (W / 2 - pad) * math.sin(ang)
         rd.ellipse([cx - 10, cy - 10, cx + 10, cy + 10], fill=light + (255,), outline=edge + (255,), width=3)
     if kind == "boss":
-        # selo de runa no topo
-        rd.ellipse([W / 2 - 46, 8, W / 2 + 46, 100], fill=dark + (255,), outline=light + (255,), width=6)
-        rd.polygon([(W / 2, 26), (W / 2 + 22, 54), (W / 2, 84), (W / 2 - 22, 54)], outline=light + (255,), width=6)
+        THEME["seal"](rd, light, dark)  # selo no topo
     return tok
 
 # ---------- artes genéricas ----------
@@ -167,12 +199,31 @@ def draw_crossbow(d):
 def src(name):
     return Image.open(os.path.join(SRC, name + ".png")).convert("RGBA")
 
+def horde(name, n=3):
+    """Junta n cópias de uma arte num bando (para hordas)."""
+    a = src(name)
+    a = a.crop(a.getbbox())
+    s = 0.52 * W / max(a.size)
+    a = a.resize((int(a.width * s), int(a.height * s)), Image.LANCZOS)
+    out = Image.new("RGBA", (W, W), (0, 0, 0, 0))
+    spots = [(0.30, 0.28), (0.70, 0.30), (0.50, 0.66)][:n]
+    for i, (fx, fy) in enumerate(spots):
+        piece = ImageOps.mirror(a) if i == 1 else a
+        out.alpha_composite(piece, (int(fx * W - piece.width / 2), int(fy * W - piece.height / 2)))
+    return out
+
 BRONZE_BG = ((58, 44, 30), (16, 12, 9))
 BOSS_BG = ((80, 30, 34), (18, 8, 10))
 VOID_BG = ((44, 36, 64), (12, 10, 18))
 GREEN_BG = ((40, 58, 36), (10, 14, 9))
+# andar 4
+SPECTRAL_BG = ((46, 62, 98), (8, 11, 20))
+GHOUL_BG = ((54, 58, 46), (12, 13, 10))
+SPIRIT_BG = ((52, 44, 86), (10, 8, 18))
+BOSS4_BG = ((88, 36, 62), (16, 8, 14))
+SPECTRAL = (170, 200, 255)
 
-TOKENS = [
+TOKENS3 = [
     # arquivo, nome, quadrados no Foundry, tipo do aro, fundo, arte
     ("caixa-de-batalha", "Caixa de Batalha", 2, "boss", BOSS_BG, lambda: src("beholdenbox1")),
     ("mimicarroca", "Mimicarroça", 2, "normal", BRONZE_BG, lambda: sticker(draw_wagon)),
@@ -188,6 +239,26 @@ TOKENS = [
     ("cranio-do-caos", "Crânio do caos", 0.5, "normal", GREEN_BG, lambda: src("flameskull")),
     ("cultista-adepto", "Cultista adepto (supervisor)", 1, "normal", BRONZE_BG, lambda: src("cultist2")),
 ]
+
+TOKENS4 = [
+    # A Galeria das Lembranças: o Orgulho é o próprio Inventor saindo do retrato
+    ("espirito-do-orgulho", "Espírito do Orgulho", 2, "boss", BOSS4_BG, lambda: src("nobleghost2")),
+    ("espirito-da-ira", "Espírito da Ira", 2, "boss", BOSS4_BG, lambda: tint(src("shade1"), (236, 84, 66), 0.95)),
+    ("espirito-da-fome", "Espírito da Fome", 1, "normal", SPIRIT_BG, lambda: src("ectoplasmghoul1")),
+    ("espirito-do-desejo", "Espírito do Desejo", 1, "normal", SPIRIT_BG, lambda: src("sayona1")),
+    ("espirito-da-preguica", "Espírito da Preguiça", 1, "normal", SPIRIT_BG, lambda: src("upholsteryghost1")),
+    ("bradador", "Bradador", 1, "normal", SPIRIT_BG, lambda: src("banshee5")),
+    ("pesadelo", "Pesadelo", 2, "normal", SPIRIT_BG, lambda: src("nightmare").rotate(-38, expand=True, resample=Image.BICUBIC)),
+    ("predador-mortal", "Predador mortal", 1, "normal", GHOUL_BG, lambda: src("palestranger1")),
+    ("espectro-capitao", "Espectro capitão", 1, "normal", SPECTRAL_BG, lambda: tint(src("deathknight"), SPECTRAL, 0.95)),
+    ("espectro-guardiao", "Espectro guardião", 1, "normal", SPECTRAL_BG, lambda: src("swordwraith1")),
+    ("espectro-arqueiro", "Espectro arqueiro", 1, "normal", SPECTRAL_BG, lambda: tint(src("forsakenranger11"), SPECTRAL, 0.95)),
+    ("livido", "Lívido", 1, "normal", GHOUL_BG, lambda: src("ghoul")),
+    ("carnical-atroz", "Carniçal atroz", 1, "normal", GHOUL_BG, lambda: src("ghast2")),
+    ("horda-de-carnicais", "Horda de carniçais", 2, "normal", GHOUL_BG, lambda: horde("ghoul3")),
+]
+
+TOKENS = {3: TOKENS3, 4: TOKENS4}[FLOOR]
 
 manifest = []
 for slug, name, units, kind, bg, art in TOKENS:
