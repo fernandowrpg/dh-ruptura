@@ -88,6 +88,12 @@ svg{width:100%;height:auto;display:block}
 .comp li.total span:last-child{color:var(--accent)}
 .prose{margin:0;max-width:68ch}
 .notes{margin:0;padding-left:1.1em;display:grid;gap:4px;max-width:68ch}
+.envbox{border-left:3px solid var(--event);padding:8px 12px;background:var(--panel-2);border-radius:0 8px 8px 0;display:grid;gap:8px}
+.envbox h3{color:var(--accent)}
+.envhead{display:grid;gap:2px}
+.envhead b{font-family:var(--font-display);font-weight:400;font-size:19px}
+.envbox .abil{padding:0}
+.envmark{fill:var(--accent);stroke:var(--bg);stroke-width:1.5;pointer-events:none}
 .memento{border-left:3px solid var(--relic);padding:8px 12px;background:var(--panel-2);border-radius:0 8px 8px 0;display:grid;gap:8px}
 .memento h3{color:var(--relic)}
 .maps{display:grid;gap:8px}
@@ -168,6 +174,7 @@ td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var
         <span><i class="dot" style="background:var(--event)"></i>? mistério</span>
         <span><i class="dot" style="background:var(--treasure)"></i>T tesouro</span>
         <span><i class="dot" style="background:var(--boss)"></i>B boss</span>
+        <span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1 L11 6 L6 11 L1 6 Z" class="envmark"/></svg>com ambiente</span>
       </div>
       <p class="foot">? é um mistério: pode virar qualquer tipo de nó, menos boss. Estrutura fixa da Esfera: linha 1 descanso (o único do andar), linha 4 tesouro e o boss no topo. No máximo uma elite por linha.</p>
     </section>
@@ -242,6 +249,13 @@ const N = [
     maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Ground Ghost (alternativa: Fog Day)"}]},
   {id:"q2",type:"Q",reveal:"Evento",row:2,x:160,pos:"centro (hub)",title:"O Vestíbulo das Três Versões",
     body:"Três portas iguais levam à mesma sala. O grupo escolhe uma, e a sala aparece na versão daquela porta. As três entradas chegam aqui.",
+    env:{name:"Cidade Assombrada",type:"Exploração",tier:"2º patamar",dif:"14",src:"LB p.246",
+      adapt:"Sem mudança de patamar. Aqui a \"cidade\" é a ala de entrada da casa, e as calamidades são as do dono dela.",
+      impulses:"desorientar e confundir, replicar calamidades públicas e pessoais",
+      ab:[["Conhecimento Oculto","passiva","Quem investigar a casa faz Instinto ou Conhecimento. Crítico: informação valiosa e um item útil. Sucesso com Esperança: informação valiosa. Com Medo: informação vaga. Falha: marque 1 PF para achar uma pista depois de muito procurar."],
+        ["Forma Fantasmagórica","passiva","Adversários que surgem aqui são fantasmagóricos: resistentes a dano físico e, com 1 PF, atravessam objetos sólidos até um ponto próximo."],
+        ["Antiga Calamidade","medo","O eco da última festa da casa se repete: os convidados envelhecem e caem em volta de um homem que continua brindando. Contagem de progresso (5) para atravessar o salão enquanto móveis apodrecem e o teto cede."],
+        ["Sem Saída","ação","Os fantasmas encenam uma cena do passado (um velório, o aniversário de cem anos do dono) que fecha a porta escolhida e obriga o grupo a tentar outra."]]},
     notes:["Original: a casa lembra de ser lar. Um PJ recupera 1 Esperança. No retrato da lareira, o rosto do dono foi raspado da tela.","Decrépita: na poeira, pegadas recentes de quatro pessoas. Outra equipe passou por aqui. Com Instinto 13, o grupo acha um crachá sem nome, igual ao do supervisor do Cofre.","Pesadelo: as paredes são feitas de nomes riscados. A contagem do Eco desce 2, e quem entrar tem uma visão da tabela sem fazer teste.","Sem combate. Mostra para a mesa como funciona a Arquitetura Espectral."],
     maps:[{k:"Mapa",name:"Grand Hunter's House",url:CZ+"maps/grand-hunters-house",v:"Ground Floor Original Night · Ground Floor Abandoned · Ground Floor Haunted (uma por porta)"}]},
   {id:"m2b",type:"M",row:2,x:270,pos:"direita",code:"N2",title:"A Cozinha",
@@ -276,6 +290,14 @@ const N = [
     maps:[{k:"Mapa",name:"Great Library",url:CZ+"maps/great-library",v:"B5 Violet Study Night"}]},
   {id:"q3d",type:"Q",reveal:"Loja",row:3,x:280,pos:"direita",title:"A Taverna dos que Ficaram",
     body:"O mistério se revela uma taverna torta no porão da ala de serviço. O taverneiro é um fantasma educado, e os fregueses de costas nunca se viram. É a loja do lado direito.",
+    env:{name:"Taverna Local",type:"Social",tier:"2º patamar (adaptada do 1º)",dif:"13",src:"LB p.245",
+      adapt:"Adaptada pela Forja de Antagonistas: Dificuldade 10 → 13 e dano da briga 1d6+2 → 2d6+4.",
+      impulses:"dar oportunidades aos aventureiros, juntar a comunidade",
+      ab:[["Cantar pela Refeição","passiva","Um PJ se apresenta para os fregueses com Presença. Sucesso: 1d4 punhados de ouro em moedas antigas (2d4 no crítico). Falha: marca 1 PF."],
+        ["Quais os Boatos da Casa?","passiva","Presença para conversar com o taverneiro ou os fregueses. Sucesso: dois boatos à escolha do jogador (três no crítico). Falha: um boato e 1 PF. Boatos: outra equipe de quatro passou por aqui há pouco · o dono não desce para jantar desde que o último filho morreu · ninguém consegue selar o cavalo negro da cavalariça · o retrato do fim da galeria pisca."],
+        ["Briga de Bar!","medo","Os fantasmas brigam atravessando mesas. Quem tentar se mover durante a briga faz Agilidade ou Presença ou sofre 2d6+4 fís. Um PJ pode começar a briga provocando os fregueses."],
+        ["Figura Misteriosa","ação","Numa mesa escura, um homem vivo de terno e crachá sem nome bebe sozinho. Não lembra como entrou e jura que \"o turno já devia ter acabado\"."],
+        ["Gente Nova no Pedaço","ação","O fantasma de uma criada pede ao grupo que leve uma carta ao quarto do patrão. É o fim da carta \"Querida —\" do Quarto (E2)."]]},
     notes:["Vende os consumíveis do andar: Poção de Vida e Folhas de Varik.","Itens permanentes à venda (um por visita): Cetro de Elias (LB p.117, mágico, Revigorante) ou Espírito Sussurrante (LB p.129–131).","O taverneiro aceita pagamento em lembranças: o PJ conta uma lembrança verdadeira em vez de pagar, marca 1 PF e o mestre ganha 1 Medo."],
     maps:[{k:"Mapa",name:"Twisted Tavern",url:CZ+"maps/twisted-tavern",v:"Haunted ou Candlelight"}]},
 
@@ -312,11 +334,22 @@ const N = [
   {id:"q5a",type:"Q",reveal:"Evento (pode virar elite)",row:5,x:45,pos:"esquerda",code:"E3",title:"A Cavalariça do Pesadelo",
     comp:[["Pesadelo",5],["Predador mortal",3],["2 Espectros guardiões",4],["2 Carniçais atrozes",4]],total:"16 (se virar elite)",
     body:"Um cavalo negro de crina de fumaça dorme na última baia. Na baia ao lado, um caçador morto-vivo de casaco de couro afia as garras, com o emblema do casaco arrancado.",
-    notes:["Passar em silêncio: teste em grupo de Agilidade 14. Se falhar, ou se alguém tentar montar o Pesadelo, o mistério vira a elite reserva (E3).","O Predador põe aliados em foco pagando PF (Morte Inevitável) e drena Esperança com Aterrorizante.","Domar o Pesadelo (regra da casa): com o Predador derrotado e o Pesadelo com metade dos PV marcados, um PJ faz Instinto ou Presença 15. Sucesso: ele para de lutar e vira montaria (BdM p.131).","O caçador pode ser de uma expedição anterior, como os Experimentos do Cofre."],
+    env:{name:"Emboscados",type:"Evento",tier:"qualquer patamar",dif:"16 (a do Predador)",src:"LB p.243",
+      adapt:"Use só se o grupo for descoberto: é o Predador quem arma a emboscada.",
+      impulses:"dividir, cercar, subjugar",
+      ab:[["Força Relativa","passiva","A Dificuldade do ambiente é a do adversário com a Dificuldade mais alta: 16, a do Predador mortal."],
+        ["Surpresa!","ação","Os emboscadores se revelam. Receba 2 Medo e ponha um deles em foco na hora (o Predador, de preferência com Marcado para Morrer)."]]},
+    notes:["Passar em silêncio: teste em grupo de Agilidade 14. Se falhar, ou se alguém tentar montar o Pesadelo, o mistério vira a elite reserva (E3) e abre com Surpresa!.","O Predador põe aliados em foco pagando PF (Morte Inevitável) e drena Esperança com Aterrorizante.","Domar o Pesadelo (regra da casa): com o Predador derrotado e o Pesadelo com metade dos PV marcados, um PJ faz Instinto ou Presença 15. Sucesso: ele para de lutar e vira montaria (BdM p.131).","O caçador pode ser de uma expedição anterior, como os Experimentos do Cofre."],
     maps:[{k:"Mapa",name:"Pastoral Village Stables",url:CZ+"maps/pastoral-village-stables",v:"Haunted (alternativa: Fog)"},{k:"Cena",name:"Pastoral Village Stables",url:CZ+"scenes/pastoral-village-stables",v:"Haunted"}]},
   {id:"q5b",type:"Q",reveal:"Evento",row:5,x:275,pos:"direita",title:"A Casa Como Era",
-    body:"O mistério se revela uma sala na versão original: limpa, aquecida, com cheiro de pão. A casa lembra de ter sido um lar, e os espíritos não entram aqui.",
-    notes:["Sem combate. O grupo pode fazer um descanso curto aqui sem ser interrompido (o mestre recebe 1d4 Medo, como sempre).","Na lareira, o retrato do dono da casa ainda tem rosto. É o mesmo homem do quadro do boss, só que sorrindo.","Bom momento para o grupo juntar os mementos e decidir quem vai tentar o Exorcismo."],
+    body:"O mistério se revela a sala de jantar na versão original: limpa, aquecida, com cheiro de pão. A porta se fecha atrás do grupo. Na cabeceira, o dono da casa em seus melhores dias convida todos a sentar. Os criados servem sem fazer barulho.",
+    env:{name:"Castelo do Pavor",type:"Social",tier:"2º patamar (adaptado do 3º)",dif:"14",src:"BdM p.148",
+      adapt:"Adaptado pela Forja de Antagonistas: Dificuldade 17 → 14. Ao descer de patamar, a Proposta Irrecusável tira Esperança em vez de pontos de atributo. O anfitrião é uma lembrança do dono da casa, não um príncipe demoníaco, e os criados são espíritos, não demônios.",
+      impulses:"causar desconforto",
+      ab:[["Aventureiros na Sala de Jantar","passiva","Contagem de progresso (6) a partir do primeiro prato. O anfitrião adora falar de ciência, de história e de como vencer a morte. Quando a contagem termina, ele fica satisfeito, as portas se abrem e o grupo pode sair."],
+        ["Disfarce Vil","passiva","Os criados são espíritos disfarçados. Instinto nota os sinais (pés que não tocam o chão, nenhum reflexo nas pratas). Presença identifica qual memória cada um é: fome, desejo, preguiça."],
+        ["Uma Proposta Irrecusável","medo","Reação: quando um PJ falha com Medo perto do anfitrião, gaste 1 Medo. Ele faz Presença. Se passar, marca 1 PF. Se falhar, marca 1 PF e perde 1 Esperança, que o anfitrião \"guarda para depois\" e só devolve quando o Orgulho for exorcizado."]]},
+    notes:["Sem combate. Terminado o jantar, o grupo pode fazer um descanso curto aqui sem ser interrompido (o mestre recebe 1d4 Medo, como sempre).","O anfitrião chama um dos PJs de \"funcionário\" e pergunta se o turno dele já acabou.","Se a contagem terminar, ele ergue a taça para o grupo: quem tentar o Exorcismo do boss tem vantagem no teste de Presença.","Na lareira, o retrato do anfitrião ainda tem rosto. É o mesmo homem do quadro do boss, só que sorrindo."],
     maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Normal Mansion Day"},{k:"Alternativa",name:"Victorian Greenhouse",url:CZ+"maps/victorian-greenhouse",v:"Original Night (jardim de inverno)"}]},
   {id:"m6a",type:"M",row:6,x:85,pos:"esquerda/centro",code:"N4",title:"A Capela",
     comp:[["Lívido",3],["Horda de carniçais",2],["2 Carniçais atrozes",4],["Espectro guardião",2],["Espectro arqueiro",2]],total:"13 (14−1)",
@@ -467,6 +500,7 @@ for(const n of N){
   g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r,class:"body",style:`fill:var(--panel-2);stroke:${t.color}`}));
   g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r:r-3,style:`fill:${t.color};opacity:.35;pointer-events:none`}));
   const tx=el("text",{x:n.x,y:Y[n.row]+1}); tx.textContent=t.letter||n.type; if(n.type==="B") tx.setAttribute("font-size","20"); g.appendChild(tx);
+  if(n.env){ const cx=n.x+11, cy=Y[n.row]-11; g.appendChild(el("path",{d:`M${cx} ${cy-5} L${cx+5} ${cy} L${cx} ${cy+5} L${cx-5} ${cy} Z`,class:"envmark"})); }
   g.addEventListener("click",()=>select(n.id));
   g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); select(n.id);} });
   svg.appendChild(g); nodeEls[n.id]=g;
@@ -479,6 +513,11 @@ function render(n){
     <h2 class="dtitle">${esc(n.title)}</h2>
     <div class="meta">Linha ${n.row===7?"★":n.row} · nó da ${esc(n.pos)}</div></div>`;
   if(n.body) h+=`<p class="prose">${esc(n.body)}</p>`;
+  if(n.env){
+    const ev=n.env;
+    const ab=ev.ab.map(([nm,tag,tx])=>{ const [lbl,cls]=TAGTXT[tag]||[tag,""]; return `<li><b>${esc(nm)}</b><span class="tag ${cls}">${esc(lbl)}</span> — ${esc(tx)}</li>`; }).join("");
+    h+=`<div class="block envbox"><h3>Ambiente</h3><div class="envhead"><b>${esc(ev.name)}</b><span class="meta">${esc(ev.type)} · ${esc(ev.tier)} · Dificuldade ${esc(ev.dif)} · ${esc(ev.src)}</span></div><p class="prose"><i>Impulsos:</i> ${esc(ev.impulses)}</p><ul class="abil">${ab}</ul><p class="prose foot">${esc(ev.adapt)}</p></div>`;
+  }
   if(n.clue) h+=`<div class="block memento"><h3>${esc(n.clue.h1)}</h3><p class="prose">${esc(n.clue.intro)}</p><h3>${esc(n.clue.h2)}</h3><ul class="notes">${n.clue.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="prose foot">${esc(n.clue.gm)}</p></div>`;
   if(n.comp){
     h+=`<div class="block"><h3>Composição</h3><ul class="comp">${n.comp.map(([a,p])=>`<li><span>${esc(a)}</span><span>${p} PB</span></li>`).join("")}<li class="total"><span>Total</span><span>${esc(n.total)} PB</span></li></ul></div>`;
@@ -519,7 +558,7 @@ const order=[...N].sort((a,b)=>a.row-b.row||a.x-b.x);
 for(const n of order){
   const tr=document.createElement("tr"); tr.dataset.id=n.id; tr.tabIndex=0;
   const m=n.maps[0];
-  tr.innerHTML=`<td class="mono">${n.row===7?"★":n.row}</td><td><span class="badge" style="background:${TYPES[n.type].color}">${TYPES[n.type].letter||n.type}</span></td><td>${n.code?esc(n.code)+" · ":""}${n.reveal?esc(n.reveal)+" · ":""}${esc(n.title)}</td><td class="mono">${n.total?esc(n.total):"—"}</td><td><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)}</a></td><td>${esc(m.v)}</td>`;
+  tr.innerHTML=`<td class="mono">${n.row===7?"★":n.row}</td><td><span class="badge" style="background:${TYPES[n.type].color}">${TYPES[n.type].letter||n.type}</span></td><td>${n.code?esc(n.code)+" · ":""}${n.reveal?esc(n.reveal)+" · ":""}${esc(n.title)}${n.env?` <span class="tag">◆ ${esc(n.env.name)}</span>`:""}</td><td class="mono">${n.total?esc(n.total):"—"}</td><td><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)}</a></td><td>${esc(m.v)}</td>`;
   tr.addEventListener("click",e=>{ if(e.target.closest("a")) return; select(n.id); detail.scrollIntoView({behavior:"smooth",block:"nearest"}); });
   tr.addEventListener("keydown",e=>{ if(e.key==="Enter"){ select(n.id); } });
   rows.appendChild(tr);
