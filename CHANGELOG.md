@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.1
+
+- Quadro de Pessoal: a Vesper, Gerente dos Separados, fica lotada no Anel 01. Para o mestre, a ficha dela mostra que ela é a Umbris, a Voz de Dearani, que deixou de aparecer como uma pessoa separada.
+
 ## 0.12.0
 
 - **Quadro de Pessoal no tema do andar:** dentro do Foundry, o quadro copia a paleta, a textura e a fonte dos títulos do andar ativo e muda junto quando o andar, a cena ou o tema mudam. Fora do Foundry, continua no visual claro.

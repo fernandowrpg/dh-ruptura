@@ -23,7 +23,9 @@ window.ESFERA = {
   // org: false = ainda fora da Organização (fica no botão "Fora da Organização")
   // terrario: a identidade fora da Esfera. Se `nome` for igual a `terrario.nome`, ainda não tem nome na Esfera.
   personagens: [
-    {id: "vesper", nome: "Vesper", tipo: "funcionario", funcao: "Gerente dos Separados", anel: null},
+    {id: "vesper", nome: "Vesper", tipo: "funcionario", funcao: "Gerente dos Separados", anel: 1,
+      terrario: {nome: "Umbris, a Voz de Dearani", regiao: "Sem região"},
+      descricao: "Vesper é a Umbris. Está presente desde o Anel 1."},
     {id: "lenore", nome: "Lenore", tipo: "funcionario", funcao: "Mercadora", anel: null},
     {id: "nata", nome: "Natã", tipo: "funcionario", funcao: "Armeiro", anel: null},
     {id: "vorgoth", nome: "Vorgoth", tipo: "funcionario", funcao: "Chefe da Segurança", anel: null},
@@ -125,14 +127,13 @@ window.ESFERA = {
     {id: "grande-mae",nome: "Grande Mãe",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Grande Mãe",regiao: "Sem região"}},
     {id: "zahara",nome: "Zahara",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Zahara",regiao: "Sem região"}},
     {id: "avatar-de-tenebra",nome: "Avatar de Tenebra",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Avatar de Tenebra",regiao: "Sem região"}},
-    {id: "disfarce-da-umbris",nome: "Disfarce da Umbris",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Disfarce da Umbris",regiao: "Sem região"},descricao: "O disfarce da Umbris. Se a Umbris estiver na Organização, este pode ser o rosto que ela usa lá dentro."},
+    {id: "disfarce-da-umbris",nome: "Disfarce da Umbris",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Disfarce da Umbris",regiao: "Sem região"},descricao: "O disfarce da Umbris, que na Esfera é a Vesper."},
     {id: "elzar-a-android-17",nome: "Elzar, a Android 17",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Elzar, a Android 17",regiao: "Sem região"}},
     {id: "exos",nome: "Exos",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Exos",regiao: "Sem região"}},
     {id: "frank",nome: "Frank",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Frank",regiao: "Sem região"}},
     {id: "krel-fugitivo-de-axion",nome: "Krel, fugitivo de Axion",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Krel, fugitivo de Axion",regiao: "Sem região"}},
     {id: "lauden",nome: "Lauden",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Lauden",regiao: "Sem região"}},
     {id: "rujabu",nome: "Rujabu",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Rujabu",regiao: "Sem região"}},
-    {id: "umbris-a-voz-de-dearani",nome: "Umbris, a Voz de Dearani",tipo: "funcionario",anel: null,org: true,funcao: "A serviço do Arconte",terrario: {nome: "Umbris, a Voz de Dearani",regiao: "Sem região"}},
     {id: "urazyel",nome: "Urazyel",tipo: "funcionario",anel: null,org: false,funcao: null,terrario: {nome: "Urazyel",regiao: "Sem região"}}
   ]
 };
