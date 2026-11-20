@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa do Terrário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:wght@400;700&family=Spline+Sans+Mono&display=swap">
+<style>
+:root{--bg:#17130f;--panel:#211b15;--panel2:#2a221a;--line:#5a4a37;--fg:#ece2d0;--muted:#a8987f;--accent:#e0a54a;
+  --npc:#7fb3d5;--jogador:#e0a54a;--inimigo:#d9665b;--extra:#a8987f;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:"Alegreya Sans","Segoe UI",system-ui,sans-serif;font-size:17px;line-height:1.5;
+  padding:32px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+a{color:var(--accent)}
+.wrap{max-width:1280px;margin:0 auto;display:grid;gap:20px}
+.eyebrow{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.eyebrow a{color:inherit;text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1,h2,h3{font-family:"IM Fell English SC",Georgia,serif;font-weight:400;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,5vw,46px)}
+h2{font-size:26px}
+p{margin:0}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+/* mapa */
+.mapa{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0f0c09}
+.mapa img{display:block;width:100%;height:auto;user-select:none}
+.pin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;padding:4px 9px 4px 4px;
+  border-radius:999px;border:1px solid rgba(236,226,208,.55);background:rgba(23,19,15,.82);color:var(--fg);
+  font:600 12px/1 "Alegreya Sans",system-ui,sans-serif;cursor:pointer;white-space:nowrap;backdrop-filter:blur(2px);
+  transition:transform .12s,border-color .12s,background .12s}
+.pin .n{min-width:22px;height:22px;border-radius:999px;display:grid;place-items:center;background:var(--accent);color:#1a120a;
+  font:700 12px/1 "Spline Sans Mono",monospace}
+.pin.vazio{opacity:.62}.pin.vazio .n{background:#4a3f33;color:var(--muted)}
+.pin:hover,.pin:focus-visible{transform:translate(-50%,-50%) scale(1.08);border-color:var(--accent);outline:none;z-index:3}
+.pin.ativo{background:var(--accent);color:#1a120a;border-color:#fff;z-index:4}
+.pin.ativo .n{background:#1a120a;color:var(--accent)}
+.pin .rot{max-width:0;overflow:hidden;transition:max-width .2s}
+.pin:hover .rot,.pin:focus-visible .rot,.pin.ativo .rot{max-width:220px}
+@media (max-width:600px){.pin{padding:3px}.pin .rot{display:none}.pin .n{min-width:20px;height:20px;font-size:11px}}
+.fora{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+  background:var(--panel);color:var(--fg);font:inherit;font-size:15px;cursor:pointer}
+.chip b{font:700 12px/1 "Spline Sans Mono",monospace;color:var(--accent)}
+.chip:hover,.chip:focus-visible{border-color:var(--accent);outline:none}
+.chip.ativo{background:var(--accent);color:#1a120a;border-color:var(--accent)}.chip.ativo b{color:#1a120a}
+
+/* painel */
+.painel{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:18px;display:grid;gap:14px;
+  position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:hidden;grid-template-rows:auto auto 1fr}
+@media (max-width:900px){.painel{position:static;max-height:none}}
+.filtros{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filtros input{flex:1 1 160px;min-width:0;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
+.filtros input:focus{outline:none;border-color:var(--accent)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;padding:8px 10px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--panel2);color:var(--fg)}
+.lista{overflow:auto;display:grid;gap:8px;align-content:start;padding-right:4px;min-height:0}
+.grupo{font:12px/1 "Spline Sans Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.card{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--fg);text-align:left;font:inherit;cursor:pointer;width:100%}
+.card:hover,.card:focus-visible{border-color:var(--accent);outline:none}
+.av{width:56px;height:56px;border-radius:6px;object-fit:cover;object-position:top;background:var(--panel2);display:grid;place-items:center;
+  font-family:"IM Fell English SC",serif;font-size:24px;color:var(--muted)}
+.card b{display:block;font-weight:700;line-height:1.2}
+.card small{display:block;color:var(--muted);font-size:13px;line-height:1.3}
+.tag{display:inline-block;font:11px/1 "Spline Sans Mono",monospace;text-transform:uppercase;letter-spacing:.08em;padding:3px 6px;border-radius:4px;margin-right:6px;
+  border:1px solid currentColor}
+.t-npc{color:var(--npc)}.t-jogador{color:var(--jogador)}.t-inimigo{color:var(--inimigo)}.t-extra{color:var(--extra)}
+.vazio-msg{color:var(--muted);padding:12px 0}
+
+/* detalhe */
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--fg);padding:0;width:min(720px,calc(100vw - 32px));max-height:calc(100vh - 48px)}
+dialog::backdrop{background:rgba(8,6,4,.75)}
+.det{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:0}
+@media (max-width:620px){.det{grid-template-columns:1fr}}
+.det .img{background:#0f0c09;min-height:220px}
+.det .img img{width:100%;height:100%;max-height:70vh;object-fit:cover;object-position:top;display:block}
+.det .txt{padding:20px;display:grid;gap:10px;align-content:start;overflow:auto;max-height:calc(100vh - 48px)}
+.det dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-size:15px}
+.det dt{color:var(--muted)}.det dd{margin:0}
+.det .desc{white-space:pre-line;font-size:16px;color:var(--fg)}
+.fechar{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:rgba(23,19,15,.85);color:var(--fg);font-size:18px;cursor:pointer}
+.fechar:hover{border-color:var(--accent)}
+code{font-family:"Spline Sans Mono",monospace;font-size:13px;background:var(--bg);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><a href="../">Esfera dos Mistérios</a> · Ruptura · Além da Luz</div>
+    <h1>O Terrário</h1>
+    <p class="muted">Clique numa região do mapa para ver quem vem de lá. Os nomes são as identidades fora da Esfera.</p>
+  </header>
+  <div class="grid">
+    <section>
+      <div class="mapa" id="mapa"><img src="terrario.webp" alt="Mapa do Terrário com as regiões" width="776" height="742"></div>
+      <div class="fora" id="fora"></div>
+    </section>
+    <aside class="painel" aria-live="polite">
+      <div>
+        <div class="eyebrow" id="p-sub">Todas as regiões</div>
+        <h2 id="p-tit">Personagens do Terrário</h2>
+      </div>
+      <div class="filtros">
+        <input id="busca" type="search" placeholder="Buscar nome ou facção" aria-label="Buscar">
+        <div class="seg" id="tipos" role="group" aria-label="Tipo">
+          <button data-t="" class="on">Todos</button><button data-t="npc">NPCs</button><button data-t="jogador">Jogadores</button><button data-t="inimigo">Inimigos</button>
+        </div>
+      </div>
+      <div class="lista" id="lista"></div>
+    </aside>
+  </div>
+</div>
+<dialog id="det"><button class="fechar" id="fechar" aria-label="Fechar">×</button><div class="det" id="det-c"></div></dialog>
+<script src="npcs.js"></script>
+<script>
+const D = window.TERRARIO, R = Object.fromEntries(D.regioes.map(r => [r.id, r]));
+const P = D.personagens;
+const ROT = {npc: "NPC", jogador: "Jogador", inimigo: "Inimigo", extra: "Ficha extra"};
+let regiao = null, tipo = "", busca = "";
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const conta = id => P.filter(p => p.regiao === id).length;
+
+function pinos() {
+  const m = $("#mapa"), f = $("#fora");
+  for (const r of D.regioes) {
+    const b = document.createElement("button");
+    b.dataset.r = r.id;
+    const n = conta(r.id);
+    b.title = `${r.nome} (${n})`;
+    if (r.x == null) { b.className = "chip"; b.innerHTML = `${esc(r.nome)} <b>${n}</b>`; f.append(b); }
+    else {
+      b.className = "pin" + (n ? "" : " vazio");
+      b.style.left = r.x + "%"; b.style.top = r.y + "%";
+      b.innerHTML = `<span class="n">${n}</span><span class="rot">${esc(r.nome)}</span>`;
+      m.append(b);
+    }
+    b.addEventListener("click", () => escolher(regiao === r.id ? null : r.id));
+  }
+}
+
+function escolher(id) {
+  regiao = id;
+  document.querySelectorAll("[data-r]").forEach(b => b.classList.toggle("ativo", b.dataset.r === id));
+  $("#p-tit").textContent = id ? R[id].nome : "Personagens do Terrário";
+  $("#p-sub").textContent = id ? (R[id].x == null ? "Fora do mapa" : "Região do Terrário") : "Todas as regiões";
+  render();
+}
+
+function card(p) {
+  const av = p.token || p.arte;
+  return `<button class="card" data-id="${p.id}">
+    ${av ? `<img class="av" src="arte/${esc(av)}" alt="" loading="lazy">` : `<span class="av">${esc(p.nome[0])}</span>`}
+    <span><b>${esc(p.nome)}</b><small><span class="tag t-${p.tipo}">${ROT[p.tipo]}</span>${esc(p.faccao || "")}</small></span></button>`;
+}
+
+function render() {
+  const q = busca.trim().toLowerCase();
+  const vis = P.filter(p => (!regiao || p.regiao === regiao) && (!tipo || p.tipo === tipo)
+    && (!q || (p.nome + " " + (p.faccao || "")).toLowerCase().includes(q)));
+  let h = "";
+  if (regiao) h = vis.map(card).join("");
+  else for (const r of D.regioes) {
+    const g = vis.filter(p => p.regiao === r.id);
+    if (g.length) h += `<div class="grupo">${esc(r.nome)} · ${g.length}</div>` + g.map(card).join("");
+  }
+  $("#lista").innerHTML = h || `<p class="vazio-msg">Ninguém aqui ainda.</p>`;
+}
+
+function detalhe(id) {
+  const p = P.find(x => x.id === id), r = R[p.regiao];
+  const img = p.arte || p.token;
+  $("#det-c").innerHTML = `
+    <div class="img">${img ? `<img src="arte/${esc(img)}" alt="${esc(p.nome)}">` : ""}</div>
+    <div class="txt">
+      <div class="eyebrow"><span class="tag t-${p.tipo}">${ROT[p.tipo]}</span></div>
+      <h2>${esc(p.nome)}</h2>
+      <dl><dt>Região</dt><dd>${esc(r.nome)}</dd>
+        ${p.faccao ? `<dt>Facção</dt><dd>${esc(p.faccao)}</dd>` : ""}
+        <dt>Ficha</dt><dd>${p.tem_ficha ? "Tormenta20, na biblioteca local" : "não tem"}</dd></dl>
+      ${p.obs_regiao ? `<p class="muted">${esc(p.obs_regiao)}</p>` : ""}
+      ${p.descricao ? `<div class="desc">${esc(p.descricao)}</div>` : ""}
+      <p class="muted" style="font-size:14px">Macro do Foundry: <code>macros/${esc(p.id)}.js</code></p>
+    </div>`;
+  $("#det").showModal();
+}
+
+pinos(); render();
+$("#lista").addEventListener("click", e => { const c = e.target.closest(".card"); if (c) detalhe(c.dataset.id); });
+$("#tipos").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  tipo = b.dataset.t; document.querySelectorAll("#tipos button").forEach(x => x.classList.toggle("on", x === b)); render();
+});
+$("#busca").addEventListener("input", e => { busca = e.target.value; render(); });
+$("#fechar").addEventListener("click", () => $("#det").close());
+$("#det").addEventListener("click", e => { if (e.target === $("#det")) $("#det").close(); });
+</script>
+</body>
+</html>
