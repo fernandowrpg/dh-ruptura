@@ -20,7 +20,7 @@ class RingsMap extends ApplicationV2 {
     const frame = document.createElement('iframe');
     frame.src = `modules/${MODULE_ID}/docs/esfera/index.html?foundry`;
     frame.title = game.i18n.localize('RUPTURA.RingsMap.Title');
-    frame.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#e9ecea';
+    frame.style.cssText = 'width:100%;height:100%;border:0;display:block;background:var(--rpt-void, #e9ecea)';
     return frame;
   }
 
@@ -30,8 +30,19 @@ class RingsMap extends ApplicationV2 {
     content.style.padding = '0';
   }
 
+  #page() {
+    return this.element?.querySelector('iframe')?.contentWindow;
+  }
+
   refresh() {
-    this.element?.querySelector('iframe')?.contentWindow?.recarregar?.();
+    this.#page()?.recarregar?.();
+  }
+
+  /** Recopia as cores do andar ativo e o anel atual. O CSS de um tema novo pode chegar depois, então repete. */
+  retheme() {
+    const run = () => this.#page()?.tema?.();
+    requestAnimationFrame(run);
+    setTimeout(run, 600);
   }
 }
 
@@ -74,6 +85,11 @@ export function registerRingsMap() {
   };
   Hooks.on('createSetting', onSetting);
   Hooks.on('updateSetting', onSetting);
+
+  // O quadro acompanha o tema: troca de andar, de cena ou de tema.
+  Hooks.on('ruptura.themeApplied', () => {
+    if (app?.rendered) app.retheme();
+  });
 }
 
 /** API para macros: `game.modules.get('dh-ruptura').api.ringsMap`. */

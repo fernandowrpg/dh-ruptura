@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0
+
+- **Quadro de Pessoal no tema do andar:** dentro do Foundry, o quadro copia a paleta, a textura e a fonte dos títulos do andar ativo e muda junto quando o andar, a cena ou o tema mudam. Fora do Foundry, continua no visual claro.
+- **Anel atual em destaque:** o anel do andar em que o grupo está (o da cena ou o do mundo) ganha contorno na cor do andar e o selo "Atual". No painel, um botão "Anel atual" leva direto a ele. Fora do Foundry, `?anel=N` no endereço marca o anel.
+
 ## 0.11.0
 
 - **Quadro de Pessoal dos Doze Anéis:** novo botão nos controles de token, disponível para todos. Ele abre numa janela o mapa dos doze anéis da Esfera, com a equipe da Organização do Arconte em cada um, num visual corporativo. Os jogadores veem só quem já tem nome na Esfera, com função e lotação.

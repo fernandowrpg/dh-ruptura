@@ -192,8 +192,10 @@ Ele abre numa janela o mapa de `docs/esfera`, com a equipe da Organização do A
 - O mestre vê também os agentes de cada anel, as notas do andar e quem ainda está fora da
   Organização. Clicando numa pessoa, ele muda o anel, o nome na Esfera, a função e se ela
   está na Organização. As mudanças ficam salvas no mundo e atualizam as janelas abertas.
+- O quadro segue o tema do andar ativo e destaca o anel em que o grupo está (o andar da cena ou
+  o do mundo), mudando junto com o andar.
 - A mesma página está no GitHub Pages. Fora do Foundry, `?mestre` no endereço mostra a vista do
-  mestre, só para leitura.
+  mestre, só para leitura, e `?anel=N` destaca um anel.
 
 ```js
 const { ringsMap } = game.modules.get('dh-ruptura').api;
