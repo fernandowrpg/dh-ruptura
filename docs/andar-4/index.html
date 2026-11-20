@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Mapa clicável do andar 4 da Esfera dos Mistérios (Daggerheart): encontros, fichas das ameaças e mapas da Czepeku.">
+<title>A Galeria das Lembranças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: mapa do andar à esquerda (fixo ao rolar), ficha do nó à direita; empilha no celular. Mesmo esqueleto do andar 3, com a paleta azul-espectral da Galeria (tema Sombria, variante "galeria"). */
+:root{
+  --bg:#0b0f18;
+  --panel:#111827;
+  --panel-2:#1a2336;
+  --line:#34446a;
+  --fg:#e6ebf7;
+  --muted:#b3bdd4;
+  --accent:#8fb8ff;
+  --relic:#f5e1a8;
+  --combat:#b0574a;
+  --elite:#d0485a;
+  --event:#6f8fb8;
+  --treasure:#c9a640;
+  --rest:#e07a2e;
+  --boss:#a33a5c;
+  --font-display:"IM Fell English SC", "Palatino Linotype", Georgia, serif;
+  --font-body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono:"Spline Sans Mono", ui-monospace, Consolas, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;
+  background-image:repeating-linear-gradient(90deg, rgba(143,184,255,.035) 0 1px, transparent 1px 7px, rgba(143,184,255,.035) 7px 8px, transparent 8px 28px);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:24px 48px;
+}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,.node:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:20px}
+header{display:grid;gap:6px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--font-display);font-weight:400;font-size:clamp(30px,5vw,44px);line-height:1.05;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0;max-width:70ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--font-mono);font-size:12px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--fg);background:var(--panel)}
+.layout{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}}
+.mapcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:12px;position:sticky;top:max(12px, env(safe-area-inset-top, 0px))}
+@media (max-width:820px){.mapcard{position:static}}
+.mapcard h2,.detail h2,.all h2{font-family:var(--font-display);font-weight:400;font-size:20px;margin:0}
+svg{width:100%;height:auto;display:block}
+.edge{stroke:var(--line);stroke-width:1.6;stroke-dasharray:4 4;fill:none;transition:stroke .2s}
+.edge.on{stroke:var(--accent);stroke-width:2.4;stroke-dasharray:none}
+.rowlabel{fill:var(--muted);font-family:var(--font-mono);font-size:10px}
+.node{cursor:pointer}
+.node circle.body{stroke-width:2;transition:transform .15s}
+.node text{font-family:var(--font-display);font-size:14px;fill:var(--fg);pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.node:hover circle.body{stroke:var(--fg)}
+.node .ring{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:0}
+.node.sel .ring{opacity:1}
+.node.dim{opacity:.35}
+.paths{display:flex;flex-wrap:wrap;gap:8px}
+.paths button{font:inherit;font-size:14px;background:var(--panel-2);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+.paths button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.pathnote{font-size:14px;color:var(--muted);margin:0;min-height:2.6em}
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.detail{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:16px;min-width:0}
+.dhead{display:grid;gap:6px}
+.badge{justify-self:start;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;color:var(--bg);font-weight:500}
+.dtitle{font-family:var(--font-display);font-size:30px;line-height:1.1;margin:0;text-wrap:balance}
+.meta{font-family:var(--font-mono);font-size:13px;color:var(--muted)}
+.block{display:grid;gap:8px}
+.block h3{margin:0;font-size:12px;font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.comp{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.comp li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:4px}
+.comp li span:last-child{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.comp li.total{border-bottom:none;font-weight:700}
+.comp li.total span:last-child{color:var(--accent)}
+.prose{margin:0;max-width:68ch}
+.notes{margin:0;padding-left:1.1em;display:grid;gap:4px;max-width:68ch}
+.memento{border-left:3px solid var(--relic);padding:8px 12px;background:var(--panel-2);border-radius:0 8px 8px 0;display:grid;gap:8px}
+.memento h3{color:var(--relic)}
+.maps{display:grid;gap:8px}
+.mapref{display:grid;gap:2px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mapref .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mapref a{font-weight:700;text-decoration:none}
+.mapref a:hover{text-decoration:underline}
+.mapref .v{font-size:14px;color:var(--fg)}
+.foot{font-size:13px;color:var(--muted)}
+.all{display:grid;gap:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:400;background:var(--panel)}
+#rows tr{cursor:pointer}
+#rows tr:hover,#rows tr.sel{background:var(--panel-2)}
+td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.threats{display:grid;gap:8px}
+.threat{background:var(--panel-2);border:1px solid var(--line);border-radius:8px}
+.threat summary{cursor:pointer;padding:10px 12px;display:grid;gap:4px;list-style:none}
+.threat summary::-webkit-details-marker{display:none}
+.threat summary .tn{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.threat summary .tn b{font-family:var(--font-display);font-weight:400;font-size:19px}
+.threat summary .tn i{font-style:normal;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.statline{display:flex;flex-wrap:wrap;gap:6px}
+.stat{font-family:var(--font-mono);font-size:12px;font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:4px;padding:2px 7px;background:var(--panel)}
+.stat em{font-style:normal;color:var(--muted);margin-right:4px}
+.atk{font-size:14px;color:var(--fg)}
+.threat summary .more{font-size:12px;color:var(--accent)}
+.threat[open] summary .more{display:none}
+.abil{list-style:none;margin:0;padding:0 12px 12px;display:grid;gap:8px}
+.abil li{font-size:15px;max-width:68ch}
+.abil b{color:var(--fg)}
+.tag{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-left:4px}
+.tag.fear{color:var(--elite)}
+.tag.free{color:var(--treasure)}
+.envgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px}
+.envcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:12px;align-content:start;min-width:0}
+.envcard h3{font-family:var(--font-display);font-weight:400;font-size:19px;margin:0}
+.envlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.envlist li{font-size:15px;max-width:68ch}
+.visions{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.visions li{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:10px;align-items:baseline;font-size:15px}
+.visions .die{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--accent);text-align:right}
+.visions small{display:block;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Esfera dos Mistérios · Andar 4 · Aflição</div>
+    <h1>A Galeria das Lembranças</h1>
+    <p class="sub">Clique em um nó do mapa para ver o encontro, a composição em Pontos de Batalha, as fichas das ameaças, o mapa da Czepeku e as cenas.</p>
+    <div class="chips">
+      <span class="chip">Nível 3 → 4 · 2º patamar</span>
+      <span class="chip">4 PJs · 14 PB por encontro</span>
+      <span class="chip">Pressão da Esfera: Eco da Lembrança (ciclo 5)</span>
+      <span class="chip">Descanso longo na linha 6</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="mapcard" aria-label="Mapa do andar">
+      <h2>Mapa do andar</h2>
+      <svg id="map" viewBox="0 0 320 400" role="group" aria-label="Nós do mapa do andar 4"></svg>
+      <div class="paths" role="group" aria-label="Destacar caminho">
+        <button type="button" id="p-esq" data-path="esq" aria-pressed="false">Esquerda</button>
+        <button type="button" id="p-centro" data-path="centro" aria-pressed="false">Centro</button>
+        <button type="button" id="p-dir" data-path="dir" aria-pressed="false">Direita</button>
+      </div>
+      <p class="pathnote" id="pathnote">Escolha um caminho para destacá-lo no mapa.</p>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--rest)"></i>R repouso</span>
+        <span><i class="dot" style="background:var(--combat)"></i>M combate</span>
+        <span><i class="dot" style="background:var(--elite)"></i>E elite</span>
+        <span><i class="dot" style="background:var(--event)"></i>? mistério</span>
+        <span><i class="dot" style="background:var(--treasure)"></i>T tesouro</span>
+        <span><i class="dot" style="background:var(--boss)"></i>B boss</span>
+      </div>
+      <p class="foot">? é um mistério: pode virar qualquer tipo de nó, menos boss. A linha 6 é descanso para todo caminho, como pede o guia da Esfera.</p>
+    </section>
+
+    <section class="detail" id="detail" aria-live="polite"></section>
+  </div>
+
+  <section class="all">
+    <h2>Todos os nós</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Linha</th><th>Nó</th><th>Encontro</th><th>PB</th><th>Mapa</th><th>Variante</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="foot">¹ adversário de 1º patamar (+1 PB no orçamento). Fontes: Espectros (LB p.223), Predador mortal (LB p.227), Carniçais e Lívido (BdM p.17), Bradador, Ira e Fome (BdM p.36), Orgulho, Desejo e Preguiça (BdM p.37), Pesadelo (BdM p.131), Mansão Amaldiçoada (BdM p.146).</p>
+  </section>
+
+  <section class="all" aria-label="Ambiente e Pressão da Esfera">
+    <h2>A mansão</h2>
+    <div class="envgrid">
+      <div class="envcard">
+        <h3>Ambiente: Mansão Amaldiçoada</h3>
+        <div class="meta">Exploração · 2º patamar · Dificuldade 15 · BdM p.146</div>
+        <ul class="envlist">
+          <li><b>Arquitetura Espectral</b><span class="tag">passiva</span> — a casa é maior por dentro, as portas mudam de destino e cada cômodo existe em três versões: original, decrépita e pesadelo. Diga em qual versão o grupo entrou.</li>
+          <li><b>Uma História de Dor</b><span class="tag">passiva</span> — quem falhar com Medo tem uma visão do passado do dono da casa, com uma pista de um memento. Depois faz reação de Instinto ou marca 1 PF.</li>
+          <li><b>Vá para o Além</b><span class="tag">passiva</span> — com o memento descoberto, um PJ confronta o espírito com a própria mortalidade (Presença). Crítico ou sucesso com Esperança: ele some em paz. Qualquer outro resultado: ele ataca antes de partir.</li>
+          <li><b>Fúria do Fantasma</b><span class="tag fear">1 Medo</span> — portas batem, janelas explodem e objetos voam. Todos fazem reação de Agilidade ou sofrem 2d6+3 fís.</li>
+          <li><b>Pressão da Esfera — Eco da Lembrança</b><span class="tag">regra da casa</span> — contagem padrão, ciclo 5, desce a cada teste de qualquer PJ. Ao zerar, o PJ com mais Esperança faz reação de Presença 14. Falha: perde 1 Esperança e o mestre ganha 1 Medo. Sucesso: tem uma visão (tabela ao lado).</li>
+          <li><b>Mementos</b><span class="tag">regra da casa</span> — há três no andar: as cartas, o laboratório e os retratos. Cada um encontrado dá +1 no teste de Presença do Exorcismo do boss (até +3).</li>
+        </ul>
+      </div>
+      <div class="envcard">
+        <h3>Visões do Eco (1d6)</h3>
+        <div class="meta">Memórias do dono da casa. Leia em voz baixa, sem explicar.</div>
+        <ol class="visions" id="visions"></ol>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const CZ = "https://www.czepeku.com/fantasy/";
+const TYPES = {
+  R:{name:"Repouso", color:"var(--rest)"},
+  M:{name:"Combate", color:"var(--combat)"},
+  E:{name:"Elite", color:"var(--elite)"},
+  Q:{name:"Evento", color:"var(--event)", letter:"?"},
+  T:{name:"Tesouro", color:"var(--treasure)"},
+  B:{name:"Boss", color:"var(--boss)"}
+};
+const Y = {1:362, 2:310, 3:258, 4:206, 5:154, 6:102, 7:46};
+const entryBody = "Atrás da Caixa de Batalha, uma escada sobe para o saguão de uma mansão. Os retratos acompanham o grupo com os olhos. Cada cômodo daqui existe em três versões: original, decrépita e pesadelo.";
+const entryNotes = [
+  "Descanso de entrada: o mestre recebe 1d4 Medo (curto) ou 1d4 + nº de PJs (longo).",
+  "Ative a Pressão da Esfera — Eco da Lembrança: contagem padrão, ciclo 5. Ao zerar, o PJ com mais Esperança faz reação de Presença 14. Falha: perde 1 Esperança e o mestre ganha 1 Medo. Sucesso: uma visão da tabela no fim da página.",
+  "Espíritos e espectros têm Fantasma (resistentes a dano físico). Se o grupo tem pouco dano mágico, a Adaga devoradora está na loja da esquerda e o Martelo de Ecsota na cripta."
+];
+const restBody = "A última sala antes da galeria aparece na versão original: limpa, aquecida, com cheiro de pão. A casa lembra de ter sido um lar, e os espíritos não entram aqui.";
+const restNotes = [
+  "Descanso longo, o único do andar: o mestre recebe 1d4 + nº de PJs Medo.",
+  "Chegue ao boss com pelo menos 2 Medo guardados para a Batalha sem Fim do Orgulho.",
+  "Bom momento para o grupo juntar os mementos e decidir quem vai tentar o Exorcismo."
+];
+const N = [
+  {id:"r1",type:"R",row:1,x:70,pos:"esquerda",title:"Chegada pelo jardim",body:entryBody,notes:entryNotes,
+    maps:[{k:"Cena",name:"Vampire Mansion",url:CZ+"scenes/vampire-mansion",v:"Fog"}]},
+  {id:"r2",type:"R",row:1,x:160,pos:"centro",title:"Chegada pela porta principal",body:entryBody,notes:entryNotes,
+    maps:[{k:"Cena",name:"Vampire Mansion",url:CZ+"scenes/vampire-mansion",v:"Haunted"}]},
+  {id:"r3",type:"R",row:1,x:250,pos:"direita",title:"Chegada pela entrada de serviço",body:entryBody,notes:entryNotes,
+    maps:[{k:"Cena",name:"Vampire Mansion",url:CZ+"scenes/vampire-mansion",v:"Rain Night"}]},
+
+  {id:"m2a",type:"M",row:2,x:50,pos:"esquerda",code:"N1",title:"Ronda Fantasma",
+    comp:[["Espectro capitão",3],["3 Espectros guardiões",6],["2 Espectros arqueiros",4]],total:"13 (14−1, mais curta)",
+    body:"A guarda da casa ainda faz a ronda do pátio, séculos depois do último dono a contratar.",
+    notes:["Primeira lição do andar: derrubar o capitão primeiro. A Batalha sem Fim dele (2 Medo) traz de volta até 1d4+1 espectros.","O dano principal dos guardiões (Lâmina Tumular) e dos arqueiros (Escolher Alvo) custa Medo. Com pouco Medo, use o ataque padrão e guarde o Medo para o capitão.","Luta mais curta para abrir o andar."],
+    maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Ground Ghost (alternativa: Fog Day)"}]},
+  {id:"q2",type:"Q",reveal:"Evento",row:2,x:160,pos:"centro (hub)",title:"O Vestíbulo das Três Versões",
+    body:"Três portas iguais levam à mesma sala. O grupo escolhe uma, e a sala aparece na versão daquela porta. As três entradas chegam aqui.",
+    notes:["Original: a casa lembra de ser lar. Um PJ recupera 1 Esperança. No retrato da lareira, o rosto do dono foi raspado da tela.","Decrépita: na poeira, pegadas recentes de quatro pessoas. Outra equipe passou por aqui. Com Instinto 13, o grupo acha um crachá sem nome, igual ao do supervisor do Cofre.","Pesadelo: as paredes são feitas de nomes riscados. A contagem do Eco desce 2, e quem entrar tem uma visão da tabela sem fazer teste.","Sem combate. Mostra para a mesa como funciona a Arquitetura Espectral."],
+    maps:[{k:"Mapa",name:"Grand Hunter's House",url:CZ+"maps/grand-hunters-house",v:"Ground Floor Original Night · Ground Floor Abandoned · Ground Floor Haunted (uma por porta)"}]},
+  {id:"m2b",type:"M",row:2,x:270,pos:"direita",code:"N2",title:"A Cozinha",
+    comp:[["2 Hordas de carniçais",4],["3 Carniçais atrozes",6],["2 Espectros arqueiros",4]],total:"14",
+    body:"Panelas ainda no fogo, uma sopa que nunca acaba e carniçais roendo os ossos de um banquete que ninguém comeu.",
+    notes:["Carniçais são de carne: dano físico funciona normalmente neles. Os arqueiros espectrais atiram de trás das bancadas.","Eles São Muitos: com outro carniçal por perto, todo ataque contra o alvo tem vantagem. A Secreção Paralisante pune quem acerta (Força ou 2 PF e Imobilizado).","O Berro Faminto das Hordas (1 PF) tira Esperança sem gastar Medo."],
+    maps:[{k:"Mapa",name:"Giant Kitchen",url:CZ+"maps/giant-kitchen",v:"Abandoned Kitchen (alternativa: Witch)"},{k:"Cena",name:"Giant Kitchen",url:CZ+"scenes/giant-kitchen",v:"Horror"}]},
+
+  {id:"q3a",type:"Q",reveal:"Loja",row:3,x:35,pos:"esquerda",title:"A Vela de Luto",
+    body:"O mistério se revela uma loja de velas. O mesmo mercador que sumia pelas paredes do Cofre está aqui, agora de preto, vendendo velas que queimam sem acabar. É a loja do lado esquerdo.",
+    notes:["Vende os consumíveis do andar: Folhas de Varik e Poção de Vida (LB p.132).","Itens permanentes à venda (um por visita): Adaga devoradora (LB p.117, mágica, Aversão) ou Medalhão da Esperança (LB p.129–131).","Tudo aqui pertenceu a alguém. Ao comprar, role 1d6: no 1, o item vem assombrado e a contagem do Eco desce 1."],
+    maps:[{k:"Mapa",name:"Candle Workshop",url:CZ+"maps/candle-workshop",v:"Haunted ou Dark"}]},
+  {id:"m3",type:"M",row:3,x:125,pos:"centro-esquerda",code:"N3",title:"Grito no Corredor",
+    comp:[["Bradador¹",5],["2 Espectros guardiões",4],["Espectro arqueiro",2],["2 Carniçais atrozes",4]],total:"15 (14+1)",
+    body:"Um corredor de quartos fechados. Lá no fundo, alguém que não é da casa grita sem parar: um espírito expulso, preso entre os andares.",
+    notes:["Abra a luta com o Brado Aterrorizante do Bradador (1 Medo): todos os vivos próximos fazem reação de Força ou Presença.","Inclemente (2): com Medo sobrando, ele age duas vezes por turno.","Corredor estreito: os carniçais seguram a passagem e os espectros atravessam as paredes (Fantasma, 1 PF)."],
+    maps:[{k:"Mapa",name:"Grand Hunter's House",url:CZ+"maps/grand-hunters-house",v:"Upper Floor Haunted (alternativa: Upper Floor Dark Night)"}]},
+  {id:"q3c",type:"Q",reveal:"Evento",row:3,x:205,pos:"centro-direita",title:"O Escritório das Cartas",
+    body:"O escritório do dono da casa. Na escrivaninha, dezenas de cartas lacradas, todas para pessoas mortas há séculos. Nenhuma foi enviada.",
+    clue:{h1:"O memento: as cartas",
+      intro:"Esta é a Aflição do andar: a culpa de quem sobreviveu a todo mundo. As cartas são o primeiro dos três mementos.",
+      h2:"O que está na escrivaninha",
+      items:[
+        "As cartas são assinadas só com um D. Quase todas pedem desculpas: \"eu podia ter dado a fórmula a você também\".",
+        "Uma delas foi aberta e respondida em papel timbrado da Organização: \"Agradecemos a doação dos seus arquivos. O Departamento cuidará deles.\"",
+        "Presa à última carta, uma ficha igual às do Arquivo dos Experimentos: \"Temperamento designado: Aflição\". No campo Equipe, a mesma data da ficha em branco do Cofre. Resultado: \"em andamento\".",
+        "Um esboço a carvão do homem que aparece em todos os retratos da casa, com a legenda \"o Inventor\"."
+      ],
+      gm:"Só o mestre sabe: o dono da casa é o Demiurgo, e os espíritos do andar são memórias que a culpa dele prende aqui. O grupo pode suspeitar que o D. é o inventor da Imortalidade (a Oficina do Inventor, no andar 3, já apontava para isso). Não confirme: o Arco 2 revela."},
+    loot:["Corrente dos Princípios (LB p.129–131), enrolada no tinteiro"],
+    notes:["Sem combate. Quem ler as cartas em voz alta conta como tendo encontrado o memento (+1 no Exorcismo).","A carta inacabada \"Querida —\" do Quarto (E2) tem o mesmo nome destas cartas: quem leu sabe como terminá-la."],
+    maps:[{k:"Mapa",name:"Great Library",url:CZ+"maps/great-library",v:"B5 Violet Study Night"}]},
+  {id:"q3d",type:"Q",reveal:"Loja",row:3,x:280,pos:"direita",title:"A Taverna dos que Ficaram",
+    body:"O mistério se revela uma taverna torta no porão da ala de serviço. O taverneiro é um fantasma educado, e os fregueses de costas nunca se viram. É a loja do lado direito.",
+    notes:["Vende os consumíveis do andar: Poção de Vida e Folhas de Varik.","Itens permanentes à venda (um por visita): Cetro de Elias (LB p.117, mágico, Revigorante) ou Espírito Sussurrante (LB p.129–131).","O taverneiro aceita pagamento em lembranças: o PJ conta uma lembrança verdadeira em vez de pagar, marca 1 PF e o mestre ganha 1 Medo."],
+    maps:[{k:"Mapa",name:"Twisted Tavern",url:CZ+"maps/twisted-tavern",v:"Haunted ou Candlelight"}]},
+
+  {id:"t4a",type:"T",row:4,x:70,pos:"esquerda",title:"A Cripta da Família",
+    body:"Gavetas de mármore com o mesmo sobrenome e datas de séculos diferentes. Uma gaveta está vazia, com nome e sem data.",
+    loot:["Martelo de Ecsota (LB p.117, mágico, Impactante) ou Espada larga de Urok (LB p.116, Mortal)","Espírito Sussurrante (LB p.129–131)"],
+    notes:["Uma História de Dor: quem falhar com Medo aqui vê um enterro em que só um homem não chora, e faz reação de Instinto ou marca 1 PF."],
+    maps:[{k:"Mapa",name:"Forgotten Chapel Crypt",url:CZ+"maps/forgotten-chapel-crypt",v:"Dark (alternativa: Curse)"}]},
+  {id:"e4",type:"E",row:4,x:160,pos:"centro",code:"E2",title:"O Quarto de Quem Desistiu",
+    comp:[["Espírito da Preguiça",5],["Espírito do Desejo",5],["2 Espectros arqueiros",4]],total:"14 (14−2+2)",
+    body:"O quarto do casal. Um lado da cama está arrumado há séculos. No outro, deitado, o espírito de alguém que desistiu de levantar. Na escrivaninha, uma carta começada: \"Querida —\".",
+    notes:["A elite anti-Esperança: o Desejo tira 1 Esperança a cada acerto e, contra quem estiver sem Esperança, causa dano direto.","A Preguiça não tem Inclemente e precisa de dois focos para agir (marcador na ficha). A Aura de Letargia cobra 1 PF de quem age perto dela.","Aura Sedutora (2 Medo): quando alguém perto do Desejo gasta Esperança, o espírito pode escolher a próxima ação dele.","Exorcizar a Preguiça: terminar a carta \"Querida —\". Quem passou pelo Escritório das Cartas sabe o nome."],
+    maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Top Level Ghost (alternativa: Original Top Night)"}]},
+  {id:"t4c",type:"T",row:4,x:250,pos:"direita",title:"O Porão do Inventor",
+    body:"Uma bancada de trabalho limpa demais para uma casa abandonada. Frascos vazios em fila, cada um com um nome e uma data.",
+    clue:{h1:"O memento: o laboratório",
+      intro:"O segundo memento. Aqui o dono da casa fez a primeira dose da Imortalidade.",
+      h2:"O que está na bancada",
+      items:[
+        "Um caderno de testes: \"Teste 1: o rato não morreu. Teste 2: o rato não morreu. Teste 3: eu.\"",
+        "Os nomes nos frascos são os mesmos das cartas do Escritório. As datas são do ano em que cada um morreu.",
+        "Num canto, uma caixa de madeira com seis encaixes vazios, do tamanho de uma runa."
+      ],
+      gm:"Os seis encaixes antecipam os sigilos do Arco 1 (Morte, Teia, Folia, Aflição, Pavor e Malícia). Deixe o grupo ligar isso sozinho."},
+    loot:["Cota de Malha Elundriana (LB p.126, Égide: ótima contra o dano mágico dos espíritos)","Pena de Fênix (LB p.129–131)"],
+    notes:["Encontrar o caderno conta como memento (+1 no Exorcismo)."],
+    maps:[{k:"Mapa",name:"Grand Hunter's House",url:CZ+"maps/grand-hunters-house",v:"Basement Work Table Clean (alternativa: Basement Work Table Bloody)"}]},
+
+  {id:"q5a",type:"Q",reveal:"Evento (pode virar elite)",row:5,x:45,pos:"esquerda",code:"E3",title:"A Cavalariça do Pesadelo",
+    comp:[["Pesadelo",5],["Predador mortal",3],["2 Espectros guardiões",4],["2 Carniçais atrozes",4]],total:"16 (se virar elite)",
+    body:"Um cavalo negro de crina de fumaça dorme na última baia. Na baia ao lado, um caçador morto-vivo de casaco de couro afia as garras, com o emblema do casaco arrancado.",
+    notes:["Passar em silêncio: teste em grupo de Agilidade 14. Se falhar, ou se alguém tentar montar o Pesadelo, o mistério vira a elite reserva (E3).","O Predador põe aliados em foco pagando PF (Morte Inevitável) e drena Esperança com Aterrorizante.","Domar o Pesadelo (regra da casa): com o Predador derrotado e o Pesadelo com metade dos PV marcados, um PJ faz Instinto ou Presença 15. Sucesso: ele para de lutar e vira montaria (BdM p.131).","O caçador pode ser de uma expedição anterior, como os Experimentos do Cofre."],
+    maps:[{k:"Mapa",name:"Pastoral Village Stables",url:CZ+"maps/pastoral-village-stables",v:"Haunted (alternativa: Fog)"},{k:"Cena",name:"Pastoral Village Stables",url:CZ+"scenes/pastoral-village-stables",v:"Haunted"}]},
+  {id:"m5a",type:"M",row:5,x:115,pos:"centro-esquerda",code:"N4",title:"A Capela",
+    comp:[["Lívido",3],["Horda de carniçais",2],["2 Carniçais atrozes",4],["Espectro guardião",2],["Espectro arqueiro",2]],total:"13 (14−1)",
+    body:"Uma capela particular com caixões abertos em fila. Em cada lápide, o mesmo sobrenome. Só um nome nunca tem data de morte.",
+    notes:["Use a variante Massacre: os corpos no chão alimentam o Erguer Cadáveres do Lívido (1 PF, o carniçal atroz criado já entra em foco).","Comandar os Incapazes custa 2 Medo. Guarde para depois que o Lívido erguer um cadáver.","Luta curta: 13 PB."],
+    maps:[{k:"Mapa",name:"Celestial Chapel Interior",url:CZ+"maps/celestial-chapel-interior",v:"Midnight Chapel ou Massacre"},{k:"Alternativa",name:"Peaceful Village Church Interior",url:CZ+"maps/peaceful-village-church-interior",v:"Shadowland"}]},
+  {id:"m5b",type:"M",row:5,x:195,pos:"centro-direita",code:"N5",title:"Galeria dos Retratos",
+    comp:[["2 Espectros guardiões",4],["3 Espectros arqueiros",6],["2 Carniçais atrozes",4]],total:"14",
+    body:"Retratos de família em ordem: a cada quadro, os parentes envelhecem e somem, e o mesmo homem no centro não muda. No último, ele está sozinho.",
+    notes:["Memento: os retratos. Contam +1 no Exorcismo do boss.","Os arqueiros saem das molduras e atiram de longe. Os guardiões protegem os quadros.","Sem líder, brutamonte ou solo: se quiser apertar, a regra do LB permite +1 PB (15)."],
+    maps:[{k:"Mapa",name:"Opulent Ballroom",url:CZ+"maps/opulent-ballroom",v:"Haunted (alternativa: Treasury Exhibition)"}]},
+  {id:"e5",type:"E",row:5,x:275,pos:"direita",code:"E1",title:"O Banquete",
+    comp:[["Espírito da Fome",5],["Lívido",3],["2 Hordas de carniçais",4],["2 Carniçais atrozes",4]],total:"16",
+    body:"Uma mesa posta para doze. Onze cadeiras vazias e o Espírito da Fome na cabeceira, mastigando o nada. Doze lugares, um para cada andar da Esfera.",
+    notes:["Hora do Rango: contagem (ciclo 1d6) que desce a cada foco do espírito. Ao zerar, quem estiver próximo faz Presença ou sofre 2d12 mág direto e marca 2 PF, e o espírito recupera 1 PV.","Aura de Fome: PJ muito próximo posto em foco faz Presença ou marca 1 PF.","O Lívido ergue cadáveres pagando PF: os restos do banquete servem.","Quem veio pela Cozinha já conhece os carniçais."],
+    maps:[{k:"Mapa",name:"Ogre Queen Feast",url:CZ+"maps/ogre-queen-feast",v:"Haunted (alternativa: Fog Night)"},{k:"Cena",name:"Ogre Queen Feast",url:CZ+"scenes/ogre-queen-feast",v:"Haunted"}]},
+
+  {id:"r6a",type:"R",row:6,x:110,pos:"centro-esquerda",title:"O Jardim de Inverno",body:restBody,notes:restNotes,
+    maps:[{k:"Mapa",name:"Victorian Greenhouse",url:CZ+"maps/victorian-greenhouse",v:"Original Night (alternativa: Eerie)"}]},
+  {id:"r6b",type:"R",row:6,x:210,pos:"centro-direita",title:"A Casa Como Era",body:restBody,notes:restNotes,
+    maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Normal Mansion Day"}]},
+
+  {id:"b",type:"B",row:7,x:160,pos:"topo",code:"Boss",title:"O Retrato do Inventor",
+    comp:[["Espírito do Orgulho (Líder)",3],["Espírito da Ira (Solo)",5],["2 Espectros guardiões",4],["2 Espectros arqueiros",4]],total:"16",
+    body:"No fim da galeria, um retrato de corpo inteiro: um homem de jaleco erguendo um frasco que brilha. Quando o grupo se aproxima, a tinta escorre e o Orgulho sai da moldura. A Ira vem logo atrás, de punhos cerrados: a raiva dele contra a morte.",
+    notes:["Orgulho: Dificuldade 16 · 14/26 · 9 PV · Inclemente (3). A Armadura do Orgulho reduz o dano em 1d10 até ele marcar o primeiro PV.","Ira: Dificuldade 15 · 13/26 · 9 PV · Inclemente (3). Punhos de 2d12+7 mág, em média 20, acima do limiar grave de quase todo PJ de nível 3. Use o movimento grátis sempre nela.","Guarde 2 Medo para a Batalha sem Fim depois que o grupo limpar os espectros.","Dano massivo (regra C) vale aqui: dano igual ou maior que o dobro do limiar grave marca 4 PV.","Pesado demais para o nível 3? Troque a Ira por 2 Carniçais atrozes antes de começar e, durante a luta, segure a Batalha sem Fim.","Exorcismo: derrotado, o Orgulho só some de vez se alguém o confrontar com a própria arrogância (Presença 15, +1 por memento encontrado). Se falhar, ele ataca uma última vez antes de partir."],
+    loot:["Fragmento de Memória (LB p.129–131)","Armadura do Tormento (LB p.126, 9/21, Armadura 4, Resiliente)","Sigilo da Aflição","Up para o nível 4"],
+    maps:[{k:"Mapa",name:"Throne Gallery",url:CZ+"maps/throne-gallery",v:"Abandoned → Creeping Darkness Stage 1 a 4 (avance um estágio a cada 3 PV marcados nos espíritos)"},{k:"Exorcismo",name:"Throne Gallery",url:CZ+"maps/throne-gallery",v:"Hall of Mirrors"},{k:"Cena",name:"Vampire Mansion",url:CZ+"scenes/vampire-mansion",v:"Eclipse (revelação do boss)"}]}
+];
+const E = [["r1","m2a"],["r1","q2"],["r2","q2"],["r3","q2"],["r3","m2b"],
+  ["m2a","q3a"],["m2a","m3"],["q2","m3"],["q2","q3c"],["m2b","q3c"],["m2b","q3d"],
+  ["q3a","t4a"],["m3","t4a"],["m3","e4"],["q3c","e4"],["q3c","t4c"],["q3d","t4c"],
+  ["t4a","q5a"],["t4a","m5a"],["e4","m5a"],["e4","m5b"],["t4c","m5b"],["t4c","e5"],
+  ["q5a","r6a"],["m5a","r6a"],["m5b","r6a"],["m5b","r6b"],["e5","r6b"],
+  ["r6a","b"],["r6b","b"]];
+const PATHS = {
+  esq:{nodes:["r1","m2a","q3a","t4a","q5a","r6a","b"],note:"Esquerda: Ronda Fantasma, a Vela de Luto (loja), a Cripta e a Cavalariça. Só uma luta certa e a chance de ganhar o Pesadelo como montaria. O caminho mais leve."},
+  centro:{nodes:["r2","q2","m3","e4","m5a","r6a","b"],note:"Centro: o Vestíbulo, o Grito no Corredor, o Quarto (elite anti-Esperança) e a Capela. O caminho mais duro. Quem quiser as cartas pode trocar o Grito pelo Escritório."},
+  dir:{nodes:["r3","m2b","q3d","t4c","e5","r6b","b"],note:"Direita: a Cozinha, a Taverna dos que Ficaram (loja), o Porão do Inventor e o Banquete (elite). Trocando o Banquete pela Galeria, o grupo chega ao boss com dois mementos."}
+};
+const VISIONS = [
+  ["Um banquete para doze. Onze cadeiras vazias. Ele come sozinho e não sente gosto nenhum.","Fome: prepara o Banquete (E1)."],
+  ["Ele quebra um espelho porque o rosto não envelheceu. A mão sangra e o corte fecha na hora.","Ira: prepara o boss."],
+  ["Uma carta pela metade: \"Querida —\". Ele promete terminar amanhã. A poeira cobre a carta.","Preguiça: prepara o Quarto (E2)."],
+  ["Uma mulher de costas na janela. Ele estende a mão e ela vira um retrato.","Desejo: prepara o Quarto (E2)."],
+  ["Um auditório aplaude. Ele ergue um frasco que brilha: \"Ninguém mais precisa morrer.\"","Orgulho: o retrato do boss."],
+  ["Ele dorme. Pessoas de terno, sem rosto, medem a cabeça dele com um compasso. Uma delas carimba um papel.","A Organização. Não explique."]
+];
+// Fichas resumidas (texto das habilidades parafraseado; confira o livro na página indicada).
+// tag: "medo" = custa 1 Medo · "medo2" = custa 2 Medo · "pf" = custa Fadiga · "grátis" = sem custo
+const FANT = ["Fantasma","passiva","Resistente a dano físico. Marque 1 PF para movê-lo até um ponto próximo atravessando objetos sólidos."];
+const INC3 = ["Inclemente (3)","passiva","Pode entrar em foco até 3 vezes por turno do mestre. Cada foco ainda custa Medo normalmente."];
+const SECRECAO = ["Secreção Paralisante","reação","Uma vez por cena para cada PJ: quem causar dano a ele faz reação de Força ou marca 2 PF e fica Imobilizado até passar em Força."];
+const HORRIP = ["Horripilante","passiva","Quem marcar PV por um ataque de carniçal também marca 1 PF."];
+const T = {
+  orgulho:{n:"Espírito do Orgulho",role:"Líder · 2º patamar",src:"BdM p.37",dif:16,lim:"14/26",pv:9,pf:5,atq:"+3",atk:"Garras · corpo a corpo · 2d12+7 mág",exp:"Aterrorizar +3, Memórias Póstumas +2",
+    ab:[INC3,FANT,
+      ["Armadura do Orgulho","passiva","Enquanto não tiver PV marcado, todo dano que sofre é reduzido em 1d10, e dano menor não marca PV."],
+      ["Garras Opressoras","pf","Marque 1 PF: ataque contra todos os alvos em corpo a corpo."],
+      ["Batalha sem Fim","medo2","Gaste 2 Medo: até 1d4+1 aliados derrotados com Fantasma voltam à luta onde surgiram, sem PV nem PF marcados."],
+      ["Impulso","reação","Quando acerta um PJ, você recebe 1 Medo."],
+      ["Possessão e Exorcismo","passiva","Derrotado, só some de vez se alguém o convencer da própria arrogância (pelo menos um teste de Presença)."]]},
+  ira:{n:"Espírito da Ira",role:"Solo · 2º patamar",src:"BdM p.36",dif:15,lim:"13/26",pv:9,pf:4,atq:"+4",atk:"Punhos · corpo a corpo · 2d12+7 mág",exp:"Irritar +3, Memórias Póstumas +2",
+    ab:[INC3,FANT,
+      ["Explosão de Fúria","pf","Marque 1 PF e escolha um ponto próximo: todos muito próximos dele fazem reação de Presença. Quem falhar sofre 2d10+5 mág e faz o próximo teste com desvantagem."],
+      ["Aura de Ira","medo","Reação: quando um PJ muito próximo falha com Medo, gaste 1 Medo para obrigá-lo a fazer um ataque padrão contra uma criatura escolhida pelo espírito."]]},
+  fome:{n:"Espírito da Fome",role:"Solo · 2º patamar",src:"BdM p.36",dif:14,lim:"12/23",pv:8,pf:4,atq:"+3",atk:"Mordida · muito próximo · 2d12+2 mág",exp:"Aterrorizar +3, Memórias Póstumas +2",
+    ab:[INC3,FANT,
+      ["Aura de Fome","passiva","Quando um PJ muito próximo é posto em foco, ele faz reação de Presença ou marca 1 PF."],
+      ["Hora do Rango","reação","Contagem (ciclo 1d6): ative no primeiro foco e diminua a cada novo foco do espírito. Ao zerar, todos os próximos fazem reação de Presença. Quem falhar sofre 2d12 mág direto e marca 2 PF, e o espírito recupera 1 PV."]]},
+  desejo:{n:"Espírito do Desejo",role:"Solo · 2º patamar",src:"BdM p.37",dif:15,lim:"12/23",pv:8,pf:5,atq:"+3",atk:"Toque · corpo a corpo · 2d12+3 mág",exp:"Desejar +3, Memórias Póstumas +3",
+    ab:[INC3,FANT,
+      ["Toque Insidioso","passiva","Quando acerta um PJ, o alvo perde 1 Esperança. Contra alvo sem Esperança, causa dano direto."],
+      ["Aura Sedutora","medo2","Reação: quando um PJ muito próximo gasta Esperança, gaste 2 Medo. Ele faz reação de Presença; se falhar, o espírito escolhe a próxima ação dele."]]},
+  preguica:{n:"Espírito da Preguiça",role:"Solo · 2º patamar",src:"BdM p.37",dif:14,lim:"14/26",pv:10,pf:5,atq:"+4",atk:"Mordida · muito próximo · 2d12+7 mág",exp:"Memórias Póstumas +3",
+    ab:[FANT,
+      ["Aura de Letargia","passiva","Um PJ posto em foco muito próximo do espírito marca 1 PF antes de agir."],
+      ["Preguiça","passiva","Posto em foco sem marcador na ficha, não age: ponha um marcador e descreva o que ele está prestes a fazer. No próximo foco, tire o marcador e ele age."],
+      ["Possessão e Exorcismo","passiva","Derrotado, só some de vez se o grupo ajudá-lo a concluir a tarefa que deixou inacabada."]]},
+  bradador:{n:"Bradador",role:"Solo · 1º patamar",src:"BdM p.36",dif:13,lim:"8/15",pv:8,pf:3,atq:"+1",atk:"Toque fantasma · corpo a corpo · 1d10+2 mág",exp:"Assombrar +2, Berrar +2",
+    ab:[["Inclemente (2)","passiva","Pode entrar em foco até 2 vezes por turno do mestre. Cada foco ainda custa Medo."],FANT,
+      ["Ódio pela Vida","passiva","Sente a presença de criaturas vivas e é atraído por elas."],
+      ["Brado Aterrorizante","medo","Gaste 1 Medo: todas as criaturas vivas próximas fazem reação de Força ou Presença. Quem falhar sofre 2d6 mág e fica Vulnerável até recuperar 1 PF. Quem passar sofre metade."]]},
+  pesadelo:{n:"Pesadelo",role:"Solo · 2º patamar · montaria",src:"BdM p.131",dif:14,lim:"13/26",pv:10,pf:5,atq:"+3",atk:"Coice · muito próximo · 2d10+3 mág",exp:"—",
+    ab:[["Inclemente (3)","passiva","Pode entrar em foco até 3 vezes por turno do mestre. Cada foco ainda custa Medo."],
+      ["Personificação do Medo","pf","Reação, ao ser posto em foco: marque 1 PF. Todas as criaturas distantes fazem reação de Instinto ou ficam Amedrontadas até serem postas em foco (só podem agir para fugir dele)."],
+      ["Impulso","reação","Quando acerta um PJ, você recebe 1 Medo."],
+      ["Cavaleiro de Pesadelo","passiva","Montaria: o cavaleiro vinculado tem vantagem nos testes para resistir a efeitos de medo."]]},
+  predador:{n:"Predador mortal",role:"Líder · 2º patamar",src:"LB p.227",dif:16,lim:"15/27",pv:6,pf:4,atq:"+5",atk:"Dilacerar · muito próximo · 2d12+1 fís",exp:"Cão de Caça +3",
+    ab:[["Aterrorizante","passiva","Quando acerta, todos os PJs distantes perdem 1 Esperança, e você recebe 1 Medo."],
+      ["Marcado para Morrer","medo","Gaste 1 Medo: marca um alvo muito próximo até o fim da cena. Ataques do predador contra o Marcado causam dano direto. Um alvo por vez."],
+      ["Morte Inevitável","pf","Marque 1 PF: põe 1d4 aliados em foco. Os ataques deles causam metade do dano."],
+      ["Ataque Violento","reação","Contagem (ciclo 1d6), ativada no primeiro foco. Ao zerar, ele corre em linha reta até um ponto distante e ataca todos no caminho: 2d8+2 fís."]]},
+  capitao:{n:"Espectro capitão",role:"Líder · 2º patamar",src:"LB p.223",dif:16,lim:"13/26",pv:6,pf:4,atq:"+3",atk:"Arco longo · distante · 2d10+3 fís",exp:"Conhecimento Antigo +3",
+    ab:[FANT,
+      ["Batalha sem Fim","medo2","Gaste 2 Medo: até 1d4+1 aliados espectrais derrotados voltam à luta onde surgiram, sem PV nem PF marcados."],
+      ["Impulso","reação","Quando acerta um PJ, você recebe 1 Medo."],
+      ["Manter Posições","pf","Reação: quando aliados espectrais fazem um teste de reação, marque 1 PF para dar +2 a eles."]]},
+  guardiao:{n:"Espectro guardião",role:"Comum · 2º patamar",src:"LB p.223",dif:15,lim:"7/15",pv:4,pf:3,atq:"+1",atk:"Lança · muito próximo · 2d8+1 fís",exp:"Conhecimento Antigo +2",
+    ab:[FANT,
+      ["Lâmina Tumular","medo","Gaste 1 Medo: ataque contra um alvo muito próximo. Se acertar, causa 2d10+6 fís e o alvo marca 1 PF."]]},
+  arqueiro:{n:"Espectro arqueiro",role:"Atirador · 2º patamar",src:"LB p.223",dif:13,lim:"6/14",pv:3,pf:3,atq:"+3",atk:"Arco longo · distante · 2d10+2 fís",exp:"Conhecimento Antigo +2",
+    ab:[FANT,
+      ["Escolher Alvo","medo","Gaste 1 Medo: ataque contra um PJ distante que esteja muito próximo de pelo menos dois outros PJs. Se acertar, causa 2d8+12 fís."]]},
+  atroz:{n:"Carniçal atroz",role:"Comum · 2º patamar",src:"BdM p.17",dif:13,lim:"12/23",pv:3,pf:3,atq:"+1",atk:"Mordida · corpo a corpo · 2d6+5 fís",exp:"Mordida Paralisante +3",
+    ab:[["Eles São Muitos","passiva","Se estiver em corpo a corpo com uma criatura e houver outro carniçal próximo, todos os ataques contra ela têm vantagem."],HORRIP,SECRECAO]},
+  horda:{n:"Horda de carniçais",role:"Horda (2/PV) · 2º patamar",src:"BdM p.17",dif:14,lim:"10/20",pv:5,pf:3,atq:"+0",atk:"Mordida · corpo a corpo · 2d6+5 fís",exp:"Mordida Paralisante +3",
+    ab:[["Horda (2d4+2)","passiva","Com metade dos PV marcados, o ataque padrão passa a causar 2d4+2 fís."],HORRIP,
+      ["Berro Faminto","pf","Marque 1 PF: todos os alvos muito próximos perdem 1 Esperança. Quem não puder perder marca 2 PF."],SECRECAO]},
+  livido:{n:"Lívido",role:"Líder · 2º patamar",src:"BdM p.17",dif:16,lim:"13/26",pv:7,pf:4,atq:"+3",atk:"Mordida · corpo a corpo · 2d12 fís",exp:"Mordida Paralisante +3",
+    ab:[["Comandar os Incapazes","medo2","Gaste 2 Medo: põe 1d4 carniçais em foco. Os ataques deles causam metade do dano."],
+      ["Erguer Cadáveres","pf","Reação, uma vez por cena, ao marcar 2 PV ou mais: marque 1 PF. Um cadáver da cena vira carniçal atroz num ponto próximo e entra em foco na hora."],SECRECAO]}
+};
+const MATCH = [[/Espírito do Orgulho/,"orgulho"],[/Espírito da Ira/,"ira"],[/Espírito da Fome/,"fome"],[/Espírito do Desejo/,"desejo"],[/Espírito da Preguiça/,"preguica"],[/Bradador/,"bradador"],[/Pesadelo/,"pesadelo"],[/Predador mortal/,"predador"],[/Espectro capitão/,"capitao"],[/Espectros? guardi/,"guardiao"],[/Espectros? arqueiros?/,"arqueiro"],[/Hordas? de carniçais/,"horda"],[/Carniça(l|is) atroz(es)?/,"atroz"],[/Lívido/,"livido"]];
+const EXTRA = {};
+function threatsOf(n){
+  const keys=[];
+  (n.comp||[]).forEach(([name])=>{ for(const [re,k] of MATCH){ if(re.test(name)){ if(!keys.includes(k)) keys.push(k); break; } } });
+  (EXTRA[n.id]||[]).forEach(k=>{ if(!keys.includes(k)) keys.push(k); });
+  return keys;
+}
+const TAGTXT={medo:["1 Medo","fear"],medo2:["2 Medo","fear"],pf:["PF","pf"],"grátis":["sem custo","free"],passiva:["passiva",""],"reação":["reação",""]};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function threatCard(k){
+  const t=T[k];
+  const ab=t.ab.map(([nm,tag,tx])=>{ const [lbl,cls]=TAGTXT[tag]||[tag,""]; return `<li><b>${esc(nm)}</b><span class="tag ${cls}">${esc(lbl)}</span> — ${esc(tx)}</li>`; }).join("");
+  return `<details class="threat"><summary>
+    <span class="tn"><b>${esc(t.n)}</b><i>${esc(t.role)} · ${esc(t.src)}</i></span>
+    <span class="statline"><span class="stat"><em>Dif</em>${t.dif}</span><span class="stat"><em>Limiares</em>${esc(t.lim)}</span><span class="stat"><em>PV</em>${t.pv}</span><span class="stat"><em>PF</em>${t.pf}</span><span class="stat"><em>ATQ</em>${esc(t.atq)}</span></span>
+    <span class="atk">${esc(t.atk)} · Experiências: ${esc(t.exp)}</span>
+    <span class="more">Ver habilidades ▾</span></summary>
+    <ul class="abil">${ab}</ul></details>`;
+}
+const byId = Object.fromEntries(N.map(n=>[n.id,n]));
+const svg = document.getElementById("map");
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs={}) => { const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; };
+
+for(let r=1;r<=6;r++){ const t=el("text",{x:8,y:Y[r]+4,class:"rowlabel"}); t.textContent=r; svg.appendChild(t); }
+const star=el("text",{x:8,y:Y[7]+4,class:"rowlabel"}); star.textContent="★"; svg.appendChild(star);
+
+const edgeEls = E.map(([a,b])=>{
+  const A=byId[a],B=byId[b];
+  const l=el("line",{x1:A.x,y1:Y[A.row],x2:B.x,y2:Y[B.row],class:"edge"});
+  l.dataset.a=a; l.dataset.b=b; svg.appendChild(l); return l;
+});
+const nodeEls = {};
+for(const n of N){
+  const t=TYPES[n.type];
+  const g=el("g",{class:"node",tabindex:"0",role:"button","aria-label":`${n.reveal?"Mistério ("+n.reveal+")":t.name}: ${n.title}`});
+  const r = n.type==="B" ? 19 : 13;
+  g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r:r+5,class:"ring"}));
+  g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r,class:"body",style:`fill:var(--panel-2);stroke:${t.color}`}));
+  g.appendChild(el("circle",{cx:n.x,cy:Y[n.row],r:r-3,style:`fill:${t.color};opacity:.35;pointer-events:none`}));
+  const tx=el("text",{x:n.x,y:Y[n.row]+1}); tx.textContent=t.letter||n.type; if(n.type==="B") tx.setAttribute("font-size","20"); g.appendChild(tx);
+  g.addEventListener("click",()=>select(n.id));
+  g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); select(n.id);} });
+  svg.appendChild(g); nodeEls[n.id]=g;
+}
+
+const detail=document.getElementById("detail");
+function render(n){
+  const t=TYPES[n.type];
+  let h=`<div class="dhead"><span class="badge" style="background:${t.color}">${n.reveal?"Mistério → "+esc(n.reveal):t.name}${n.code&&n.code!==t.name?" · "+esc(n.code):""}</span>
+    <h2 class="dtitle">${esc(n.title)}</h2>
+    <div class="meta">Linha ${n.row===7?"★":n.row} · nó da ${esc(n.pos)}</div></div>`;
+  if(n.body) h+=`<p class="prose">${esc(n.body)}</p>`;
+  if(n.clue) h+=`<div class="block memento"><h3>${esc(n.clue.h1)}</h3><p class="prose">${esc(n.clue.intro)}</p><h3>${esc(n.clue.h2)}</h3><ul class="notes">${n.clue.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="prose foot">${esc(n.clue.gm)}</p></div>`;
+  if(n.comp){
+    h+=`<div class="block"><h3>Composição</h3><ul class="comp">${n.comp.map(([a,p])=>`<li><span>${esc(a)}</span><span>${p} PB</span></li>`).join("")}<li class="total"><span>Total</span><span>${esc(n.total)} PB</span></li></ul></div>`;
+  }
+  if(n.loot) h+=`<div class="block"><h3>${n.type==="B"?"Recompensa":"Tesouro"}</h3><ul class="notes">${n.loot.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  if(n.notes) h+=`<div class="block"><h3>Como usar</h3><ul class="notes">${n.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  const tk=threatsOf(n);
+  if(tk.length) h+=`<div class="block"><h3>${n.type==="Q"?"Ameaças possíveis":"Fichas das ameaças"}</h3><div class="threats">${tk.map(threatCard).join("")}</div></div>`;
+  h+=`<div class="block"><h3>Mapas e cenas</h3><div class="maps">${n.maps.map(m=>`<div class="mapref"><span class="k">${esc(m.k)}</span><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)} ↗</a><span class="v">Variante: ${esc(m.v)}</span></div>`).join("")}</div></div>`;
+  detail.innerHTML=h;
+}
+function select(id){
+  for(const k in nodeEls) nodeEls[k].classList.toggle("sel",k===id);
+  document.querySelectorAll("#rows tr").forEach(tr=>tr.classList.toggle("sel",tr.dataset.id===id));
+  render(byId[id]);
+  try{ localStorage.setItem("andar4-no",id); }catch(e){}
+}
+
+let activePath=null;
+const pathnote=document.getElementById("pathnote");
+document.querySelectorAll(".paths button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const p=btn.dataset.path;
+    activePath = activePath===p ? null : p;
+    document.querySelectorAll(".paths button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.path===activePath)));
+    const set = activePath ? PATHS[activePath].nodes : null;
+    edgeEls.forEach(l=>{
+      const on = set && set.some((id,i)=> i<set.length-1 && set[i]===l.dataset.a && set[i+1]===l.dataset.b);
+      l.classList.toggle("on",!!on);
+    });
+    for(const k in nodeEls) nodeEls[k].classList.toggle("dim", !!set && !set.includes(k));
+    pathnote.textContent = activePath ? PATHS[activePath].note : "Escolha um caminho para destacá-lo no mapa.";
+  });
+});
+
+const rows=document.getElementById("rows");
+const order=[...N].sort((a,b)=>a.row-b.row||a.x-b.x);
+for(const n of order){
+  const tr=document.createElement("tr"); tr.dataset.id=n.id; tr.tabIndex=0;
+  const m=n.maps[0];
+  tr.innerHTML=`<td class="mono">${n.row===7?"★":n.row}</td><td><span class="badge" style="background:${TYPES[n.type].color}">${TYPES[n.type].letter||n.type}</span></td><td>${n.code?esc(n.code)+" · ":""}${n.reveal?esc(n.reveal)+" · ":""}${esc(n.title)}</td><td class="mono">${n.total?esc(n.total):"—"}</td><td><a href="${m.url}" target="_blank" rel="noopener">${esc(m.name)}</a></td><td>${esc(m.v)}</td>`;
+  tr.addEventListener("click",e=>{ if(e.target.closest("a")) return; select(n.id); detail.scrollIntoView({behavior:"smooth",block:"nearest"}); });
+  tr.addEventListener("keydown",e=>{ if(e.key==="Enter"){ select(n.id); } });
+  rows.appendChild(tr);
+}
+
+document.getElementById("visions").innerHTML = VISIONS.map(([v,s],i)=>`<li><span class="die">${i+1}</span><span>${esc(v)}<small>${esc(s)}</small></span></li>`).join("");
+
+let start="b";
+try{ const s=localStorage.getItem("andar4-no"); if(s && byId[s]) start=s; }catch(e){}
+select(start);
+</script>
+
+</body>
+</html>
