@@ -275,6 +275,10 @@
         "NoPermission": "You do not have permission to see this rune's journal."
       }
     },
+    "RingsMap": {
+      "Title": "Twelve Rings Staff Directory",
+      "Open": "Twelve Rings Staff Directory"
+    },
     "Dock": {
       "Minimize": "Minimise",
       "Hint": "click to open; drag to move or pin to a corner"

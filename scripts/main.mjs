@@ -13,11 +13,13 @@ import { announceVariant, registerVariantHooks } from './variants.mjs';
 import { registerVitalsWidget } from './widgets/party-vitals.mjs';
 import { countdownsApi, registerCountdownsWidget } from './widgets/countdowns.mjs';
 import { registerSigils, sigilsApi } from './widgets/sigils.mjs';
+import { registerRingsMap, ringsMapApi } from './widgets/rings-map.mjs';
 import builtinThemes from '../themes/index.mjs';
 
 registerVitalsWidget();
 registerCountdownsWidget();
 registerSigils();
+registerRingsMap();
 registerVariantHooks();
 
 const api = {
@@ -29,6 +31,7 @@ const api = {
   setVariant,
   countdowns: countdownsApi,
   sigils: sigilsApi,
+  ringsMap: ringsMapApi,
   getActiveVariant: () => resolveActiveVariant(),
   announceVariant: (id) => announceVariant(id ? getVariants().find((variant) => variant.id === id) : resolveActiveVariant())
 };

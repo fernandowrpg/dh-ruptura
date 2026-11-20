@@ -275,6 +275,10 @@
         "NoPermission": "Você não tem permissão para ver o diário desta runa."
       }
     },
+    "RingsMap": {
+      "Title": "Quadro de Pessoal dos Doze Anéis",
+      "Open": "Quadro de Pessoal dos Doze Anéis"
+    },
     "Dock": {
       "Minimize": "Minimizar",
       "Hint": "clique para abrir; arraste para mover ou prender num canto"

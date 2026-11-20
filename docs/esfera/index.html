@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Os Doze Anéis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#e9ecea;--panel:#fbfcfb;--panel2:#f0f3f1;--line:#c9d1cd;--fg:#1b2523;--muted:#5d6b67;--accent:#1d625d;--accent-fg:#fbfcfb;
+  --anel:#dfe5e2;--anel2:#d4dcd8;--mestre:#7a4b8f;--agente:#a3473d;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.5;
+  padding:32px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+body.embed{padding:16px}
+a{color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;display:grid;gap:20px}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2{font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,36px)}
+h2{font-size:22px}
+p{margin:0}
+.muted{color:var(--muted)}
+header{display:grid;gap:6px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.85fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+/* mapa */
+.mapa{border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:16px}
+.mapa svg{display:block;width:100%;height:auto;max-height:76vh;margin:0 auto}
+.anel{cursor:pointer;stroke:var(--panel);stroke-width:3;transition:fill .15s}
+.anel.par{fill:var(--anel)}.anel.impar{fill:var(--anel2)}
+.anel:hover,.anel:focus-visible{fill:#c3d3cd;outline:none}
+.anel.ativo{fill:var(--accent)}
+.num{font:500 13px "IBM Plex Mono",monospace;fill:var(--muted);pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.anel.ativo+.num{fill:var(--accent-fg)}
+.badge circle{fill:var(--fg);stroke:var(--panel);stroke-width:2}
+.badge text{font:500 11px "IBM Plex Mono",monospace;fill:var(--panel);text-anchor:middle;dominant-baseline:central}
+.badge{pointer-events:none}
+.selo{fill:var(--panel);stroke:var(--fg);stroke-width:1.5}
+.selo-t{font:500 10px "IBM Plex Mono",monospace;letter-spacing:.18em;fill:var(--fg);text-anchor:middle;pointer-events:none}
+.fora{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel);color:var(--fg);font:inherit;font-size:14px;cursor:pointer}
+.chip b{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--muted)}
+.chip.gm{border-style:dashed;border-color:var(--mestre)}
+.chip:hover,.chip:focus-visible{border-color:var(--accent);outline:none}
+.chip.ativo{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}.chip.ativo b{color:var(--accent-fg)}
+
+/* painel */
+.painel{border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:18px;display:grid;gap:14px;
+  position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:hidden;grid-template-rows:auto auto auto 1fr}
+@media (max-width:900px){.painel{position:static;max-height:none}}
+.nota{border:1px dashed var(--mestre);border-radius:4px;padding:10px 12px;font-size:14px;display:grid;gap:4px}
+.nota:empty{display:none}
+.nota dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0}
+.nota dt{color:var(--muted)}.nota dd{margin:0}
+.nota .eyebrow{color:var(--mestre)}
+.filtros{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filtros input{flex:1 1 160px;min-width:0;padding:8px 10px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:inherit;font-size:14px}
+.filtros input:focus{outline:none;border-color:var(--accent)}
+.seg{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg[hidden]{display:none}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:7px 10px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--panel2);color:var(--fg)}
+.lista{overflow:auto;display:grid;gap:6px;align-content:start;padding-right:4px;min-height:0}
+.grupo{font:11px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:10px 0 2px}
+.card{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel);color:var(--fg);text-align:left;font:inherit;cursor:pointer;width:100%}
+.card:hover,.card:focus-visible{border-color:var(--accent);outline:none}
+.card.oculto{border-style:dashed;opacity:.8}
+.av{width:40px;height:40px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;
+  font:500 15px "IBM Plex Mono",monospace;color:var(--muted)}
+.card b{display:block;font-weight:500;line-height:1.25}
+.card small{display:block;color:var(--muted);font-size:13px;line-height:1.3}
+.tag{display:inline-block;font:10px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;padding:3px 5px;border-radius:3px;margin-right:6px;border:1px solid currentColor}
+.t-agente{color:var(--agente)}.t-mestre{color:var(--mestre)}
+.vazio-msg{color:var(--muted);padding:12px 0;font-size:14px}
+
+/* detalhe */
+dialog{border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);padding:0;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 48px)}
+dialog::backdrop{background:rgba(27,37,35,.45)}
+.det{padding:22px;display:grid;gap:12px;align-content:start;overflow:auto;max-height:calc(100vh - 48px)}
+.det > dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:15px}
+.det > dl dt{color:var(--muted)}.det > dl dd{margin:0}
+.fechar{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-size:18px;cursor:pointer}
+.fechar:hover{border-color:var(--accent)}
+.ed{display:grid;gap:10px;border:1px dashed var(--mestre);border-radius:4px;padding:12px}
+.ed label{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+.ed label.chk{display:flex;align-items:center;gap:8px;color:var(--fg);font-size:14px}
+.ed input:not([type]),.ed select{padding:7px 9px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:inherit;font-size:14px}
+.ed input:focus,.ed select:focus{outline:none;border-color:var(--accent)}
+.acoes{display:flex;gap:8px;flex-wrap:wrap}
+.acoes button{padding:7px 14px;border-radius:4px;border:1px solid var(--line);background:var(--panel2);color:var(--fg);font:inherit;font-size:14px;cursor:pointer}
+.acoes button.pri{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+code{font-family:"IBM Plex Mono",monospace;font-size:12px;background:var(--panel2);padding:1px 5px;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Domínio do Arconte dos Mistérios · Esfera dos Mistérios</div>
+    <h1>Quadro de Pessoal dos Doze Anéis</h1>
+    <p class="muted">Selecione um anel para consultar a equipe designada. O Anel 1 é o acesso; o Anel 12, o mais interno.</p>
+  </header>
+  <div class="grid">
+    <section>
+      <div class="mapa"><svg id="mapa" viewBox="0 0 800 800" role="group" aria-label="Os Doze Anéis"></svg></div>
+      <div class="fora" id="fora"></div>
+    </section>
+    <aside class="painel" aria-live="polite">
+      <div>
+        <div class="eyebrow" id="p-sub">Todos os anéis</div>
+        <h2 id="p-tit">Equipe da Esfera</h2>
+      </div>
+      <div class="nota" id="p-nota"></div>
+      <div class="filtros">
+        <input id="busca" type="search" placeholder="Buscar nome ou função" aria-label="Buscar">
+        <div class="seg" id="tipos" role="group" aria-label="Tipo" hidden>
+          <button data-t="" class="on">Todos</button><button data-t="funcionario">Equipe</button><button data-t="agente">Agentes</button>
+        </div>
+      </div>
+      <div class="lista" id="lista"></div>
+    </aside>
+  </div>
+</div>
+<dialog id="det"><button class="fechar" id="fechar" aria-label="Fechar">×</button><div class="det" id="det-c"></div></dialog>
+<script src="npcs.js"></script>
+<script>
+const D = window.ESFERA, A = Object.fromEntries(D.aneis.map(a => [a.n, a])), BASE = D.personagens;
+const STATUS = {concluido: "Concluído", "a-fazer": "A fazer", rascunho: "Rascunho"};
+const SEM = "sem", FORA = "fora", CAMPOS = ["org", "anel", "nome", "funcao"];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const url = new URLSearchParams(location.search);
+if (url.has("foundry")) document.body.classList.add("embed");
+
+// Dentro do Foundry, as mudanças do mestre ficam salvas no mundo (configuração dh-ruptura.ringsMap).
+let G = null;
+try { if (window.parent !== window && window.parent.game?.settings) G = window.parent.game; } catch (e) {}
+// Vista do mestre: GM no Foundry, ou ?mestre fora dele. Os jogadores só veem a equipe com nome na Esfera.
+const MESTRE = G ? !!G.user?.isGM : url.has("mestre");
+const EDITA = !!G?.user?.isGM;
+
+let anel = null, tipo = "", busca = "", P = [], O = {};
+const naOrg = p => p.org !== false;
+const semNome = p => p.terrario && p.nome === p.terrario.nome;
+const publico = p => naOrg(p) && p.tipo === "funcionario" && !semNome(p);
+const visivel = p => MESTRE || publico(p);
+const chave = p => naOrg(p) ? (p.anel ?? SEM) : FORA;
+const conta = k => P.filter(p => visivel(p) && chave(p) === k).length;
+
+function carregar() {
+  try { O = JSON.parse(JSON.stringify(G?.settings.get("dh-ruptura", "ringsMap") ?? {})); } catch (e) { O = {}; }
+  P = BASE.map(p => ({...p, ...(O[p.id] || {})}));
+}
+
+const C = 400, R0 = 388, RN = 70, W = (R0 - RN) / 12, NS = "http://www.w3.org/2000/svg";
+function svg(tag, attrs, pai) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  pai?.append(e); return e;
+}
+const circ = r => `M${C - r},${C}a${r},${r} 0 1,0 ${2 * r},0a${r},${r} 0 1,0 ${-2 * r},0Z`;
+const meio = n => R0 - (n - 0.5) * W;
+
+function mapa() {
+  const m = $("#mapa");
+  for (const a of D.aneis) {
+    const ro = R0 - (a.n - 1) * W, ri = ro - W;
+    const p = svg("path", {d: circ(ro) + circ(ri), "fill-rule": "evenodd", tabindex: 0, role: "button",
+      class: `anel ${a.n % 2 ? "impar" : "par"}`, "data-a": a.n, "aria-label": `Anel ${a.n}`}, m);
+    svg("title", {}, p).textContent = MESTRE ? `Anel ${a.n} · ${a.nome}` : `Anel ${a.n}`;
+    svg("text", {x: C, y: C - meio(a.n), class: "num"}, m).textContent = String(a.n).padStart(2, "0");
+    p.addEventListener("click", () => escolher(anel === a.n ? null : a.n));
+    p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); p.dispatchEvent(new Event("click")); } });
+  }
+  svg("circle", {cx: C, cy: C, r: RN - 6, class: "selo"}, m);
+  svg("text", {x: C, y: C + 4, class: "selo-t"}, m).textContent = "ARCONTE";
+  svg("g", {id: "badges"}, m);
+  const chips = [[SEM, "Sem anel designado", ""]];
+  if (MESTRE) chips.push([FORA, "Fora da Organização", "gm"]);
+  for (const [k, rot, cls] of chips) {
+    const b = document.createElement("button");
+    b.className = "chip " + cls; b.dataset.a = k; b.dataset.rot = rot;
+    b.addEventListener("click", () => escolher(anel === k ? null : k));
+    $("#fora").append(b);
+  }
+  if (MESTRE) $("#tipos").hidden = false;
+}
+
+function contagens() {
+  const g = $("#badges"); g.replaceChildren();
+  for (const a of D.aneis) {
+    const n = conta(a.n); if (!n) continue;
+    const ang = (-90 + 22 + a.n * 24) * Math.PI / 180, x = C + meio(a.n) * Math.cos(ang), y = C + meio(a.n) * Math.sin(ang);
+    const b = svg("g", {class: "badge"}, g);
+    svg("circle", {cx: x, cy: y, r: 10}, b);
+    svg("text", {x, y}, b).textContent = n;
+  }
+  document.querySelectorAll(".chip").forEach(b => b.innerHTML = `${esc(b.dataset.rot)} <b>${conta(b.dataset.a)}</b>`);
+}
+
+function escolher(k) {
+  anel = k;
+  document.querySelectorAll("[data-a]").forEach(e => e.classList.toggle("ativo", e.dataset.a === String(k)));
+  const a = A[k];
+  $("#p-sub").textContent = a ? "Quadro de pessoal" : k === SEM ? "Quadro de pessoal" : k === FORA ? "Só o mestre vê" : "Todos os anéis";
+  $("#p-tit").textContent = a ? `Anel ${String(a.n).padStart(2, "0")}` : k === SEM ? "Sem anel designado" : k === FORA ? "Fora da Organização" : "Equipe da Esfera";
+  let nota = "";
+  if (MESTRE && a) nota = `<div class="eyebrow">Só o mestre vê</div><dl><dt>Andar</dt><dd>${esc(a.nome)}</dd><dt>Amarra</dt><dd>${esc(a.amarra)}</dd>
+    <dt>Boss</dt><dd>${esc(a.boss)}</dd><dt>Nível</dt><dd>${esc(a.nivel)}</dd>
+    <dt>Status</dt><dd>${STATUS[a.status]}${a.pagina ? ` · <a href="${a.pagina}">mapa do andar</a>` : ""}</dd></dl>`;
+  else if (MESTRE && k === FORA) nota = `<div class="eyebrow">Só o mestre vê</div><p>Personagens da tabela do Notion sem nome no Arco 1, pela região no Terrário. ${EDITA ? "Abra alguém e marque <b>Na Organização</b>." : "Para mudar, edite <code>docs/esfera/npcs.js</code> ou use o mapa no Foundry."}</p>`;
+  else if (MESTRE && k === null) nota = `<div class="eyebrow">Só o mestre vê</div><p>Linhas tracejadas não aparecem para os jogadores: agentes e quem ainda não tem nome na Esfera.${EDITA ? " Clique em alguém para mudar anel, nome ou função." : ""}</p>`;
+  $("#p-nota").innerHTML = nota;
+  render();
+}
+
+function card(p) {
+  const oculto = MESTRE && !publico(p);
+  const sub = naOrg(p) ? (p.funcao || "") : (p.terrario?.regiao || "");
+  return `<button class="card${oculto ? " oculto" : ""}" data-id="${p.id}">
+    <span class="av">${esc(p.nome.replace(/^(O|Os|A|As) /, "")[0])}</span>
+    <span><b>${esc(p.nome)}</b><small>${MESTRE && p.tipo === "agente" ? `<span class="tag t-agente">Agente</span>` : ""}${MESTRE && naOrg(p) && semNome(p) ? `<span class="tag t-mestre">sem nome na Esfera</span>` : ""}${esc(sub)}</small></span></button>`;
+}
+
+function render() {
+  const q = busca.trim().toLowerCase();
+  const vis = P.filter(p => visivel(p) && (anel === null ? naOrg(p) : chave(p) === anel) && (!tipo || p.tipo === tipo)
+    && (!q || [p.nome, p.funcao, MESTRE && p.terrario?.nome, MESTRE && p.terrario?.regiao].join(" ").toLowerCase().includes(q)));
+  let h = "";
+  if (anel === FORA) {
+    const regs = [...new Set(vis.map(p => p.terrario?.regiao || "Sem região"))];
+    for (const r of regs) { const g = vis.filter(p => (p.terrario?.regiao || "Sem região") === r); h += `<div class="grupo">${esc(r)} · ${g.length}</div>` + g.map(card).join(""); }
+  } else if (anel !== null) h = vis.map(card).join("");
+  else for (const k of [SEM, ...D.aneis.map(a => a.n)]) {
+    const g = vis.filter(p => chave(p) === k);
+    if (g.length) h += `<div class="grupo">${k === SEM ? "Sem anel designado" : `Anel ${String(k).padStart(2, "0")}`} · ${g.length}</div>` + g.map(card).join("");
+  }
+  $("#lista").innerHTML = h || `<p class="vazio-msg">${anel === FORA ? "Todos já estão na Organização." : "Nenhum funcionário designado para este anel."}</p>`;
+}
+
+function detalhe(id) {
+  const p = P.find(x => x.id === id), a = A[p.anel], t = p.terrario;
+  const ops = [`<option value="">sem anel designado</option>`, ...D.aneis.map(x => `<option value="${x.n}" ${p.anel === x.n ? "selected" : ""}>Anel ${x.n} · ${esc(x.nome)}</option>`)].join("");
+  $("#det-c").innerHTML = `
+    <div class="eyebrow">${naOrg(p) ? "Ficha funcional" : "Fora da Organização"}</div>
+    <h2>${esc(p.nome)}</h2>
+    <dl>${p.funcao ? `<dt>Função</dt><dd>${esc(p.funcao)}</dd>` : ""}
+      ${naOrg(p) ? `<dt>Lotação</dt><dd>${a ? `Anel ${String(a.n).padStart(2, "0")}` : "sem anel designado"}</dd>` : ""}</dl>
+    ${MESTRE && (t || p.descricao || p.tipo === "agente") ? `<div class="nota"><div class="eyebrow">Só o mestre vê</div><dl>
+      ${p.tipo === "agente" ? `<dt>Tipo</dt><dd>Agente (encontro)</dd>` : ""}
+      ${t ? `<dt>No Terrário</dt><dd>${esc(t.nome)} · ${esc(t.regiao)}</dd>` : ""}</dl>
+      ${p.descricao ? `<p>${esc(p.descricao)}</p>` : ""}</div>` : ""}
+    ${EDITA ? `<form class="ed" id="ed">
+      <div class="eyebrow" style="color:var(--mestre)">Editar (mestre)</div>
+      <label class="chk"><input type="checkbox" name="org" ${naOrg(p) ? "checked" : ""}> Na Organização</label>
+      <label>Anel<select name="anel">${ops}</select></label>
+      <label>Nome na Esfera<input name="nome" value="${semNome(p) ? "" : esc(p.nome)}" placeholder="${semNome(p) ? "sem nome: os jogadores não veem" : ""}"></label>
+      <label>Função<input name="funcao" value="${esc(p.funcao || "")}" placeholder="Ex.: Supervisora do Anel 03"></label>
+      <div class="acoes"><button type="submit" class="pri">Salvar</button>
+        ${O[p.id] ? `<button type="button" id="desfaz">Voltar ao arquivo</button>` : ""}</div>
+    </form>` : ""}`;
+  $("#ed")?.addEventListener("submit", e => { e.preventDefault(); salvar(p.id, new FormData(e.target)); });
+  $("#desfaz")?.addEventListener("click", () => salvar(p.id, null));
+  $("#det").showModal();
+}
+
+async function salvar(id, f) {
+  const b = BASE.find(x => x.id === id);
+  if (!f) delete O[id];
+  else {
+    const nome = f.get("nome").trim();
+    const novo = {org: f.get("org") === "on", anel: f.get("anel") ? Number(f.get("anel")) : null,
+      nome: nome || (b.terrario?.nome ?? b.nome), funcao: f.get("funcao").trim() || null};
+    const dif = {};
+    for (const c of CAMPOS) if (novo[c] !== ((c === "org" ? naOrg(b) : b[c]) ?? null)) dif[c] = novo[c];
+    if (Object.keys(dif).length) O[id] = dif; else delete O[id];
+  }
+  try { await G.settings.set("dh-ruptura", "ringsMap", O); }
+  catch (e) { alert("Não foi possível salvar no mundo: " + e.message); return; }
+  $("#det").close();
+  recarregar();
+}
+
+// Chamado pela janela do Foundry quando o mestre salva uma mudança.
+window.recarregar = () => { carregar(); contagens(); render(); };
+
+carregar(); mapa(); contagens(); escolher(null);
+$("#lista").addEventListener("click", e => { const c = e.target.closest(".card"); if (c) detalhe(c.dataset.id); });
+$("#tipos").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  tipo = b.dataset.t; document.querySelectorAll("#tipos button").forEach(x => x.classList.toggle("on", x === b)); render();
+});
+$("#busca").addEventListener("input", e => { busca = e.target.value; render(); });
+$("#fechar").addEventListener("click", () => $("#det").close());
+$("#det").addEventListener("click", e => { if (e.target === $("#det")) $("#det").close(); });
+</script>
+</body>
+</html>
