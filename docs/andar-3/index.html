@@ -247,7 +247,18 @@ const N = [
     maps:[{k:"Mapa",name:"Lair of the Many Eyed God",url:CZ+"maps/lair-of-the-many-eyed-god",v:"Night"},{k:"Cena",name:"Lair of the Many Eyed God",url:CZ+"scenes/lair-of-the-many-eyed-god",v:"Sleepy (dormindo) ou Suspicious"}]},
   {id:"q5b",type:"Q",reveal:"Descanso",row:5,x:197,pos:"centro-direita",title:"Arquivo dos Experimentos",
     body:"O mistério se revela uma sala segura: o arquivo onde a Organização guarda as fichas dos Experimentos fracassados. Como o mapa não tem descanso antes do boss, este nó cumpre esse papel.",
-    notes:["Descanso curto sem risco (o mestre recebe 1d4 Medo, como sempre).","As fichas dão vantagem contra os Experimentos fracassados no Arsenal ou no Depósito.","Mais uma pista da Organização."],
+    clue:{
+      intro:"Os Experimentos fracassados não são monstros da Esfera. São gente: membros de expedições anteriores que a Organização mandou abrir o cofre da Caixa de Batalha. Quem falhou ficou preso no Cofre, e a sombra de Tenebra, que imita tudo, foi copiando o corpo deles até sobrar uma coisa torta que ainda repete os gestos do antigo cargo. Por isso eles têm Imitador +3 e resistem a dano físico.",
+      items:[
+        "Cada ficha tem um retrato, um número de lote e o carimbo do Departamento de Refinamento. Nenhuma tem nome, só \"funcionário\" e um número, igual ao crachá do supervisor no Arsenal.",
+        "Objetivo: \"abrir o cofre e recuperar a face 6 do cubo\". A Organização sabe que o sigilo está na Caixa de Batalha e quer pegá-lo.",
+        "Temperamento designado: Folia. O grupo ainda não tem como entender isso. Os andares 4 a 6 trazem fichas de Aflição, Pavor e Malícia.",
+        "Resultado: falha. Status: \"devolvido à Esfera\". A Organização não resgata quem falha: deixa no Cofre e manda a próxima equipe.",
+        "A última ficha da pilha está em branco. Só o campo Equipe está preenchido, com a data em que o grupo entrou na Esfera. Os PJs são o próximo lote."
+      ],
+      gm:"Só o mestre sabe: a Organização patrocina as expedições para soltar, andar por andar, as amarras mentais do Demiurgo. O arquivo não revela isso. Ele só mostra que alguém manda equipes ao Cofre, descarta quem falha e que o grupo é a equipe da vez. A ficha em branco prepara o crachá com o nome de um PJ no fim do andar 6."
+    },
+    notes:["Descanso curto sem risco (o mestre recebe 1d4 Medo, como sempre).","Ler as fichas: as anotações de campo dizem onde cada Experimento falhou (\"não vira o pescoço para a esquerda\", \"perde o equilíbrio quando empurrado\"). O grupo tem vantagem nos ataques contra Experimentos fracassados no nó seguinte: Arsenal (N4) ou Depósito (N3).","Opcional: com Instinto 13, um PJ reconhece um rosto num dos retratos, alguém de uma expedição anterior que ele conheceu (gancho pessoal)."],
     maps:[{k:"Mapa",name:"Monster Genealogy Lab",url:CZ+"maps/monster-genealogy-lab",v:"Night ou Lapse in Tenure"}]},
   {id:"m5",type:"M",row:5,x:262,pos:"direita",code:"N5",title:"Barricada de Carroças",
     comp:[["Mimicarroça",4],["Mímico gigante",2],["2 Mimibarris¹",4],["Mimijoias¹",2],["Crânio do caos",2],["4 Olhos solitários¹",1]],total:"15 (14+1)",
@@ -405,6 +416,7 @@ function render(n){
     <h2 class="dtitle">${esc(n.title)}</h2>
     <div class="meta">Linha ${n.row===7?"★":n.row} · nó da ${esc(n.pos)}</div></div>`;
   if(n.body) h+=`<p class="prose">${esc(n.body)}</p>`;
+  if(n.clue) h+=`<div class="block"><h3>A pista: quem são os Experimentos</h3><p class="prose">${esc(n.clue.intro)}</p><h3>O que está nas fichas</h3><ul class="notes">${n.clue.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="prose foot">${esc(n.clue.gm)}</p></div>`;
   if(n.comp){
     h+=`<div class="block"><h3>Composição</h3><ul class="comp">${n.comp.map(([a,p])=>`<li><span>${esc(a)}</span><span>${p} PB</span></li>`).join("")}<li class="total"><span>Total</span><span>${esc(n.total)} PB</span></li></ul></div>`;
   }
