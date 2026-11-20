@@ -183,6 +183,24 @@ await sigils.reveal(true);  // revela o fundo (false volta a velar)
 sigils.list();              // runas encaixadas, por andar
 ```
 
+## Quadro de Pessoal dos Doze Anéis
+
+O botão **Quadro de Pessoal dos Doze Anéis**, nos controles de token, fica disponível para todos.
+Ele abre numa janela o mapa de `docs/esfera`, com a equipe da Organização do Arconte em cada anel.
+
+- Os jogadores veem só quem já tem nome na Esfera, com a função e o anel onde trabalha.
+- O mestre vê também os agentes de cada anel, as notas do andar e quem ainda está fora da
+  Organização. Clicando numa pessoa, ele muda o anel, o nome na Esfera, a função e se ela
+  está na Organização. As mudanças ficam salvas no mundo e atualizam as janelas abertas.
+- A mesma página está no GitHub Pages. Fora do Foundry, `?mestre` no endereço mostra a vista do
+  mestre, só para leitura.
+
+```js
+const { ringsMap } = game.modules.get('dh-ruptura').api;
+ringsMap.open();     // abre o quadro
+ringsMap.changes();  // mudanças feitas pelo mestre, por personagem
+```
+
 Os temas são escuros e forçam o esquema escuro da interface enquanto estão ativos.
 
 ## Estrutura
@@ -201,6 +219,7 @@ scripts/
     countdowns.mjs    Ampulhetas
     sigils.mjs        Encaixe dos Sigilos
     mind.mjs          a mente por trás dos encaixes (SVG)
+    rings-map.mjs     Quadro de Pessoal dos Doze Anéis
 themes/
   index.mjs           lista dos temas embutidos
   _template/          ponto de partida para um tema novo

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+- **Quadro de Pessoal dos Doze Anéis:** novo botão nos controles de token, disponível para todos. Ele abre numa janela o mapa dos doze anéis da Esfera, com a equipe da Organização do Arconte em cada um, num visual corporativo. Os jogadores veem só quem já tem nome na Esfera, com função e lotação.
+- O mestre vê também os agentes de cada anel, as notas do andar e as pessoas da campanha Além da Luz que ainda estão fora da Organização. Ele pode mudar o anel, o nome na Esfera, a função e quem está na Organização. As mudanças ficam salvas no mundo e atualizam as janelas abertas dos jogadores. API `ringsMap` para macros.
+- **Mapa do Terrário** em `docs/terrario` (e no GitHub Pages): os NPCs da campanha Além da Luz por região, com retrato, facção e descrição. As artes ficam no módulo, em `docs/terrario/arte`.
+
 ## 0.10.0
 
 - **Encaixe dos Sigilos:** tela com um encaixe por andar da Esfera, em anel, para as runas criadas pelo Sigil Generator. Os jogadores arrastam a runa da ficha (ou clicam no encaixe e a escolhem); o mestre grava o encaixe pelo socket, a runa sai do inventário e o chat anuncia. O mestre pode retirar a runa, que volta a quem a encaixou.
