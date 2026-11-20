@@ -140,74 +140,144 @@
         "Label": "Floor 1 — The Ossuary",
         "Kicker": "Floor 1",
         "Title": "The Ossuary",
-        "Subtitle": "Death"
+        "Subtitle": "Death",
+        "Sigil": "Sigil of Death",
+        "Bond": "the fear of death"
       },
       "Teia": {
         "Label": "Floor 2 — The Web of Anansi",
         "Kicker": "Floor 2",
         "Title": "The Web of Anansi",
-        "Subtitle": "Web"
+        "Subtitle": "Web",
+        "Sigil": "Sigil of the Web",
+        "Bond": "the stories he told himself"
       },
       "Cofre": {
         "Label": "Floor 3 — The Lying Vault",
         "Kicker": "Floor 3",
         "Title": "The Lying Vault",
-        "Subtitle": "Frolic"
+        "Subtitle": "Frolic",
+        "Sigil": "Sigil of Folly",
+        "Bond": "what he hid"
       },
       "Galeria": {
         "Label": "Floor 4 — The Gallery of Memories",
         "Kicker": "Floor 4",
         "Title": "The Gallery of Memories",
-        "Subtitle": "Woe"
+        "Subtitle": "Woe",
+        "Sigil": "Sigil of Affliction",
+        "Bond": "guilt / pride"
       },
       "Tabuleiro": {
         "Label": "Floor 5 — The Eye's Gameboard",
         "Kicker": "Floor 5",
         "Title": "The Eye's Gameboard",
-        "Subtitle": "Dread"
+        "Subtitle": "Dread",
+        "Sigil": "Sigil of Dread",
+        "Bond": "the fear of nothingness"
       },
       "Cisterna": {
         "Label": "Floor 6 — The Cistern of Will",
         "Kicker": "Floor 6",
         "Title": "The Cistern of Will",
-        "Subtitle": "Malice"
+        "Subtitle": "Malice",
+        "Sigil": "Sigil of Malice",
+        "Bond": "his own will"
       },
       "Corte": {
         "Label": "Floor 7 — The Court of Endless Night",
         "Kicker": "Floor 7",
         "Title": "The Court of Endless Night",
-        "Subtitle": "Hunger"
+        "Subtitle": "Hunger",
+        "Sigil": "Sigil of Hunger",
+        "Bond": "the will to go on"
       },
       "Cacada": {
         "Label": "Floor 8 — The Moonless Hunt",
         "Kicker": "Floor 8",
         "Title": "The Moonless Hunt",
-        "Subtitle": "Instinct"
+        "Subtitle": "Instinct",
+        "Sigil": "Sigil of Instinct",
+        "Bond": "the animal that survives"
       },
       "Departamento": {
         "Label": "Floor 9 — The Department",
         "Kicker": "Floor 9",
         "Title": "The Department",
-        "Subtitle": "Order"
+        "Subtitle": "Order",
+        "Sigil": "Sigil of Order",
+        "Bond": "obedience"
       },
       "Teatro": {
         "Label": "Floor 10 — The Yellow Theater",
         "Kicker": "Floor 10",
         "Title": "The Yellow Theater",
-        "Subtitle": "Reason"
+        "Subtitle": "Reason",
+        "Sigil": "Sigil of Reason",
+        "Bond": "sanity"
       },
       "Tribunal": {
         "Label": "Floor 11 — The Tribunal of the Furies",
         "Kicker": "Floor 11",
         "Title": "The Tribunal of the Furies",
-        "Subtitle": "Guilt"
+        "Subtitle": "Guilt",
+        "Sigil": "Sigil of Guilt",
+        "Bond": "judgement"
       },
       "Olho": {
         "Label": "Floor 12 — The Eye Behind Everything",
         "Kicker": "Floor 12",
         "Title": "The Eye Behind Everything",
-        "Subtitle": "Consciousness"
+        "Subtitle": "Consciousness",
+        "Sigil": "Sigil of Consciousness",
+        "Bond": "the Demiurge's \"self\""
       }
+    },
+    "Sigils": {
+      "Title": "Sigil Sockets",
+      "Open": "Sigil Sockets",
+      "Floor": "Floor {floor}",
+      "Empty": "empty socket",
+      "EmptyHint": "Empty socket. Drag a rune here or click to choose one.",
+      "Unreached": "A socket for a floor you have not reached yet.",
+      "Hint": "Drag a rune from an inventory onto a socket, or click an empty socket. Hover a socket to see which floor it belongs to.",
+      "ArcOne": "Arc I",
+      "ArcTwo": "Arc II",
+      "Tally": "sigils socketed",
+      "Reveal": "Reveal the background",
+      "Veil": "Veil the background",
+      "RevealHint": "The party realises what lies behind the sockets. Everyone sees the reveal.",
+      "VeilHint": "Hide what lies behind the sockets again.",
+      "ShowAll": "Show to everyone",
+      "ShowAllHint": "Opens this screen for every connected player.",
+      "Remove": "Remove the rune",
+      "RemoveConfirm": "Remove {name} from floor {floor}? It goes back to {target}.",
+      "RemoveConfirmKeep": "Remove {name} from floor {floor}? The item stays where it was.",
+      "ToDirectory": "the Items directory",
+      "Directory": "Items directory",
+      "Pick": "Socket a rune",
+      "PickHint": "Choose the rune for the floor {floor} socket.",
+      "PickButton": "Socket",
+      "NoRunes": "None of your characters carries a rune.",
+      "ChatPlaced": "socketed {rune} on floor {floor}.",
+      "PlacedBy": "Socketed by {user}.",
+      "PlacedByActor": "Socketed by {actor} ({user}).",
+      "GmLine": "GM: {sigil} · bond: {bond}",
+      "Problem": {
+        "NoSlot": "That socket does not exist.",
+        "Occupied": "That socket already holds a rune.",
+        "NoItem": "Item not found.",
+        "NotRune": "Only Sigil Generator runes fit the sockets.",
+        "NotOwner": "You can only socket runes from your own characters' inventories.",
+        "AlreadyPlaced": "That rune is already socketed on floor {floor}.",
+        "NeedGM": "A GM must be connected to socket the rune.",
+        "NoJournal": "This rune's journal was not found.",
+        "NoPermission": "You do not have permission to see this rune's journal."
+      }
+    },
+    "Dock": {
+      "Minimize": "Minimise",
+      "Hint": "click to open; drag to move or pin to a corner"
     }
   }
 }

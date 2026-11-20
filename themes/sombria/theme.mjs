@@ -12,6 +12,6 @@ export default {
     'styles/daggerheart.css',
     'styles/widgets.css'
   ],
-  widgets: ['party-vitals', 'countdowns'],
+  widgets: ['party-vitals', 'countdowns', 'sigils'],
   variants: floors
 };

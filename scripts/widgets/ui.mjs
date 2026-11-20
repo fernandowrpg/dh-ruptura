@@ -1,5 +1,6 @@
 // Peças comuns das janelas flutuantes do módulo (Vigília, Inimigos, Ampulhetas).
 import { MODULE_ID } from '../theme-manager.mjs';
+import { setMinimized } from './dock.mjs';
 
 export function setting(key, fallback) {
   try {
@@ -63,16 +64,20 @@ export function enableDrag(target, handle, save) {
   });
 }
 
-/** Cabeçalho de painel: título, botão de recolher e alça de arrasto. */
-export function buildHeader(target, titleKey, save) {
+/**
+ * Cabeçalho de painel: título, botão de minimizar e alça de arrasto.
+ * Minimizado, o painel vira um ícone flutuante (ver dock.mjs); `dock` diz qual.
+ */
+export function buildHeader(target, titleKey, save, dock) {
   const header = el('header', 'rv-header');
   header.append(el('h3', 'rv-title', game.i18n.localize(titleKey)));
+  const label = game.i18n.localize('RUPTURA.Dock.Minimize');
   const toggle = el('button', 'rv-toggle');
   toggle.type = 'button';
-  toggle.setAttribute('aria-label', game.i18n.localize('RUPTURA.Vitals.Toggle'));
-  toggle.title = game.i18n.localize('RUPTURA.Vitals.Toggle');
-  toggle.append(icon('fa-chevron-up'));
-  toggle.addEventListener('click', () => save({ collapsed: target.classList.toggle('collapsed') }));
+  toggle.setAttribute('aria-label', label);
+  toggle.title = label;
+  toggle.append(icon('fa-minus'));
+  toggle.addEventListener('click', () => setMinimized(target, true, dock, save));
   header.append(toggle);
   enableDrag(target, header, save);
   return header;

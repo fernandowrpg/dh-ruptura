@@ -1,20 +1,22 @@
 // Andares da Esfera dos Mistérios: as variantes do tema Sombria.
 // Cada andar troca paleta, recorte, textura e fonte dos títulos (styles/floors.css).
 // O mestre escolhe o andar do mundo nas configurações ou um andar por cena.
+// Cada andar também guarda a cor de destaque e o sigilo que o boss libera
+// (usados na tela de Encaixe dos Sigilos).
 
 const FLOORS = [
-  ['ossario', 'Ossario', 'fa-skull'],
-  ['teia', 'Teia', 'fa-spider'],
-  ['cofre', 'Cofre', 'fa-vault'],
-  ['galeria', 'Galeria', 'fa-ghost'],
-  ['tabuleiro', 'Tabuleiro', 'fa-chess-board'],
-  ['cisterna', 'Cisterna', 'fa-water'],
-  ['corte', 'Corte', 'fa-droplet'],
-  ['cacada', 'Cacada', 'fa-moon'],
-  ['departamento', 'Departamento', 'fa-building'],
-  ['teatro', 'Teatro', 'fa-masks-theater'],
-  ['tribunal', 'Tribunal', 'fa-scale-balanced'],
-  ['olho', 'Olho', 'fa-eye']
+  ['ossario', 'Ossario', 'fa-skull', '#7fe0a6'],
+  ['teia', 'Teia', 'fa-spider', '#e8a33c'],
+  ['cofre', 'Cofre', 'fa-vault', '#f0b429'],
+  ['galeria', 'Galeria', 'fa-ghost', '#8fb8ff'],
+  ['tabuleiro', 'Tabuleiro', 'fa-chess-board', '#ff6a2b'],
+  ['cisterna', 'Cisterna', 'fa-water', '#2fd6c8'],
+  ['corte', 'Corte', 'fa-droplet', '#d4243f'],
+  ['cacada', 'Cacada', 'fa-moon', '#9cc3e6'],
+  ['departamento', 'Departamento', 'fa-building', '#5fd3a6'],
+  ['teatro', 'Teatro', 'fa-masks-theater', '#ffd400'],
+  ['tribunal', 'Tribunal', 'fa-scale-balanced', '#e0623a'],
+  ['olho', 'Olho', 'fa-eye', '#ff2e88']
 ];
 
 /**
@@ -40,10 +42,13 @@ const COUNTDOWNS = {
   ]
 };
 
-export default FLOORS.map(([id, key, icon], index) => ({
+export default FLOORS.map(([id, key, icon, color], index) => ({
   id,
   floor: index + 1,
   icon,
+  color,
+  sigil: `RUPTURA.Floors.${key}.Sigil`,
+  bond: `RUPTURA.Floors.${key}.Bond`,
   label: `RUPTURA.Floors.${key}.Label`,
   kicker: `RUPTURA.Floors.${key}.Kicker`,
   title: `RUPTURA.Floors.${key}.Title`,

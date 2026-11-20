@@ -140,74 +140,144 @@
         "Label": "Andar 1 — O Ossário",
         "Kicker": "Andar 1",
         "Title": "O Ossário",
-        "Subtitle": "Morte"
+        "Subtitle": "Morte",
+        "Sigil": "Sigilo da Morte",
+        "Bond": "o medo da morte"
       },
       "Teia": {
         "Label": "Andar 2 — A Teia de Anansi",
         "Kicker": "Andar 2",
         "Title": "A Teia de Anansi",
-        "Subtitle": "Teia"
+        "Subtitle": "Teia",
+        "Sigil": "Sigilo da Teia",
+        "Bond": "as histórias que contou a si mesmo"
       },
       "Cofre": {
         "Label": "Andar 3 — O Cofre que Mente",
         "Kicker": "Andar 3",
         "Title": "O Cofre que Mente",
-        "Subtitle": "Folia"
+        "Subtitle": "Folia",
+        "Sigil": "Sigilo da Folia",
+        "Bond": "o que ele escondeu"
       },
       "Galeria": {
         "Label": "Andar 4 — A Galeria das Lembranças",
         "Kicker": "Andar 4",
         "Title": "A Galeria das Lembranças",
-        "Subtitle": "Aflição"
+        "Subtitle": "Aflição",
+        "Sigil": "Sigilo da Aflição",
+        "Bond": "a culpa / o orgulho"
       },
       "Tabuleiro": {
         "Label": "Andar 5 — O Tabuleiro do Olho",
         "Kicker": "Andar 5",
         "Title": "O Tabuleiro do Olho",
-        "Subtitle": "Pavor"
+        "Subtitle": "Pavor",
+        "Sigil": "Sigilo do Pavor",
+        "Bond": "o medo do nada"
       },
       "Cisterna": {
         "Label": "Andar 6 — A Cisterna da Vontade",
         "Kicker": "Andar 6",
         "Title": "A Cisterna da Vontade",
-        "Subtitle": "Malícia"
+        "Subtitle": "Malícia",
+        "Sigil": "Sigilo da Malícia",
+        "Bond": "a vontade própria"
       },
       "Corte": {
         "Label": "Andar 7 — A Corte da Noite Eterna",
         "Kicker": "Andar 7",
         "Title": "A Corte da Noite Eterna",
-        "Subtitle": "Fome"
+        "Subtitle": "Fome",
+        "Sigil": "Sigilo da Fome",
+        "Bond": "o desejo de continuar"
       },
       "Cacada": {
         "Label": "Andar 8 — A Caçada sem Lua",
         "Kicker": "Andar 8",
         "Title": "A Caçada sem Lua",
-        "Subtitle": "Instinto"
+        "Subtitle": "Instinto",
+        "Sigil": "Sigilo do Instinto",
+        "Bond": "o animal que sobrevive"
       },
       "Departamento": {
         "Label": "Andar 9 — O Departamento",
         "Kicker": "Andar 9",
         "Title": "O Departamento",
-        "Subtitle": "Ordem"
+        "Subtitle": "Ordem",
+        "Sigil": "Sigilo da Ordem",
+        "Bond": "a obediência"
       },
       "Teatro": {
         "Label": "Andar 10 — O Teatro Amarelo",
         "Kicker": "Andar 10",
         "Title": "O Teatro Amarelo",
-        "Subtitle": "Razão"
+        "Subtitle": "Razão",
+        "Sigil": "Sigilo da Razão",
+        "Bond": "a sanidade"
       },
       "Tribunal": {
         "Label": "Andar 11 — O Tribunal das Fúrias",
         "Kicker": "Andar 11",
         "Title": "O Tribunal das Fúrias",
-        "Subtitle": "Culpa"
+        "Subtitle": "Culpa",
+        "Sigil": "Sigilo da Culpa",
+        "Bond": "o julgamento"
       },
       "Olho": {
         "Label": "Andar 12 — O Olho por Trás de Tudo",
         "Kicker": "Andar 12",
         "Title": "O Olho por Trás de Tudo",
-        "Subtitle": "Consciência"
+        "Subtitle": "Consciência",
+        "Sigil": "Sigilo da Consciência",
+        "Bond": "o \"eu\" do Demiurgo"
       }
+    },
+    "Sigils": {
+      "Title": "Encaixe dos Sigilos",
+      "Open": "Encaixe dos Sigilos",
+      "Floor": "Andar {floor}",
+      "Empty": "encaixe vazio",
+      "EmptyHint": "Encaixe vazio. Arraste uma runa até aqui ou clique para escolher uma.",
+      "Unreached": "Um encaixe de um andar que vocês ainda não alcançaram.",
+      "Hint": "Arraste uma runa do inventário até um encaixe, ou clique num encaixe vazio. Passe o cursor sobre um encaixe para ver de qual andar ele é.",
+      "ArcOne": "Arco I",
+      "ArcTwo": "Arco II",
+      "Tally": "sigilos encaixados",
+      "Reveal": "Revelar o fundo",
+      "Veil": "Velar o fundo",
+      "RevealHint": "O grupo percebe o que está por trás dos encaixes. Todos veem a revelação.",
+      "VeilHint": "Volta a esconder o que está por trás dos encaixes.",
+      "ShowAll": "Mostrar a todos",
+      "ShowAllHint": "Abre esta tela para todos os jogadores conectados.",
+      "Remove": "Retirar a runa",
+      "RemoveConfirm": "Retirar {name} do andar {floor}? Ela volta para {target}.",
+      "RemoveConfirmKeep": "Retirar {name} do andar {floor}? O item continua onde estava.",
+      "ToDirectory": "o diretório de Itens",
+      "Directory": "Diretório de Itens",
+      "Pick": "Encaixar uma runa",
+      "PickHint": "Escolha a runa para o encaixe do andar {floor}.",
+      "PickButton": "Encaixar",
+      "NoRunes": "Nenhuma runa no inventário dos seus personagens.",
+      "ChatPlaced": "encaixou {rune} no andar {floor}.",
+      "PlacedBy": "Encaixada por {user}.",
+      "PlacedByActor": "Encaixada por {actor} ({user}).",
+      "GmLine": "Mestre: {sigil} · amarra: {bond}",
+      "Problem": {
+        "NoSlot": "Esse encaixe não existe.",
+        "Occupied": "Esse encaixe já tem uma runa.",
+        "NoItem": "Item não encontrado.",
+        "NotRune": "Só runas do Sigil Generator cabem nos encaixes.",
+        "NotOwner": "Você só pode encaixar runas do inventário dos seus personagens.",
+        "AlreadyPlaced": "Essa runa já está encaixada no andar {floor}.",
+        "NeedGM": "É preciso um mestre conectado para encaixar a runa.",
+        "NoJournal": "O diário desta runa não foi encontrado.",
+        "NoPermission": "Você não tem permissão para ver o diário desta runa."
+      }
+    },
+    "Dock": {
+      "Minimize": "Minimizar",
+      "Hint": "clique para abrir; arraste para mover ou prender num canto"
     }
   }
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0
+
+- **Encaixe dos Sigilos:** tela com um encaixe por andar da Esfera, em anel, para as runas criadas pelo Sigil Generator. Os jogadores arrastam a runa da ficha (ou clicam no encaixe e a escolhem); o mestre grava o encaixe pelo socket, a runa sai do inventário e o chat anuncia. O mestre pode retirar a runa, que volta a quem a encaixou.
+- O fundo da tela é a mente do Demiurgo: velada até o mestre usar **Revelar o fundo**, quando vira um cérebro com um tentáculo para cada encaixe. Encaixar tem uma animação sutil com o fundo velado e, com ele revelado, o tentáculo se estende até o sigilo e se prende.
+- **Janelas minimizadas viram ícones:** Vigília, Inimigos, Ampulhetas e o Encaixe dos Sigilos, minimizados, viram um ícone redondo que se arrasta pela cena e se prende nos cantos, com um número (Medo, inimigos de pé, ampulhetas, sigilos).
+- **Caveira do Medo redesenhada:** crânio de osso claro (tingido pela cor do andar), com órbitas, nariz, duas fileiras de dentes e mandíbula, usando óculos esportivos envolventes, com lentes espelhadas e detalhes de borracha na cor do andar. No Medo máximo, os óculos voam e a caveira gargalha batendo a mandíbula; com o Medo zerado, ela fica triste, ainda de óculos: o queixo cai e uma lágrima escorre.
+- Cada andar declara a cor, o sigilo e a amarra (`floors.mjs`). API `sigils` para macros; o módulo passa a usar socket.
+
 ## 0.9.0
 
 - **Tokens do andar 4 (A Galeria das Lembranças):** 14 tokens em `tokens/andar-4`, com moldura no tema da Galeria (aro de prata azulada e papel de parede) e tamanho do Foundry no nome do arquivo. O Orgulho e a Ira, que formam o boss, têm aro dourado-pálido e o selo de lágrima da Aflição. Arte do 2-Minute Tabletop.

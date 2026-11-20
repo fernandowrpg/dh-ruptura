@@ -3,6 +3,7 @@
 // O mestre cria, edita e anda com elas; os jogadores veem só as marcadas como visíveis.
 import { MODULE_ID, getVariants, resolveActiveTheme, resolveActiveVariant } from '../theme-manager.mjs';
 import { buildHeader, el, icon, iconButton, place, setting } from './ui.mjs';
+import { hideDockIcon, setDockBadge, setMinimized } from './dock.mjs';
 
 export const WIDGET_ID = 'countdowns';
 const ELEMENT_ID = 'ruptura-countdowns';
@@ -331,6 +332,17 @@ function visibleCountdowns() {
   return canEdit() ? list : list.filter((item) => item.visible);
 }
 
+/** Ícone da janela minimizada: mostra quantas ampulhetas zeraram (ou quantas há). */
+const DOCK = {
+  key: 'countdowns',
+  label: 'RUPTURA.Countdowns.Title',
+  icon: 'fa-hourglass-half',
+  badge: () => {
+    const items = visibleCountdowns();
+    return items.length || '';
+  }
+};
+
 function saveState(change) {
   game.settings.set(MODULE_ID, 'countdownsState', { ...(setting('countdownsState', {}) ?? {}), ...change });
 }
@@ -399,6 +411,7 @@ function renderList() {
     if (list.children[i] !== node) list.insertBefore(node, list.children[i] ?? null);
   });
   while (list.children.length > nodes.length) list.lastElementChild.remove();
+  setDockBadge(DOCK.key, DOCK.badge());
 }
 
 function mount() {
@@ -407,17 +420,18 @@ function mount() {
   element = el('aside', 'ruptura-vitals ruptura-countdowns');
   element.id = ELEMENT_ID;
   element.setAttribute('aria-label', game.i18n.localize('RUPTURA.Countdowns.Title'));
-  element.classList.toggle('collapsed', !!state.collapsed);
   element.classList.toggle('rv-player-view', !canEdit());
-  element.append(buildHeader(element, 'RUPTURA.Countdowns.Title', saveState), el('ul', 'rv-list'));
+  element.append(buildHeader(element, 'RUPTURA.Countdowns.Title', saveState, DOCK), el('ul', 'rv-list'));
   if (canEdit()) element.append(buildFooter());
   document.body.append(element);
   renderPresets();
   renderList();
   place(element, state.left ?? 400, state.top ?? 420);
+  if (state.collapsed) setMinimized(element, true, DOCK, saveState);
 }
 
 function unmount() {
+  hideDockIcon(DOCK.key);
   element?.remove();
   element = null;
   drawn.clear();

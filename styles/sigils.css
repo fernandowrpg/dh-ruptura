@@ -1,0 +1,689 @@
+/* Encaixe dos Sigilos: um encaixe por andar em volta de uma mente.
+   Velada (padrão), a mente é um padrão orgânico distorcido na cor do andar ativo.
+   Revelada pelo mestre (.rs-revealed), vira um cérebro que pulsa, com um tentáculo
+   para cada encaixe: recolhido no encaixe vazio, estendido até o sigilo encaixado.
+   Encaixe novo (.rs-fresh): animação sutil com a mente velada; com ela revelada,
+   o tentáculo cresce até o encaixe, se prende e a runa acende. */
+
+.ruptura-sigils {
+  --rs-flesh: #9a4b86;
+  --rs-flesh-dark: #3a0f33;
+  --rs-gyrus: #b86a98;
+  --rs-ridge: rgba(255, 214, 236, 0.5);
+}
+
+.ruptura-sigils .window-content {
+  padding: 0;
+  overflow: hidden;
+  background: var(--rpt-void, #07050a);
+}
+
+.ruptura-sigils .rs-board {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Palco ---------- */
+
+.ruptura-sigils .rs-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--rpt-accent, #b44dff) 10%, transparent), transparent 62%),
+    radial-gradient(circle at 50% 50%, var(--rpt-abyss, #0d0a12), var(--rpt-void, #050307) 75%);
+}
+
+.ruptura-sigils .rs-mind {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ruptura-sigils .rs-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--rpt-accent, #b44dff) 28%, transparent);
+  stroke-width: 1.5;
+}
+
+.ruptura-sigils .rs-ring-inner {
+  stroke-dasharray: 2 7;
+  opacity: 0.6;
+}
+
+.ruptura-sigils .rs-aura {
+  opacity: 0.35;
+  transition: opacity 2.4s ease;
+}
+
+.ruptura-sigils .rs-revealed .rs-aura {
+  opacity: 0.8;
+}
+
+/* ---------- A mente velada e revelada ---------- */
+
+.ruptura-sigils .rs-brain-veiled {
+  --rs-base: color-mix(in srgb, var(--rpt-accent, #b44dff) 16%, transparent);
+  --rs-sulcus: color-mix(in srgb, var(--rpt-accent, #b44dff) 30%, transparent);
+  --rs-gyrus: color-mix(in srgb, var(--rpt-accent, #b44dff) 22%, transparent);
+  --rs-ridge: color-mix(in srgb, var(--rpt-hot, #ff7ad1) 12%, transparent);
+  opacity: 0.6;
+  transition: opacity 2.6s ease;
+}
+
+.ruptura-sigils .rs-revealed .rs-brain-veiled {
+  opacity: 0;
+}
+
+.ruptura-sigils .rs-brain-clear {
+  --rs-sulcus: var(--rs-flesh-dark);
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 300px 300px;
+  transition: opacity 2.6s ease 0.4s;
+}
+
+.ruptura-sigils .rs-revealed .rs-brain-clear {
+  opacity: 1;
+  animation: rs-throb 5s ease-in-out infinite;
+}
+
+.ruptura-sigils .rs-brain-edge {
+  fill: none;
+  stroke: var(--rs-flesh-dark);
+  stroke-width: 3;
+}
+
+.ruptura-sigils .rs-glow {
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 1.2s ease;
+}
+
+.ruptura-sigils .rs-revealed .rs-glow.rs-set {
+  opacity: 0.7;
+  animation: rs-glow-pulse 3.2s ease-in-out infinite alternate;
+}
+
+.ruptura-sigils .rs-revealed .rs-glow.rs-fresh {
+  animation: rs-glow-wake 2.4s ease-out 1.4s both, rs-glow-pulse 3.2s ease-in-out 3.8s infinite alternate;
+}
+
+/* Todos os sigilos encaixados: a mente toda acende. */
+.ruptura-sigils .rs-complete.rs-revealed .rs-brain-clear {
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--rpt-hot, #ff7ad1) 70%, transparent));
+}
+
+.ruptura-sigils .rs-complete .rs-aura {
+  opacity: 1;
+}
+
+/* ---------- Tentáculos ---------- */
+
+/* Velados, são só veios finos do mesmo padrão. */
+.ruptura-sigils .rs-tendrils {
+  opacity: 0.4;
+  transition: opacity 2.4s ease 0.6s;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendrils {
+  opacity: 1;
+}
+
+.ruptura-sigils .rs-tendril-body {
+  fill: color-mix(in srgb, var(--rpt-accent, #b44dff) 30%, transparent);
+  stroke: none;
+  transition: fill 2s ease;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendril-body {
+  fill: var(--rs-flesh);
+  stroke: var(--rs-flesh-dark);
+  stroke-width: 1.2;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendril.rs-set .rs-tendril-body {
+  fill: color-mix(in srgb, var(--rs-floor) 30%, var(--rs-flesh));
+}
+
+/* A máscara que mostra o tentáculo: recolhido, só o começo; encaixado, inteiro. */
+.ruptura-sigils .rs-grow {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 44;
+  stroke-linecap: round;
+  stroke-dasharray: 100 200;
+  stroke-dashoffset: 77;
+}
+
+.ruptura-sigils .rs-tendril.rs-set .rs-grow {
+  stroke-dashoffset: 0;
+}
+
+/* Revelados, os tentáculos recolhidos tateiam o ar. */
+.ruptura-sigils .rs-tendril:not(.rs-set) .rs-tendril-body {
+  opacity: 0.8;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendril:not(.rs-set) .rs-grow {
+  animation: rs-feel 4.5s ease-in-out calc(var(--rs-order) * -0.7s) infinite;
+}
+
+/* Anéis na pele do tentáculo. */
+.ruptura-sigils .rs-tendril-rings {
+  fill: none;
+  stroke: var(--rs-flesh-dark);
+  stroke-width: 9;
+  stroke-dasharray: 1.2 5.5;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendril-rings {
+  opacity: 0.45;
+}
+
+/* Impulso que sobe do sigilo para a mente. */
+.ruptura-sigils .rs-tendril-spine {
+  fill: none;
+  stroke: var(--rs-floor);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 8 92;
+  opacity: 0;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendril.rs-set .rs-tendril-spine {
+  opacity: 0.95;
+  filter: drop-shadow(0 0 3px var(--rs-floor));
+  animation: rs-impulse 2.6s linear calc(var(--rs-order) * -0.4s) infinite;
+}
+
+.ruptura-sigils .rs-latch {
+  fill: var(--rs-floor);
+  opacity: 0;
+}
+
+/* ---------- Encaixes ---------- */
+
+.ruptura-sigils .rs-socket {
+  --rs-floor: var(--rpt-accent, #b44dff);
+  position: absolute;
+  width: 11.6%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.ruptura-sigils .rs-well {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--rs-floor) 45%, transparent);
+  background:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--rs-floor) 14%, #0b0810), #040306 72%);
+  color: color-mix(in srgb, var(--rs-floor) 60%, transparent);
+  box-shadow: inset 0 0 14px #000000, 0 0 0 4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.ruptura-sigils .rs-well:hover,
+.ruptura-sigils .rs-well:focus-visible {
+  outline: none;
+  border-color: var(--rs-floor);
+  box-shadow: inset 0 0 14px #000000, 0 0 0 4px rgba(0, 0, 0, 0.5), 0 0 16px color-mix(in srgb, var(--rs-floor) 60%, transparent);
+}
+
+.ruptura-sigils .rs-unknown .rs-well {
+  border-color: color-mix(in srgb, var(--rpt-muted, #999999) 22%, transparent);
+  background: radial-gradient(circle at 50% 38%, #0d0b10, #040306 72%);
+}
+
+.ruptura-sigils .rs-floor-icon {
+  font-size: 1.15rem;
+  opacity: 0.5;
+}
+
+.ruptura-sigils .rs-over .rs-well {
+  border-style: dashed;
+  border-color: var(--rs-floor);
+  transform: scale(1.1);
+  box-shadow: inset 0 0 14px #000000, 0 0 22px var(--rs-floor);
+}
+
+.ruptura-sigils .rs-filled .rs-well {
+  border-color: var(--rs-floor);
+  box-shadow: inset 0 0 16px #000000, 0 0 0 4px rgba(0, 0, 0, 0.5), 0 0 14px color-mix(in srgb, var(--rs-floor) 50%, transparent);
+}
+
+/* As runas do Sigil Generator são traços escuros sobre fundo transparente:
+   aqui elas viram máscara e são pintadas com a cor do andar. */
+.ruptura-sigils .rs-rune-glow {
+  width: 84%;
+  height: 84%;
+  display: block;
+  filter:
+    drop-shadow(0 0 0.6px var(--rs-floor))
+    drop-shadow(0 0 0.6px var(--rs-floor))
+    drop-shadow(0 0 5px var(--rs-floor));
+}
+
+.ruptura-sigils .rs-rune {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: color-mix(in srgb, var(--rs-floor) 70%, #ffffff);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.ruptura-sigils .rs-num {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  transform: translateX(-50%);
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--rs-floor) 55%, transparent);
+  background: var(--rpt-void, #050307);
+  color: var(--rpt-soft, #dddddd);
+  font-family: var(--rpt-font-title, serif);
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.ruptura-sigils .rs-unknown .rs-num {
+  border-color: color-mix(in srgb, var(--rpt-muted, #999999) 25%, transparent);
+  color: var(--rpt-faint, #888888);
+}
+
+.ruptura-sigils .rs-remove {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--rpt-iron, #555555);
+  background: var(--rpt-panel, #1b1b20);
+  color: var(--rpt-text, #eeeeee);
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.ruptura-sigils .rs-socket:hover .rs-remove,
+.ruptura-sigils .rs-socket:focus-within .rs-remove {
+  opacity: 1;
+}
+
+.ruptura-sigils .rs-remove:hover,
+.ruptura-sigils .rs-remove:focus-visible {
+  background: var(--rpt-blood, #ff5c7a);
+  color: var(--rpt-ink, #111111);
+}
+
+/* Anel de luz do encaixe novo (as duas versões). */
+.ruptura-sigils .rs-socket::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--rs-floor);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Encaixe novo, mente velada: a runa assenta devagar e um anel se abre. */
+.ruptura-sigils .rs-socket.rs-fresh .rs-rune-glow {
+  animation: rs-settle 1.2s ease-out both;
+}
+
+.ruptura-sigils .rs-socket.rs-fresh::after {
+  animation: rs-ripple 1.4s ease-out 0.35s both;
+}
+
+.ruptura-sigils .rs-stage:not(.rs-revealed) .rs-tendril.rs-fresh {
+  animation: rs-fade 1.6s ease both;
+}
+
+/* Encaixe novo, mente revelada: o tentáculo cresce, prende e a runa acende. */
+.ruptura-sigils .rs-revealed .rs-tendril.rs-fresh .rs-grow {
+  animation: rs-grow 1.5s cubic-bezier(0.55, 0, 0.25, 1) both;
+}
+
+.ruptura-sigils .rs-revealed .rs-tendril.rs-fresh .rs-latch {
+  animation: rs-latch 0.9s ease-out 1.3s both;
+}
+
+.ruptura-sigils .rs-revealed .rs-socket.rs-fresh .rs-well {
+  animation: rs-jolt 0.45s ease-out 1.3s both;
+}
+
+.ruptura-sigils .rs-revealed .rs-socket.rs-fresh .rs-rune-glow {
+  animation: rs-ignite 1.1s ease-out 1.4s both;
+}
+
+.ruptura-sigils .rs-revealed .rs-socket.rs-fresh::after {
+  animation: rs-ripple 1.2s ease-out 1.35s both;
+}
+
+/* O momento da revelação: a aura cresce e os tentáculos dos sigilos já encaixados
+   se estendem, um depois do outro. */
+.ruptura-sigils .rs-revealing .rs-aura {
+  animation: rs-surge 3.2s ease-out both;
+}
+
+.ruptura-sigils .rs-revealing .rs-tendril.rs-set .rs-grow {
+  animation: rs-grow 1.6s cubic-bezier(0.55, 0, 0.25, 1) calc(1.2s + var(--rs-order) * 0.14s) both;
+}
+
+.ruptura-sigils .rs-revealing .rs-tendril.rs-set .rs-latch {
+  animation: rs-latch 0.9s ease-out calc(2.5s + var(--rs-order) * 0.14s) both;
+}
+
+/* ---------- Rótulos, painel e rodapé ---------- */
+
+.ruptura-sigils .rs-arc {
+  position: absolute;
+  font-family: var(--rpt-font-title, serif);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rpt-faint, #888888);
+  pointer-events: none;
+}
+
+.ruptura-sigils .rs-arc-1 {
+  top: 3%;
+  right: 4%;
+}
+
+.ruptura-sigils .rs-arc-2 {
+  bottom: 3%;
+  left: 4%;
+}
+
+.ruptura-sigils .rs-info {
+  min-height: 74px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--rpt-iron, #444444);
+  border-left: 3px solid var(--rs-floor, transparent);
+  background: var(--rpt-abyss, #0d0a12);
+  color: var(--rpt-text, #eeeeee);
+}
+
+.ruptura-sigils .rs-info p {
+  margin: 0 0 2px;
+}
+
+.ruptura-sigils .rs-info-hint,
+.ruptura-sigils .rs-info-meta {
+  color: var(--rpt-muted, #bbbbbb);
+  font-size: 13px;
+}
+
+.ruptura-sigils .rs-info-head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.ruptura-sigils .rs-info-floor {
+  font-family: var(--rpt-font-title, serif);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rs-floor, var(--rpt-accent, #b44dff));
+}
+
+.ruptura-sigils .rs-info-title {
+  font-family: var(--rpt-font-title, serif);
+  font-size: 15px;
+  color: var(--rpt-hot, #ffffff);
+}
+
+.ruptura-sigils .rs-info-rune {
+  font-weight: 700;
+  color: var(--rpt-bright, #ffffff);
+}
+
+.ruptura-sigils .rs-info-gm {
+  margin-top: 4px;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--rpt-subtle, #999999);
+}
+
+.ruptura-sigils .rs-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--rpt-iron, #444444);
+  background: var(--rpt-panel, #151219);
+}
+
+.ruptura-sigils .rs-tally {
+  flex: 1;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--rpt-muted, #bbbbbb);
+  font-size: 13px;
+}
+
+.ruptura-sigils .rs-tally strong {
+  font-family: var(--rpt-font-title, serif);
+  font-size: 20px;
+  color: var(--rpt-hot, #ffffff);
+}
+
+.ruptura-sigils .rs-btn {
+  flex: none;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.ruptura-sigils .rs-reveal[aria-pressed="true"] {
+  border-color: var(--rpt-hot, #ff7ad1);
+}
+
+/* ---------- Escolha da runa e mensagem no chat ---------- */
+
+.ruptura-sigil-picker .rsp-hint {
+  margin: 0 0 6px;
+}
+
+.ruptura-sigil-picker .rsp-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 340px;
+  overflow-y: auto;
+  display: grid;
+  gap: 4px;
+}
+
+.ruptura-sigil-picker .rsp-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 1px solid var(--rpt-iron, #555555);
+  cursor: pointer;
+}
+
+.ruptura-sigil-picker .rsp-option:has(input:checked) {
+  border-color: var(--rs-floor, var(--rpt-accent, #b44dff));
+  background: color-mix(in srgb, var(--rs-floor, #b44dff) 14%, transparent);
+}
+
+.ruptura-sigil-picker .rsp-option input {
+  flex: none;
+  margin: 0;
+}
+
+.ruptura-sigil-picker .rsp-glow,
+.ruptura-sigil-chat .rsc-glow {
+  flex: none;
+  display: block;
+  width: 46px;
+  height: 46px;
+  filter: drop-shadow(0 0 0.6px var(--rs-floor, #e0c6ff)) drop-shadow(0 0 3px var(--rs-floor, #e0c6ff));
+}
+
+.ruptura-sigil-chat .rsc-glow {
+  --rs-floor: var(--rsc-color);
+}
+
+.ruptura-sigil-picker .rsp-rune,
+.ruptura-sigil-chat .rsc-rune {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: color-mix(in srgb, var(--rs-floor, #e0c6ff) 70%, #ffffff);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.ruptura-sigil-picker .rsp-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ruptura-sigil-picker .rsp-name {
+  font-weight: 700;
+}
+
+.ruptura-sigil-picker .rsp-owner {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.ruptura-sigil-chat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ruptura-sigil-chat p {
+  margin: 0;
+}
+
+/* ---------- Animações ---------- */
+
+@keyframes rs-throb {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.018); }
+}
+
+@keyframes rs-glow-pulse {
+  from { opacity: 0.45; }
+  to { opacity: 0.8; }
+}
+
+@keyframes rs-glow-wake {
+  0% { opacity: 0; }
+  35% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes rs-feel {
+  0%, 100% { stroke-dashoffset: 77; }
+  50% { stroke-dashoffset: 69; }
+}
+
+@keyframes rs-impulse {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes rs-grow {
+  0% { stroke-dashoffset: 77; }
+  75% { stroke-dashoffset: -3; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes rs-latch {
+  0% { opacity: 0; r: 3; }
+  35% { opacity: 0.95; r: 16; }
+  100% { opacity: 0; r: 30; }
+}
+
+@keyframes rs-jolt {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.14); }
+  60% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+
+@keyframes rs-settle {
+  0% { opacity: 0; transform: scale(1.35); filter: blur(4px); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rs-ignite {
+  0% { opacity: 0; transform: scale(0.6); }
+  45% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rs-ripple {
+  0% { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+
+@keyframes rs-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rs-surge {
+  0% { opacity: 0.35; }
+  30% { opacity: 1; filter: brightness(1.8); }
+  100% { opacity: 0.8; }
+}
+
+/* "Reduzir efeitos" e quem pede menos movimento: tudo parado, já no estado final. */
+html[data-ruptura-fx="off"] .ruptura-sigils *,
+html[data-ruptura-fx="off"] .ruptura-sigils *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ruptura-sigils *,
+  .ruptura-sigils *::after {
+    animation: none !important;
+  }
+}

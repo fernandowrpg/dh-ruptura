@@ -56,12 +56,9 @@
   box-shadow: none;
 }
 
-.ruptura-vitals.collapsed .rv-toggle i {
-  transform: rotate(180deg);
-}
-
-.ruptura-vitals.collapsed .rv-list {
-  display: none;
+/* Minimizado, o painel some e fica só o ícone flutuante (.ruptura-dock-icon). */
+.ruptura-vitals.collapsed {
+  display: none !important;
 }
 
 .ruptura-vitals .rv-list {
@@ -204,8 +201,7 @@
   border-bottom: 1px solid var(--rpt-iron, #555555);
 }
 
-.ruptura-vitals .rv-fear[hidden],
-.ruptura-vitals.collapsed .rv-fear {
+.ruptura-vitals .rv-fear[hidden] {
   display: none;
 }
 
@@ -240,8 +236,9 @@
   outline: none;
 }
 
+/* Espaço para a mandíbula, que desce além do desenho no Medo zerado e na gargalhada. */
 .ruptura-vitals .rv-fear-label {
-  margin-top: 4px;
+  margin-top: 14px;
   text-align: center;
   font-size: 11px;
   color: var(--rpt-muted, #bbbbbb);
@@ -260,20 +257,32 @@
   overflow: visible;
 }
 
-.ruptura-vitals .rv-bone {
-  fill: var(--rpt-panel, #1c1c21);
-  stroke: var(--rpt-accent, #b44dff);
-  stroke-width: 4;
+/* Osso claro, levemente tingido pela cor de destaque do tema (ou do andar). */
+.ruptura-vitals .rv-skull {
+  --rv-bone: color-mix(in srgb, var(--rpt-text, #eeeeee) 90%, var(--rpt-accent, #b44dff));
 }
 
-.ruptura-vitals .rv-hollow {
+.ruptura-vitals .rv-bone,
+.ruptura-vitals .rv-tooth {
+  fill: var(--rv-bone);
+}
+
+.ruptura-vitals .rv-bone {
+  stroke: var(--rpt-accent, #b44dff);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.ruptura-vitals .rv-hollow,
+.ruptura-vitals .rv-cavity {
   fill: var(--rpt-void, #0c0c0e);
 }
 
-.ruptura-vitals .rv-teeth {
+.ruptura-vitals .rv-temple {
   fill: none;
-  stroke: var(--rpt-accent, #b44dff);
-  stroke-width: 3;
+  stroke: var(--rpt-void, #0c0c0e);
+  stroke-width: 2.6;
+  stroke-linecap: round;
 }
 
 .ruptura-vitals .rv-glow-stop {
@@ -284,15 +293,228 @@
   transition: rx 0.4s ease, ry 0.4s ease, opacity 0.4s ease;
 }
 
+/* Óculos esportivos: armação grafite, lentes espelhadas e detalhes de borracha rosa. */
+.ruptura-vitals .rv-frame {
+  fill: none;
+  stroke: url(#rv-frame);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ruptura-vitals .rv-shine {
+  fill: #ffffff;
+  opacity: 0.32;
+}
+
+.ruptura-vitals .rv-shine-thin {
+  opacity: 0.22;
+}
+
+.ruptura-vitals .rv-streak {
+  fill: #2a0630;
+  opacity: 0.35;
+}
+
+.ruptura-vitals .rv-screw {
+  fill: #c9c9d6;
+}
+
+/* As lentes espelhadas e a borracha seguem as cores do andar (ou do tema). */
+/* Escuras o bastante para destacar do osso claro, mesmo nos andares de cor clara. */
+.ruptura-vitals .rv-lens-warm { stop-color: color-mix(in srgb, var(--rpt-hot, #ff7ad1) 80%, #000000); }
+.ruptura-vitals .rv-lens-hot { stop-color: color-mix(in srgb, var(--rpt-accent, #b44dff) 85%, #000000); }
+.ruptura-vitals .rv-lens-core { stop-color: color-mix(in srgb, var(--rpt-accent, #b44dff) 55%, #000000); }
+.ruptura-vitals .rv-lens-deep { stop-color: color-mix(in srgb, var(--rpt-accent, #b44dff) 35%, #000000); }
+.ruptura-vitals .rv-lens-edge { stop-color: color-mix(in srgb, var(--rpt-accent, #b44dff) 70%, #000000); }
+
+.ruptura-vitals .rv-rubber {
+  fill: none;
+  stroke: var(--rpt-accent, #b44dff);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
 .ruptura-vitals .rv-tint {
   fill: var(--rpt-hot, #ff4dd8);
   transition: opacity 0.4s ease;
 }
 
+/* Escuro sobre o osso em todos os andares (--rpt-ink varia demais entre eles). */
 .ruptura-vitals .rv-number {
-  fill: var(--rpt-text, #eeeeee);
-  font-size: 30px;
+  fill: var(--rpt-void, #111111);
+  font-size: 26px;
   font-weight: 800;
+}
+
+/* ---------- Medo no máximo: sem óculos, gargalhando ---------- */
+
+.ruptura-vitals .rv-head,
+.ruptura-vitals .rv-glasses,
+.ruptura-vitals .rv-jaw,
+.ruptura-vitals .rv-ha {
+  transform-box: view-box;
+}
+
+.ruptura-vitals .rv-head {
+  transform-origin: 60px 122px;
+}
+
+/* Os óculos voam para cima e para o lado; voltam quando o Medo desce. */
+.ruptura-vitals .rv-glasses {
+  transform-origin: 60px 57px;
+  transition: transform 0.6s cubic-bezier(0.5, -0.5, 0.7, 1.4), opacity 0.45s ease;
+}
+
+.ruptura-vitals .rv-max .rv-glasses {
+  transform: translate(22px, -52px) rotate(32deg) scale(0.8);
+  opacity: 0;
+}
+
+.ruptura-vitals .rv-laugh {
+  opacity: 0;
+  transition: opacity 0.35s ease 0.2s;
+}
+
+.ruptura-vitals .rv-max .rv-laugh {
+  opacity: 1;
+}
+
+.ruptura-vitals .rv-max .rv-eyes,
+.ruptura-vitals .rv-max .rv-glow {
+  opacity: 0;
+}
+
+.ruptura-vitals .rv-ember {
+  fill: var(--rpt-blood, #ff5c7a);
+  filter: drop-shadow(0 0 3px var(--rpt-blood, #ff5c7a));
+}
+
+/* A mandíbula fica entreaberta na gargalhada e bate (rv-chatter). */
+.ruptura-vitals .rv-jaw {
+  transition: transform 0.3s ease;
+}
+
+.ruptura-vitals .rv-max .rv-jaw {
+  transform: translateY(4px);
+}
+
+.ruptura-vitals .rv-ha {
+  fill: var(--rpt-blood, #ff5c7a);
+  font-size: 15px;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ruptura-vitals .rv-max .rv-head {
+  animation: rv-cackle 1.8s ease-in-out infinite;
+}
+
+.ruptura-vitals .rv-max .rv-jaw {
+  animation: rv-chatter 1.8s linear infinite;
+}
+
+.ruptura-vitals .rv-max .rv-ember {
+  animation: rv-ember 0.9s ease-in-out infinite alternate;
+}
+
+.ruptura-vitals .rv-max .rv-ha {
+  animation: rv-ha 1.8s ease-out infinite;
+}
+
+.ruptura-vitals .rv-max .rv-ha-late {
+  animation-delay: 0.3s;
+}
+
+.ruptura-vitals.rv-player .rv-max .rv-skull {
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--rpt-blood, #ff5c7a) 60%, transparent));
+}
+
+@keyframes rv-cackle {
+  0%, 55%, 100% { transform: rotate(0deg); }
+  8% { transform: rotate(-6deg); }
+  16% { transform: rotate(5deg); }
+  24% { transform: rotate(-5deg); }
+  32% { transform: rotate(4deg); }
+  42% { transform: rotate(-2deg); }
+}
+
+@keyframes rv-chatter {
+  0%, 50%, 100% { transform: translateY(4px); }
+  6%, 18%, 30%, 42% { transform: translateY(10px); }
+  12%, 24%, 36% { transform: translateY(1px); }
+}
+
+@keyframes rv-ember {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+@keyframes rv-ha {
+  0% { opacity: 0; transform: translateY(6px); }
+  12% { opacity: 1; }
+  55% { opacity: 0; transform: translateY(-12px); }
+  100% { opacity: 0; transform: translateY(-12px); }
+}
+
+/* ---------- Medo zerado: triste, ainda de óculos ---------- */
+
+.ruptura-vitals .rv-head {
+  transition: transform 0.6s ease;
+}
+
+.ruptura-vitals .rv-zero .rv-head {
+  transform: translateY(4px) rotate(-7deg);
+}
+
+/* Os óculos escorregam um pouco no nariz. */
+.ruptura-vitals .rv-zero .rv-glasses {
+  transform: translateY(4px) rotate(-3deg);
+}
+
+/* Desanimado, o queixo cai: a mandíbula desce devagar e fica pendurada. */
+.ruptura-vitals .rv-zero .rv-jaw {
+  transform: translateY(8px);
+  transition: transform 0.9s cubic-bezier(0.3, 0, 0.2, 1.15);
+}
+
+.ruptura-vitals .rv-tear {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.ruptura-vitals .rv-tear {
+  fill: var(--rpt-pale, #cfa6ff);
+  transform-box: view-box;
+}
+
+.ruptura-vitals .rv-zero .rv-tear {
+  animation: rv-tear 3.2s ease-in infinite;
+}
+
+@keyframes rv-tear {
+  0% { opacity: 0; transform: translateY(-3px) scale(0.5); }
+  15% { opacity: 0.95; transform: translateY(0) scale(1); }
+  70% { opacity: 0.9; transform: translateY(26px) scale(0.85); }
+  85%, 100% { opacity: 0; transform: translateY(32px) scale(0.6); }
+}
+
+/* "Reduzir efeitos": ri parado, sem tremer. */
+html[data-ruptura-fx="off"] .ruptura-vitals .rv-max :is(.rv-head, .rv-jaw, .rv-ember) {
+  animation: none;
+}
+
+html[data-ruptura-fx="off"] .ruptura-vitals .rv-max .rv-ha,
+html[data-ruptura-fx="off"] .ruptura-vitals .rv-zero .rv-tear {
+  animation: none;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ruptura-vitals .rv-max :is(.rv-head, .rv-jaw, .rv-ember, .rv-ha),
+  .ruptura-vitals .rv-zero .rv-tear {
+    animation: none;
+  }
 }
 
 /* Jogador: só o crânio e o anel, sem moldura de painel. */
@@ -497,10 +719,6 @@ html[data-ruptura-fx="off"] .ruptura-variant-card .rvc-icon {
 
 .ruptura-vitals.ruptura-countdowns {
   width: 270px;
-}
-
-.ruptura-countdowns.collapsed .rc-footer {
-  display: none;
 }
 
 .ruptura-countdowns .rc-card {
@@ -803,4 +1021,77 @@ html[data-ruptura-fx="off"] .ruptura-countdowns :is(.rc-stream, .rc-hourglass.rc
   .ruptura-countdowns .rc-sand {
     transition: none;
   }
+}
+
+/* ---------- Ícone das janelas minimizadas ---------- */
+
+.ruptura-dock-icon {
+  position: fixed;
+  z-index: 71;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--rpt-accent, #b44dff);
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--rpt-accent, #b44dff) 28%, transparent), transparent 70%),
+    var(--rpt-panel, #1d1d22);
+  color: var(--rpt-hot, #f0f0f0);
+  font-size: 18px;
+  line-height: 1;
+  box-shadow: 0 0 0 1px var(--rpt-void, #000000), 0 6px 16px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.ruptura-dock-icon:hover,
+.ruptura-dock-icon:focus-visible {
+  outline: none;
+  transform: scale(1.06);
+  box-shadow: 0 0 0 1px var(--rpt-void, #000000), 0 0 14px color-mix(in srgb, var(--rpt-accent, #b44dff) 70%, transparent);
+}
+
+.ruptura-dock-icon.rdi-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+/* Perto de um canto: o ícone avisa que vai ficar preso ali. */
+.ruptura-dock-icon.rdi-magnet {
+  box-shadow: 0 0 0 3px var(--rpt-accent, #b44dff), 0 0 22px var(--rpt-accent, #b44dff);
+}
+
+.ruptura-dock-icon .rdi-badge {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  border-radius: 10px;
+  background: var(--rpt-accent, #b44dff);
+  color: var(--rpt-ink, #111111);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--rpt-void, #000000);
+}
+
+.ruptura-dock-icon .rdi-badge[hidden] {
+  display: none;
+}
+
+/* Janela do Foundry minimizada para o ícone (Encaixe dos Sigilos). */
+.application.ruptura-docked {
+  display: none !important;
+}
+
+html[data-ruptura-fx="off"] .ruptura-dock-icon {
+  transition: none;
 }

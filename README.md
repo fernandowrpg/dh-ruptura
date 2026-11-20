@@ -84,7 +84,30 @@ estado de recolhimento próprios e some quando o combate termina.
 Os jogadores veem apenas o contador de Medo: o crânio com um anel de marcadores em
 volta. O brilho dos olhos cresce por trás das lentes conforme o Medo sobe.
 
-Arraste para reposicionar; o mestre também pode recolher cada painel pela seta.
+O crânio também reage aos extremos, para o mestre e para os jogadores:
+
+- **Medo no máximo:** os óculos voam, os olhos viram fendas em brasa e o crânio
+  gargalha, tremendo e batendo o queixo.
+- **Medo zerado:** o crânio fica triste, ainda de óculos: a cabeça pende, os óculos
+  escorregam no nariz, o queixo cai e uma lágrima escorre.
+
+**Reduzir efeitos** mantém as expressões, sem movimento.
+
+Arraste para reposicionar. O botão **−** minimiza o painel (veja abaixo).
+
+## Janelas minimizadas
+
+Minimizada, cada janela do módulo (Vigília, Inimigos, Ampulhetas e Encaixe dos
+Sigilos) vira um ícone redondo que flutua sobre a cena, em vez de uma barra com o nome:
+
+- **Clique** no ícone para abrir a janela de novo; **arraste** para movê-lo.
+- **Solte perto de um canto** da tela para prendê-lo ali: ele brilha durante o arraste
+  para avisar. Ícones presos no mesmo canto ficam em fila e continuam no canto quando a
+  janela do navegador muda de tamanho. Arraste de novo para soltá-lo.
+- O ícone mostra um número: o Medo (Vigília), os inimigos de pé, as ampulhetas e os
+  sigilos encaixados.
+
+O estado minimizado e o lugar de cada ícone ficam salvos por jogador.
 
 ## Ampulhetas (contadores da aventura)
 
@@ -113,6 +136,53 @@ await countdowns.step(item.id);   // desce um passo
 await countdowns.reset(item.id);  // vira a ampulheta
 ```
 
+## Encaixe dos Sigilos
+
+Uma tela com um encaixe por andar da Esfera, em anel: o andar 1 no topo, o Arco I à
+direita e o Arco II à esquerda. Cada encaixe tem a cor e o ícone do seu andar. Abra pelo
+botão **Encaixe dos Sigilos** nos controles de token (todos os jogadores o têm) ou por
+macro.
+
+As runas são os itens criados pelo [Sigil Generator](https://github.com/fernandowrpg/sigil-generator)
+(com as flags dele ou a imagem `runa-<semente>.png`).
+
+- **Encaixar:** arraste a runa da ficha do personagem até um encaixe vazio, ou clique no
+  encaixe e escolha a runa. Os jogadores só encaixam runas dos próprios personagens; o
+  pedido vai ao mestre, então é preciso um mestre conectado. A runa sai do inventário,
+  acende na cor do andar e o chat anuncia o encaixe.
+- **Retirar (mestre):** o **×** no encaixe devolve a runa ao personagem que a encaixou
+  (ou ao diretório de Itens, se ele não existir mais). Runas que o mestre encaixa direto
+  do diretório continuam lá.
+- **Ver a runa:** clicar num encaixe preenchido abre o diário da runa; passar o cursor
+  mostra o andar, a runa e quem a encaixou. O mestre vê também o sigilo esperado e a
+  amarra do Demiurgo.
+- Os jogadores só veem o nome e o ícone dos andares que já alcançaram (até o andar ativo).
+
+**O fundo é a mente.** Atrás dos encaixes há um cérebro com um tentáculo para cada
+encaixe. Até o mestre revelar, ele aparece velado, como um padrão orgânico distorcido.
+**Revelar o fundo** (botão do mestre) firma as dobras num cérebro que pulsa, diante de
+todos os que estão com a tela aberta; **Mostrar a todos** abre a tela para todos.
+
+O encaixe tem duas animações:
+
+- **Fundo velado:** sutil; a runa assenta devagar e um anel de luz se abre.
+- **Fundo revelado:** o tentáculo do andar se estende da mente até o encaixe, se prende,
+  a runa acende e aquela parte do cérebro brilha na cor do andar. Os tentáculos dos
+  encaixes vazios ficam recolhidos, tateando o ar. Ao revelar, os tentáculos dos sigilos
+  já encaixados se estendem um depois do outro.
+
+**Reduzir efeitos** desliga as animações.
+
+Por macro:
+
+```js
+const { sigils } = game.modules.get('dh-ruptura').api;
+sigils.open();              // abre a tela
+sigils.showToAll();         // abre para todos (mestre)
+await sigils.reveal(true);  // revela o fundo (false volta a velar)
+sigils.list();              // runas encaixadas, por andar
+```
+
 Os temas são escuros e forçam o esquema escuro da interface enquanto estão ativos.
 
 ## Estrutura
@@ -125,15 +195,18 @@ scripts/
   settings.mjs        configurações
   variants.mjs        andar por cena e cartão de abertura
   widgets/
-    ui.mjs            peças comuns das janelas (arrastar, recolher)
+    ui.mjs            peças comuns das janelas (arrastar, minimizar)
+    dock.mjs          ícones das janelas minimizadas
     party-vitals.mjs  Vigília, Medo e Inimigos
     countdowns.mjs    Ampulhetas
+    sigils.mjs        Encaixe dos Sigilos
+    mind.mjs          a mente por trás dos encaixes (SVG)
 themes/
   index.mjs           lista dos temas embutidos
   _template/          ponto de partida para um tema novo
   sombria/
     theme.mjs         manifesto do tema
-    floors.mjs        os doze andares (variantes) e as contagens de cada um
+    floors.mjs        os doze andares (variantes), com cor, sigilo e contagens
     styles/
       tokens.css      cores, formas e fontes
       floors.css      tokens de cada andar

@@ -116,6 +116,30 @@ export function registerSettings() {
     default: {}
   });
 
+  // Encaixe dos Sigilos: runas encaixadas, por andar. Só o mestre grava (os jogadores pedem pelo socket).
+  game.settings.register(MODULE_ID, 'sigils', {
+    scope: 'world',
+    config: false,
+    type: Object,
+    default: {}
+  });
+
+  // O mestre revela quando o grupo percebe o que está no fundo da tela dos sigilos.
+  game.settings.register(MODULE_ID, 'sigilsRevealed', {
+    scope: 'world',
+    config: false,
+    type: Boolean,
+    default: false
+  });
+
+  // Lugar dos ícones das janelas minimizadas (canto preso ou posição livre).
+  game.settings.register(MODULE_ID, 'dockState', {
+    scope: 'client',
+    config: false,
+    type: Object,
+    default: {}
+  });
+
   game.settings.register(MODULE_ID, 'reduceEffects', {
     name: 'RUPTURA.Settings.ReduceEffects.Name',
     hint: 'RUPTURA.Settings.ReduceEffects.Hint',
