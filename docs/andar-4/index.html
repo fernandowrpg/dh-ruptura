@@ -147,7 +147,7 @@ td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var
       <span class="chip">Nível 3 → 4 · 2º patamar</span>
       <span class="chip">4 PJs · 14 PB por encontro</span>
       <span class="chip">Pressão da Esfera: Eco da Lembrança (ciclo 5)</span>
-      <span class="chip">Descanso longo na linha 6</span>
+      <span class="chip">Descanso curto depois da linha 6</span>
     </div>
   </header>
 
@@ -169,7 +169,7 @@ td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var
         <span><i class="dot" style="background:var(--treasure)"></i>T tesouro</span>
         <span><i class="dot" style="background:var(--boss)"></i>B boss</span>
       </div>
-      <p class="foot">? é um mistério: pode virar qualquer tipo de nó, menos boss. A linha 6 é descanso para todo caminho, como pede o guia da Esfera.</p>
+      <p class="foot">? é um mistério: pode virar qualquer tipo de nó, menos boss. A linha 1 é sempre descanso: a entrada do andar.</p>
     </section>
 
     <section class="detail" id="detail" aria-live="polite"></section>
@@ -226,12 +226,6 @@ const entryNotes = [
   "Descanso de entrada: o mestre recebe 1d4 Medo (curto) ou 1d4 + nº de PJs (longo).",
   "Ative a Pressão da Esfera — Eco da Lembrança: contagem padrão, ciclo 5. Ao zerar, o PJ com mais Esperança faz reação de Presença 14. Falha: perde 1 Esperança e o mestre ganha 1 Medo. Sucesso: uma visão da tabela no fim da página.",
   "Espíritos e espectros têm Fantasma (resistentes a dano físico). Se o grupo tem pouco dano mágico, a Adaga devoradora está na loja da esquerda e o Martelo de Ecsota na cripta."
-];
-const restBody = "A última sala antes da galeria aparece na versão original: limpa, aquecida, com cheiro de pão. A casa lembra de ter sido um lar, e os espíritos não entram aqui.";
-const restNotes = [
-  "Descanso longo, o único do andar: o mestre recebe 1d4 + nº de PJs Medo.",
-  "Chegue ao boss com pelo menos 2 Medo guardados para a Batalha sem Fim do Orgulho.",
-  "Bom momento para o grupo juntar os mementos e decidir quem vai tentar o Exorcismo."
 ];
 const N = [
   {id:"r1",type:"R",row:1,x:70,pos:"esquerda",title:"Chegada pelo jardim",body:entryBody,notes:entryNotes,
@@ -315,26 +309,25 @@ const N = [
     body:"Um cavalo negro de crina de fumaça dorme na última baia. Na baia ao lado, um caçador morto-vivo de casaco de couro afia as garras, com o emblema do casaco arrancado.",
     notes:["Passar em silêncio: teste em grupo de Agilidade 14. Se falhar, ou se alguém tentar montar o Pesadelo, o mistério vira a elite reserva (E3).","O Predador põe aliados em foco pagando PF (Morte Inevitável) e drena Esperança com Aterrorizante.","Domar o Pesadelo (regra da casa): com o Predador derrotado e o Pesadelo com metade dos PV marcados, um PJ faz Instinto ou Presença 15. Sucesso: ele para de lutar e vira montaria (BdM p.131).","O caçador pode ser de uma expedição anterior, como os Experimentos do Cofre."],
     maps:[{k:"Mapa",name:"Pastoral Village Stables",url:CZ+"maps/pastoral-village-stables",v:"Haunted (alternativa: Fog)"},{k:"Cena",name:"Pastoral Village Stables",url:CZ+"scenes/pastoral-village-stables",v:"Haunted"}]},
-  {id:"m5a",type:"M",row:5,x:115,pos:"centro-esquerda",code:"N4",title:"A Capela",
+  {id:"q5b",type:"Q",reveal:"Descanso",row:5,x:160,pos:"centro",title:"A Casa Como Era",
+    body:"O mistério se revela uma sala na versão original: limpa, aquecida, com cheiro de pão. A casa lembra de ter sido um lar, e os espíritos não entram aqui. Os três lados do mapa podem chegar a ela.",
+    notes:["Descanso longo permitido (o mestre recebe 1d4 + nº de PJs Medo). Fora da entrada, é o único nó de descanso do andar.","Bom momento para o grupo juntar os mementos e decidir quem vai tentar o Exorcismo.","Na lareira, o retrato do dono da casa ainda tem rosto. É o mesmo homem do quadro do boss, só que sorrindo."],
+    maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Normal Mansion Day"},{k:"Alternativa",name:"Victorian Greenhouse",url:CZ+"maps/victorian-greenhouse",v:"Original Night (jardim de inverno)"}]},
+  {id:"m6a",type:"M",row:6,x:110,pos:"esquerda/centro",code:"N4",title:"A Capela",
     comp:[["Lívido",3],["Horda de carniçais",2],["2 Carniçais atrozes",4],["Espectro guardião",2],["Espectro arqueiro",2]],total:"13 (14−1)",
     body:"Uma capela particular com caixões abertos em fila. Em cada lápide, o mesmo sobrenome. Só um nome nunca tem data de morte.",
-    notes:["Use a variante Massacre: os corpos no chão alimentam o Erguer Cadáveres do Lívido (1 PF, o carniçal atroz criado já entra em foco).","Comandar os Incapazes custa 2 Medo. Guarde para depois que o Lívido erguer um cadáver.","Luta curta: 13 PB."],
+    notes:["Use a variante Massacre: os corpos no chão alimentam o Erguer Cadáveres do Lívido (1 PF, o carniçal atroz criado já entra em foco).","Comandar os Incapazes custa 2 Medo. Guarde para depois que o Lívido erguer um cadáver.","Luta curta (13 PB). Depois dela, deixe o grupo fazer um descanso curto antes do boss."],
     maps:[{k:"Mapa",name:"Celestial Chapel Interior",url:CZ+"maps/celestial-chapel-interior",v:"Midnight Chapel ou Massacre"},{k:"Alternativa",name:"Peaceful Village Church Interior",url:CZ+"maps/peaceful-village-church-interior",v:"Shadowland"}]},
-  {id:"m5b",type:"M",row:5,x:195,pos:"centro-direita",code:"N5",title:"Galeria dos Retratos",
+  {id:"m6b",type:"M",row:6,x:210,pos:"centro/direita",code:"N5",title:"Galeria dos Retratos",
     comp:[["2 Espectros guardiões",4],["3 Espectros arqueiros",6],["2 Carniçais atrozes",4]],total:"14",
     body:"Retratos de família em ordem: a cada quadro, os parentes envelhecem e somem, e o mesmo homem no centro não muda. No último, ele está sozinho.",
-    notes:["Memento: os retratos. Contam +1 no Exorcismo do boss.","Os arqueiros saem das molduras e atiram de longe. Os guardiões protegem os quadros.","Sem líder, brutamonte ou solo: se quiser apertar, a regra do LB permite +1 PB (15)."],
+    notes:["Memento: os retratos. Contam +1 no Exorcismo do boss.","Os arqueiros saem das molduras e atiram de longe. Os guardiões protegem os quadros.","Sem líder, brutamonte ou solo: se quiser apertar, a regra do LB permite +1 PB (15).","A galeria termina no retrato do boss. Depois desta luta, deixe o grupo fazer um descanso curto antes de chegar perto do quadro."],
     maps:[{k:"Mapa",name:"Opulent Ballroom",url:CZ+"maps/opulent-ballroom",v:"Haunted (alternativa: Treasury Exhibition)"}]},
   {id:"e5",type:"E",row:5,x:275,pos:"direita",code:"E1",title:"O Banquete",
     comp:[["Espírito da Fome",5],["Lívido",3],["2 Hordas de carniçais",4],["2 Carniçais atrozes",4]],total:"16",
     body:"Uma mesa posta para doze. Onze cadeiras vazias e o Espírito da Fome na cabeceira, mastigando o nada. Doze lugares, um para cada andar da Esfera.",
-    notes:["Hora do Rango: contagem (ciclo 1d6) que desce a cada foco do espírito. Ao zerar, quem estiver próximo faz Presença ou sofre 2d12 mág direto e marca 2 PF, e o espírito recupera 1 PV.","Aura de Fome: PJ muito próximo posto em foco faz Presença ou marca 1 PF.","O Lívido ergue cadáveres pagando PF: os restos do banquete servem.","Quem veio pela Cozinha já conhece os carniçais."],
+    notes:["Hora do Rango: contagem (ciclo 1d6) que desce a cada foco do espírito. Ao zerar, quem estiver próximo faz Presença ou sofre 2d12 mág direto e marca 2 PF, e o espírito recupera 1 PV.","Aura de Fome: PJ muito próximo posto em foco faz Presença ou marca 1 PF.","O Lívido ergue cadáveres pagando PF: os restos do banquete servem.","Quem veio pela Cozinha já conhece os carniçais.","Os caminhos que passam pelo Porão podem trocar o Banquete pela Casa Como Era (descanso)."],
     maps:[{k:"Mapa",name:"Ogre Queen Feast",url:CZ+"maps/ogre-queen-feast",v:"Haunted (alternativa: Fog Night)"},{k:"Cena",name:"Ogre Queen Feast",url:CZ+"scenes/ogre-queen-feast",v:"Haunted"}]},
-
-  {id:"r6a",type:"R",row:6,x:110,pos:"centro-esquerda",title:"O Jardim de Inverno",body:restBody,notes:restNotes,
-    maps:[{k:"Mapa",name:"Victorian Greenhouse",url:CZ+"maps/victorian-greenhouse",v:"Original Night (alternativa: Eerie)"}]},
-  {id:"r6b",type:"R",row:6,x:210,pos:"centro-direita",title:"A Casa Como Era",body:restBody,notes:restNotes,
-    maps:[{k:"Mapa",name:"Vampire Mansion",url:CZ+"maps/vampire-mansion",v:"Normal Mansion Day"}]},
 
   {id:"b",type:"B",row:7,x:160,pos:"topo",code:"Boss",title:"O Retrato do Inventor",
     comp:[["Espírito do Orgulho (Líder)",3],["Espírito da Ira (Solo)",5],["2 Espectros guardiões",4],["2 Espectros arqueiros",4]],total:"16",
@@ -346,13 +339,13 @@ const N = [
 const E = [["r1","m2a"],["r1","q2"],["r2","q2"],["r3","q2"],["r3","m2b"],
   ["m2a","q3a"],["m2a","m3"],["q2","m3"],["q2","q3c"],["m2b","q3c"],["m2b","q3d"],
   ["q3a","t4a"],["m3","t4a"],["m3","e4"],["q3c","e4"],["q3c","t4c"],["q3d","t4c"],
-  ["t4a","q5a"],["t4a","m5a"],["e4","m5a"],["e4","m5b"],["t4c","m5b"],["t4c","e5"],
-  ["q5a","r6a"],["m5a","r6a"],["m5b","r6a"],["m5b","r6b"],["e5","r6b"],
-  ["r6a","b"],["r6b","b"]];
+  ["t4a","q5a"],["t4a","q5b"],["e4","q5b"],["t4c","q5b"],["t4c","e5"],
+  ["q5a","m6a"],["q5b","m6a"],["q5b","m6b"],["e5","m6b"],
+  ["m6a","b"],["m6b","b"]];
 const PATHS = {
-  esq:{nodes:["r1","m2a","q3a","t4a","q5a","r6a","b"],note:"Esquerda: Ronda Fantasma, a Vela de Luto (loja), a Cripta e a Cavalariça. Só uma luta certa e a chance de ganhar o Pesadelo como montaria. O caminho mais leve."},
-  centro:{nodes:["r2","q2","m3","e4","m5a","r6a","b"],note:"Centro: o Vestíbulo, o Grito no Corredor, o Quarto (elite anti-Esperança) e a Capela. O caminho mais duro. Quem quiser as cartas pode trocar o Grito pelo Escritório."},
-  dir:{nodes:["r3","m2b","q3d","t4c","e5","r6b","b"],note:"Direita: a Cozinha, a Taverna dos que Ficaram (loja), o Porão do Inventor e o Banquete (elite). Trocando o Banquete pela Galeria, o grupo chega ao boss com dois mementos."}
+  esq:{nodes:["r1","m2a","q3a","t4a","q5a","m6a","b"],note:"Esquerda: Ronda Fantasma, a Vela de Luto (loja), a Cripta, a Cavalariça e a Capela. Dois combates certos e a chance de ganhar o Pesadelo como montaria. O caminho mais leve."},
+  centro:{nodes:["r2","q2","m3","e4","q5b","m6b","b"],note:"Centro: o Vestíbulo, o Grito no Corredor, o Quarto (elite anti-Esperança), a Casa Como Era (descanso) e a Galeria dos Retratos. Quem quiser as cartas pode trocar o Grito pelo Escritório."},
+  dir:{nodes:["r3","m2b","q3d","t4c","e5","m6b","b"],note:"Direita: a Cozinha, a Taverna dos que Ficaram (loja), o Porão do Inventor, o Banquete (elite) e a Galeria. O caminho mais duro, sem descanso, mas com dois mementos (laboratório e retratos)."}
 };
 const VISIONS = [
   ["Um banquete para doze. Onze cadeiras vazias. Ele come sozinho e não sente gosto nenhum.","Fome: prepara o Banquete (E1)."],
