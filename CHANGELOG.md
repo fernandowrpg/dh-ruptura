@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0
+
+- **Tokens do andar 4 (A Galeria das Lembranças):** 14 tokens em `tokens/andar-4`, com moldura no tema da Galeria (aro de prata azulada e papel de parede) e tamanho do Foundry no nome do arquivo. O Orgulho e a Ira, que formam o boss, têm aro dourado-pálido e o selo de lágrima da Aflição. Arte do 2-Minute Tabletop.
+- O gerador de tokens (`tokens/_fontes/make_tokens.py`) passa a receber o andar, com aro, textura e selo próprios de cada um.
+- **Mapa do andar 4** em `docs/andar-4` (e no GitHub Pages): encontros, fichas das ameaças, mementos, visões do Eco da Lembrança, mapas da Czepeku e ambientes em quatro dos mistérios.
+- Andar 3: o Arquivo dos Experimentos mostra o que está nas fichas da Organização.
+
 ## 0.8.0
 
 - **Ampulhetas:** janela de contadores da aventura no estilo da Vigília. Cada contador é uma ampulheta com passos que descem um a um, reinício com giro, visibilidade por contador para os jogadores e aviso sussurrado ao mestre quando zera.
